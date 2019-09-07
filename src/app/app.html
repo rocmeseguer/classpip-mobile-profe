@@ -1,0 +1,67 @@
+<!-- Código correspondiente al menú desplegable que se encuentra a la izquierda de la pantalla -->
+
+<ion-menu [content]="content">
+
+  <!-- Código correspondiente al título del menú desplegable-->
+
+  <ion-header>
+    <ion-toolbar color="primary" >
+      <ion-title>Menu </ion-title>
+      <ion-label></ion-label>
+    </ion-toolbar>
+  </ion-header>
+
+   <!-- Código correspondiente a los botones que redirigen a las pantallas principales. Mediante
+   menuClose, cada vez que se haga click al botón, se cerrá el menú y se redireccionará a la
+   pantalla deseada -->
+
+  <ion-content class="fondoDegradado">
+
+
+   <!-- Todos los botones del menu lateral siguen la misma estética definida en el archivo scss
+   pero tienen una separación distinta para conseguir la estética del menú desplegable deseada-->
+
+    <div *ngFor="let profesor of grupo">
+
+        <!--Se define la imagen que tiene guardada el profesor. En este caso no la cogemos de la API
+        aunque se deberá cambiar y se deberá seleccionar la foto del profesor desde la API y no desde
+        una carpeta de la aplicación-->
+        <img src="../assets/icon/icon-student.svg" class="img">
+        <ion-label style="text-align: center; font-size: 120%; color:rgb(255, 255, 255)"> {{profesor.Nombre}} {{profesor.Apellido}}</ion-label>
+
+        <!--Se define los botones que se visualizarán en el desplegable lateral del usuario-->
+        <ion-item class="BotonesMenu" style="margin-top: 8%" menuClose ion-item (click)="irMisGrupos(profesor.id);" >Mis grupos
+          <ion-icon item-left name="people"></ion-icon>
+          <ion-icon item-right name="arrow-forward"  ></ion-icon>
+        </ion-item>
+
+        <ion-item class="BotonesMenu" menuClose ion-item (click)="irMisPuntos(profesor.id);" >Mis puntos/insignias
+            <ion-icon item-left name="ionic"></ion-icon>
+            <ion-icon item-right name="arrow-forward"  ></ion-icon>
+        </ion-item>
+
+        <ion-item class="BotonesMenu" menuClose ion-item (click)="irMisColecciones(profesor.id);"  >Mis colecciones
+            <ion-icon item-left name="albums"></ion-icon>
+            <ion-icon item-right name="arrow-forward"  ></ion-icon>
+        </ion-item>
+
+        <ion-item class="BotonesMenu" style="margin-top: 8%" menuClose ion-item >Configuración
+            <ion-icon item-left name="cog"></ion-icon>
+            <ion-icon item-right name="arrow-forward"  ></ion-icon>
+        </ion-item>
+
+        <ion-item class="BotonesMenu" menuClose ion-item (click)="irHome();" >Cerrar Sesión
+            <ion-icon item-left name="log-out"></ion-icon>
+            <ion-icon item-right name="arrow-forward"  ></ion-icon>
+        </ion-item>
+
+    </div>
+
+  </ion-content>
+
+</ion-menu>
+
+
+
+<!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
+<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

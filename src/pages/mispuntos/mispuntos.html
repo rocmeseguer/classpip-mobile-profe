@@ -1,0 +1,98 @@
+<!--Se definen los elementos que aparecerán en la cabecera de la pantalla de la aplicación-->
+<ion-header>
+
+  <!--CABECERA SUPERIOR ( JUNTO A MENU LATERAL )-->
+  <form class="ClasspipCabecera">
+      <button ion-button menuToggle >
+          <ion-icon name="menu"></ion-icon>
+      </button>
+      <img src="../../assets/icon/Icono Classpip.png">
+      <h2 style="color:white">Classpip</h2>
+    </form>
+
+  <!--CABECERA INFERIOR (PERMITIRA RETROCEDER A LAS PANTALLAS ANTERIORES mediante un NavBar)-->
+  <ion-navbar color="azulcabecera">
+    <ion-title >MIS PUNTOS</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content class="fondoDegradado" >
+
+    <!--Se define un seleccionador de opciones , puedes escoger entre Puntos o
+    Insignias, de esa manera se asigna un value para mostrar posteriormente un contenido u
+    otro--><!--Se define las opciones posibles mediante un ion-segment-->
+    <ion-content class="contenedorInformacion">
+
+        <div padding>
+            <ion-segment [(ngModel)]="Tipo">
+              <ion-segment-button value="Puntos" >
+                Puntos
+              </ion-segment-button>
+              <ion-segment-button value="Insignias">
+                Insignias
+              </ion-segment-button>
+            </ion-segment>
+        </div>
+
+        <!--Segun el tipo de Asignación que se haya seleccionado, se mostrará un párrafo u otro-->
+        <div [ngSwitch]="Tipo">
+
+            <!--Al poner <b> permitimos que las palabras que esten dentro se visualicen en negrita-->
+            <p id="ParrafoTipo" *ngSwitchCase="'Puntos'">A continuación se muestran <b>los puntos</b> disponibles:</p>
+
+            <p id="ParrafoTipo" *ngSwitchCase="'Insignias'">A continuación se muestran <b>las insignias</b> disponibles:</p>
+
+        </div>
+    </ion-content>
+
+
+
+  <!--Definimos que se debe de visualizar al hacer click en Puntos o en Insignias-->
+  <div [ngSwitch]="Tipo">
+
+    <ion-list *ngSwitchCase="'Puntos'" >
+
+        <!--Si puntosProfesor tiene algun valor, entonces me debe enseñar el acordeon
+        sino, deberá saltar el Aviso_no_puntos-->
+        <ion-list *ngIf="puntosProfesor;else Aviso_no_puntos" >
+
+            <!--Medinate title, se le enviará punto.Nombre y será el titulo que aparecerá
+            en el acordeon generado-->
+            <accordionPuntos *ngFor="let punto of puntosProfesor" [title]="punto.Nombre">
+
+              <!-- Parráfo creado para que inicialmente aparezca un hueco en blanco al expandir el acordeón -->
+              <p><ion-item style="background-color:transparent"></ion-item></p>
+              <p class="DescripcionPunto">{{punto.Descripcion}}</p>
+            </accordionPuntos>
+
+        </ion-list>
+
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'Insignias'">
+
+          <!--Si insigniasProfesor tiene algun valor, entonces me debe enseñar la lista
+          sino, deberá saltar el Aviso_no_puntos-->
+          <ion-list padding *ngIf="insigniasProfesor;else Aviso_no_puntos"  >
+
+              <!--Se definen las insignias que se van a mostrar en distintos items-->
+              <ion-list padding style="background-color: white; border-bottom-right-radius: 20px; border-bottom-left-radius: 20px; border-top-right-radius: 20px; border-top-left-radius: 20px;; box-shadow: 0px 3px 6px 0px rgb(34, 130, 226) " >
+                  <ion-item *ngFor="let insignia of insigniasProfesor; let i = index" >
+                    <ion-thumbnail item-start style="margin-left:-6%"  >
+                        <img *ngIf="imagenesLogo[i]" [src]="imagenesLogo[i]" >
+                        <img *ngIf="imagenesLogo[i] === undefined" src="../../assets//imgs/No-Photo-Available.jpg" >
+                    </ion-thumbnail>
+                    <h2 style="color: rgb(34, 130, 226) ; font-style: bold;">{{insignia.Nombre}}</h2>
+                    <p style="color:  rgb(61, 60, 60); font-style: oblique;" >{{insignia.Descripcion}}</p>
+                  </ion-item>
+              </ion-list>
+
+          </ion-list>
+
+    </ion-list>
+
+  </div>
+
+
+</ion-content>

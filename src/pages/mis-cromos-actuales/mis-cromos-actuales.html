@@ -1,0 +1,67 @@
+
+<!--Se definen los elementos que aparecerán en la cabecera de la pantalla de la aplicación-->
+<ion-header>
+
+  <!--CABECERA SUPERIOR ( JUNTO A MENU LATERAL )-->
+  <form class="ClasspipCabecera">
+      <button ion-button menuToggle >
+          <ion-icon name="menu"></ion-icon>
+      </button>
+      <img src="../../assets/icon/Icono Classpip.png">
+      <h2 style="color:white">Classpip</h2>
+    </form>
+
+  <!--CABECERA INFERIOR (PERMITIRA RETROCEDER A LAS PANTALLAS ANTERIORES mediante un NavBar)-->
+  <div>
+      <ion-navbar color="azulcabecera">
+        <ion-title>MIS CROMOS </ion-title>
+      </ion-navbar>
+  </div>
+
+</ion-header>
+
+<ion-content class="fondoDegradado" >
+
+    <!--Se hace una distinción entre si la variable alumno o equipo existe, para que se visualize
+    un texto u otro-->
+    <ion-content *ngIf="alumno" class="contenedorInformacion" style="margin-bottom: 0%;">
+      <!--Al poner <b> permitimos que las palabras que esten dentro se visualicen en negrita-->
+        <p id="informacion">A continuación se muestran <b>los cromos </b> de {{alumno.Nombre}} {{alumno.PrimerApellido}} {{alumno.SegundoApellido}}: </p>
+    </ion-content>
+
+    <ion-content *ngIf="equipo"class="contenedorInformacion" style="margin-bottom: 0%;">
+      <!--Al poner <b> permitimos que las palabras que esten dentro se visualicen en negrita-->
+        <p id="informacion">A continuación se muestran <b>los cromos </b> de {{equipo.Nombre}}: </p>
+    </ion-content>
+
+
+    <!--Se define una matriz de 12 posiciones por fila, donde cada cromo ocupa 5 posiciones por lo que
+    habrán dos cromos por fila y habrá un margen de 2 posiciones para separarlos-->
+    <ion-grid >
+      <ion-row style="margin-left: -1%">
+          <ion-col col-5 *ngFor="let cromo of AlbumDelAlumno;let i = index" style="margin-right:8%"   >
+                <!--Segun el nivel del cromo, se le asigna una clase u otra, para así conseguir
+                una estética distinta para cada cromo. Para los cromos que no dispongamos se
+                le asigna la clase falti donde se le añade transparencia a ese cromo.-->
+                <ion-thumbnail  item-start class="cromo" style="margin-top: 5%;margin-left:5%; margin-right:10%"
+                [ngClass]="{
+                'Falti' : cromo.Tengi === false,
+                'Diamante' : cromo.Nivel === 'Diamante',
+                'Platino' : cromo.Nivel === 'Platino',
+                'Oro' : cromo.Nivel === 'Oro',
+                'Plata' : cromo.Nivel === 'Plata',
+                'Bronce' : cromo.Nivel === 'Bronce'}">
+
+                  <img class ="imagenCromo" *ngIf="imagenCromoArray[i]" [src]="imagenCromoArray[i]" >
+                  <div class="contenidoNombre" style="text-align: center">
+                    <h2 id="NombreCromo" >{{cromo.Nombre}}</h2>
+                  </div>
+                  <h2 id="NivelCromo" ><i>{{cromo.Nivel}}</i></h2>
+
+              </ion-thumbnail>
+          </ion-col>
+      </ion-row>
+    </ion-grid>
+
+
+</ion-content>

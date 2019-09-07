@@ -1,0 +1,91 @@
+page-inicio{
+
+//Se definen parámetros para ocultar el scrollbar
+
+::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  display: none;
+}
+
+//Se definen parámetros estéticos de los párrafos y sus correspondiente letras en negrita
+
+#p{
+  font-size: 14px;
+  line-height: 1.5;
+  color:  rgb(38, 39, 39);
+  margin-right: 2%;
+  margin-bottom:6%;
+  margin-left: 8%;
+
+  b {
+    color: map-get($colors, primary);
+  }
+}
+
+                 //*************VALORES ESTÉTICOS PARA ACCORDION*************//
+
+//Se define las posiciones de las cartas del acordeón y los colores que tendrán cada icono.
+
+//Se define la posición de la primera carta dentro del acordeón
+.subirizquierda{
+    position:relative;
+    margin-top:-12%;
+    margin-left:-2%;
+    width:105%;
+}
+
+//Se define la posición de la segunda y tercera carta dentro del acordeón
+.izquierda{
+    position:relative;
+    margin-left:-2%;
+    width:105%;
+}
+
+//Se define la estética de la carta que te redirecciona a la página misAlumnos
+.carta-Alumnos{
+  background-color: rgba(248, 56, 56, 0.966);
+  color: #fff;
+  font-size: 95%;
+  font-style: bold;
+  position:relative;
+}
+
+//Se define la estética de la carta que te redirecciona a la página misEquipos
+.carta-Equipos{
+  background-color: rgb(138, 177, 138) ;
+  color: #fff;
+  font-size: 95%;
+  font-style: bold;
+  position:relative;
+}
+
+//Se define la estética de la carta que te redirecciona a la página misJuegos
+.carta-Juegos{
+  background-color: rgb(240, 189, 95);
+  color: #fff;
+  font-size: 95%;
+  font-style: bold;
+  position:relative;
+}
+
+//Se define el margen que debe tener el icono (flechita) que tiene la cabecera del acordeón
+.card-header .item{
+  margin-left: 10%;
+}
+
+//Se definen los margenes internos (padding) del contenido del acordeón.
+.card-content {
+    padding: 0px 16px;
+    max-height: 0px;
+}
+
+
+
+
+
+}
+
+
+
+
+

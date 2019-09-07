@@ -1,0 +1,53 @@
+page-mis-colecciones {
+
+//Se definen parámetros estéticos de los párrafos y sus correspondientes letras en negrita
+  #p{
+    font-size: 14px;
+    line-height: 1.5;
+    color:  rgb(38, 39, 39);
+    margin-right: 2%;
+    margin-bottom:6%;
+    margin-left: 8%;
+
+    b {
+      color: map-get($colors, primary);
+    }
+  }
+
+//Se define la posición de la imagen dentro del contenedor coleccion y los redondeos que presentan
+//dichas imagenes
+  .imagenColeccion {
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    max-width: 90px;
+    max-height: 70px;
+    width: 90px;
+    height: 70px;
+    margin-left:1% !important;
+    margin-right: 3% !important;
+  }
+
+  //Se definen los parámetros del contenedor que muestra el logo del equipo y el nombre del equipo
+  #contenedorEquipo{
+    background-color:rgba(64, 155, 240, 0.973);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    box-shadow: 0px 5px 9px 3px rgba(24, 120, 209, 0.973);;
+    text-align: center;
+    margin-right:8%;
+    margin-bottom: 5%;
+  }
+
+  //Se definen los parámetros del texto que indica el nombre de la coleccion
+  #NombreColeccion{
+    color:rgb(255, 253, 253);
+    font-size: 13px;
+    margin-top:10%;
+    text-transform: uppercase;
+  }
+
+
+
+}

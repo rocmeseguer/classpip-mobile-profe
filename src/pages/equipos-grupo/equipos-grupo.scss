@@ -1,0 +1,43 @@
+//Como se puede apreciar, todos los identificadores se encuentran dentro de page-equipos-grupo
+//con ello se consigue particularizar dichos parametros esteticos a esta pantalla unicamente
+
+page-equipos-grupo {
+
+  //Se definen los parámetros del contenedor que muestra el logo del equipo y el nombre del equipo
+  #contenedorEquipo{
+    background-color:rgba(64, 155, 240, 0.973);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    box-shadow: 0px 5px 9px 3px rgba(24, 120, 209, 0.973);;
+    text-align: center;
+    margin-right:8%;
+    margin-bottom: 5%;
+  }
+
+                   //*************Paneles con comentarios sobre pantallas*************//
+
+//Se define los parametros esteticos del pequeño texto explicativo de la pantalla y además se
+//define los valores "b" que son los parametros para texto en negrita.
+
+  #NombreEquipo{
+    color:white;
+    font-size: 15px;
+    margin-top:3%;
+  }
+
+  #InformacionPantalla{
+    font-size: 14px;
+    line-height: 1.5;
+    color:  rgb(38, 39, 39);
+    margin-left: 7%;
+    margin-right: 2%;
+    margin-bottom:5%;
+    margin-top:7%;
+
+    b {
+      color: map-get($colors, primary);
+    }
+  }
+}

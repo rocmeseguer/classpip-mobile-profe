@@ -1,0 +1,35 @@
+//Como se puede apreciar, todos los identificadores y clases se encuentran dentro de Login(HOME)
+//con ello se consigue particularizar dichos parametros esteticos a esta pantalla unicamente
+
+page-home{
+
+  //Se definen los parámetros de la imagen de Classpip para el inicio de Sesion
+  #imagenClasspip{
+    margin-top: 10%;
+    margin-bottom: 30px;
+    width:120px;
+    position:relative;
+  }
+
+  //Se definen los contenedores que muestran los inputs de Usuario y Contraseña
+  .ContenedorInput{
+    border-top-left-radius: 35px;
+    border-top-right-radius: 35px;
+    border-bottom-left-radius: 35px;
+    border-bottom-right-radius: 35px;
+    padding-left:10%;
+    background-color: #f4f4f498;
+    color: map-get($colors, dark);
+    margin-bottom: 3%;
+
+  }
+
+  //Se define el botón de autentificación: Desde el color de fondo hasta la anchura de este
+  #botonAutentificar{
+    width: 100%;
+    margin-top: 12%;
+    background-color: map-get($colors,azulcabecera);
+  }
+
+}
+

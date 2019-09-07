@@ -1,0 +1,70 @@
+//Como se puede apreciar, todos los id se encuentran dentro de page-alumnos-equipo,
+//con ello se consigue particularizar dichos parametros esteticos a esta pantalla unicamente.
+
+page-alumnos-equipo {
+
+//Definimos id=" # " y no clases=" . " ya que con las clases podemos aplicar esos parámetros
+//a distintos elementos pero con un id, solo lo podemos aplicar a un unico elemento.
+
+//Para esta pantalla se utilizará una única vez el elemento, por lo que le corresponde un
+//identificador.
+
+  #logoEquipo {
+    max-width: 100px;
+    max-height: 100px;
+    margin-left: 32%;
+    margin-top:-5%;
+  }
+
+
+  #NombreEquipo{
+    color:white;
+    font-size: 15px;
+    text-align:center;
+    margin-top:0%;
+  }
+
+
+  #ContenidoAlumnos {
+    background:white;
+    height: 30%;
+    width:85%;
+    margin-left:7%;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    margin-top:5%;
+    margin-bottom:-2%;
+    box-shadow: 0px 5px 9px 3px map-get($colors, azulcabecera);
+  }
+
+                   //*************Paneles con comentarios sobre pantallas*************//
+
+//Se define los parametros esteticos del pequeño texto explicativo de la pantalla y además se
+//define los valores "b" que son los parametros para texto en negrita.
+.InformacionPantalla{
+  font-size: 14px;
+  line-height: 1.5;
+  color:  rgb(38, 39, 39);
+  margin-left: 8%;
+  margin-right: 2%;
+  margin-bottom:5%;
+  margin-top:5%;
+
+  b {
+    color: map-get($colors, primary);
+  }
+}
+
+
+                   //*************Información sobre alumnos*************//
+
+//Se define los parametros esteticos del pequeño texto informativo de los alumnos.
+.InformacionAlumno {
+  color: black;
+  font-size: 14px;
+  text-align: start;
+}
+
+}

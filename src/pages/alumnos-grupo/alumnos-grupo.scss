@@ -1,0 +1,49 @@
+//Como se puede apreciar, todos los identificadores se encuentran dentro de page-alumnos-grupo
+//con ello se consigue particularizar dichos parametros esteticos a esta pantalla unicamente
+
+page-alumnos-grupo {
+
+//Se define el contenedor donde aparecerá la información de los alumnos, con esquinas redondeadas
+//con sombras de color primary y con color blanco de fondo
+.ContenidoAlumnos {
+  background:white;
+  height: 50%;
+  width:85%;
+  margin-left:7%;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  margin-top:10%;
+  margin-bottom:-2%;
+  box-shadow: 0px 5px 9px 3px map-get($colors, primary);
+}
+
+                 //*************Paneles con comentarios sobre pantallas*************//
+
+//Se define los parametros esteticos del pequeño texto explicativo de la pantalla y además se
+//define los valores "b" que son los parametros para texto en negrita.
+#InformacionPantalla{
+  font-size: 14px;
+  line-height: 1.5;
+  color:  rgb(38, 39, 39);
+  margin-left: 8%;
+  margin-right: 2%;
+  margin-bottom:5%;
+  margin-top:5%;
+
+  b {
+    color: map-get($colors, primary);
+  }
+}
+
+
+                   //*************Información sobre alumnos*************//
+
+//Se define los parametros esteticos del pequeño texto informativo de los alumnos.
+#InformacionAlumno {
+  color: black;
+  font-size: 14px;
+  text-align: start;
+}
+}

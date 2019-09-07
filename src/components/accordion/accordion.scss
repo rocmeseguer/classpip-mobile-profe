@@ -1,0 +1,37 @@
+//Todas las clases estéticas definidas, solo se aplicarán en Accordion
+//ya que añadiendolas dentro de accordion{} , particularizas
+//esas clases para ese componente
+
+accordion {
+
+  .general{
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    width:85%;
+    margin-left: 7%;
+  }
+
+//Se definen las características estéticas de la cabecera de la carta
+  .card-header{
+      background-color: map-get($colors, primary);
+      color: #fff;
+      font-size: 95%;
+      position:relative;
+      margin-left: -12%;
+      box-shadow: 0px 3px 6px 0px map-get($colors, primary);
+  }
+
+//Se define el margen izquierdo que debe tener el icono de la cabecera
+  .card-header .item{
+    margin-left: 20%;
+}
+
+//Se define el color de fondo que debe tener el contenido de la
+//lista desplegable
+
+  .card-content {
+      background-color: map-get($colors, light);
+  }
+}

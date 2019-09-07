@@ -1,0 +1,58 @@
+
+<!--Se definen los elementos que aparecerán en la cabecera de la pantalla de la aplicación-->
+<ion-header>
+
+    <!--CABECERA SUPERIOR ( JUNTO A MENU LATERAL )-->
+    <form class="ClasspipCabecera">
+        <button ion-button menuToggle >
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <img src="../../assets/icon/Icono Classpip.png">
+        <h2 style="color:white">Classpip</h2>
+      </form>
+
+    <!--CABECERA INFERIOR (PERMITIRA RETROCEDER A LAS PANTALLAS ANTERIORES mediante un NavBar)-->
+    <div>
+        <ion-navbar color="azulcabecera">
+          <ion-title>MI EQUIPO</ion-title>
+        </ion-navbar>
+    </div>
+
+</ion-header>
+
+<ion-content class="fondoDegradado" >
+
+      <ion-content class="contenedorInformacion">
+      <!--Al poner <b> permitimos que las palabras que esten dentro se visualicen en negrita-->
+          <p class="InformacionPantalla"> A continuación se muestran <b>los alumnos</b> del equipo:</p>
+      </ion-content>
+
+      <!-- Se recibe de Alumnos-equipo.ts el equipo y se displaya el
+      Nombre y la imagen del Equipo-->
+
+      <img id ="logoEquipo" *ngIf="imagenLogo"  mat-card-image [src]="imagenLogo" >
+      <h2 id="NombreEquipo">{{equipo.Nombre}}</h2>
+
+
+      <!--Mediante el ion-searchbar permitimos filtrar los alumnos y buscar el deseado-->
+      <ion-searchbar (ionInput)="getItems($event)" placeholder="Filtrar por alumno" style="background-color: transparent" ></ion-searchbar>
+      <ion-content id="ContenidoAlumnos" padding>
+            <ion-list>
+              <!--Los alumnos es lo que hemos definidos como item, ya que sino no podriamos
+              hacer uso de la funcion filtrar.-->
+                <ion-item *ngFor="let item of items" no-lines>
+
+                  <!--Se define una imagen predefinida para cada alumno, deberá modificarse y permitir
+                  que esa foto se seleccione desde la API-->
+                    <ion-avatar item-start>
+                      <img src="../../assets/icon/icon-student.svg">
+                    </ion-avatar>
+
+                    <p class="InformacionAlumno">{{item.Nombre}} {{item.PrimerApellido}} {{item.SegundoApellido}}</p>
+                </ion-item>
+            </ion-list>
+
+        </ion-content>
+
+</ion-content>
+

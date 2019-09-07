@@ -1,0 +1,48 @@
+<!--Se definen los elementos que aparecerán en la pantalla deslizable inicial de nuestra app-->
+
+<ion-header>
+
+    <!--CABECERA-->
+    <div color="azulcabecera">
+      <ion-navbar color="azulcabecera">
+      </ion-navbar>
+    </div>
+
+</ion-header>
+
+  <ion-content class="tutorial-page">
+
+    <!--Se define el componente de páginas deslizables para realizar la introducción a la
+    aplicación-->
+    <ion-slides pager>
+
+      <!--Se define un patrón estético para las primeras páginas-->
+      <ion-slide *ngFor="let slide of slides">
+        <ion-toolbar>
+          <ion-buttons end style="margin-right: 5%">
+            <button ion-button (click)="irRegistro();" color="azulcabecera" class="skip">Skip</button>
+          </ion-buttons>
+        </ion-toolbar>
+        <!--Imagenes recibidas desde el archivo slide.ts, donde están predefinidas-->
+        <img [src]="slide.image" class="slide-image"/>
+        <!--Títulos recibidos desde el archivo slide.ts, donde están predefinidos-->
+        <h2 class="slide-title" [innerHTML]="slide.title"></h2>
+        <!--Descripciones recibidas desde el archivo slide.ts, donde están predefinidas-->
+        <p [innerHTML]="slide.description"></p>
+      </ion-slide>
+
+      <!--Para la última página de la introducción se particulariza la estética-->
+      <ion-slide>
+        <ion-toolbar>
+        </ion-toolbar>
+        <!--Imagen predefinida desde la carpeta imgs-->
+        <img src="assets/imgs/ica-slidebox-img-4.png" class="slide-image"/>
+        <h2 style="margin-top:20%">¿Estas preparado para gamificar?</h2>
+        <button ion-button large clear icon-end color="primary" (click)="irRegistro();">
+          A por ello
+          <ion-icon name="arrow-forward"></ion-icon>
+        </button>
+      </ion-slide>
+
+    </ion-slides>
+  </ion-content>

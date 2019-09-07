@@ -1,0 +1,261 @@
+<!--Se definen los elementos que aparecerán en la cabecera de la pantalla de la aplicación-->
+<ion-header>
+
+  <!--CABECERA SUPERIOR ( JUNTO A MENU LATERAL )-->
+  <form class="ClasspipCabecera">
+      <button ion-button menuToggle >
+          <ion-icon name="menu"></ion-icon>
+      </button>
+      <img src="../../assets/icon/Icono Classpip.png">
+      <h2 style="color:white">Classpip</h2>
+    </form>
+
+  <!--CABECERA INFERIOR (PERMITIRA RETROCEDER A LAS PANTALLAS ANTERIORES mediante un NavBar)-->
+  <ion-navbar color="azulcabecera">
+    <ion-title >MI JUEGO</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content class="fondoDegradado">
+
+    <!--CONTENIDO DE CONTENEDOR DONDE EXPLICAMOS INFORMACIÓN DE LA PANTALLA-->
+    <ion-content class="contenedorInformacion">
+        <ion-row>
+            <ion-col col-12>
+                <!--Al poner <b> permitimos que las palabras que esten dentro se visualicen en negrita-->
+                <p id="p">Se ha seleccionado un <b>{{juegoSeleccionado.Tipo}}</b> de tipo <b>{{juegoSeleccionado.Modo}}</b> . </p>
+            </ion-col>
+        </ion-row>
+    </ion-content>
+
+  <!--SE HACE DISTINCIÓN ENTRE TIPO DE JUEGO DE PUNTOS Y DE COLECCIONES-->
+
+  <!--Para el caso de un juego de Puntos-->
+ <div *ngIf= "juegoSeleccionado.Tipo === 'Juego De Puntos'">
+
+      <!--Se definen en una misma fila dos botones que permiten obtener información sobre
+      los puntos y niveles a los que obtas , además de otro botón que permite asignar puntos-->
+      <ion-row>
+          <ion-col col-6 >
+              <ion-item  class="Informacion" (click) = irInformacion(juegoSeleccionado);> Información
+                  <ion-icon style="color: white; margin-right: 2%;" name="information" item-left ></ion-icon>
+              </ion-item>
+          </ion-col>
+
+          <ion-col col-6>
+              <ion-item class="Asignar" (click) = AsignarPuntos(juegoSeleccionado);>Asignar Puntos
+                  <ion-icon style="color: white;  margin-right: 2%;" name="add" item-left ></ion-icon>
+            </ion-item>
+          </ion-col>
+
+      </ion-row>
+
+      <!--Se define contenedor donde se podrá seleccionar el punto que quieres visualizar
+      y consecuentemente la tabla que se visualizará. Esto se realiza mediante un select y
+      un option-->
+      <div class="contenedorInformacion">
+          <ion-row style="margin-top:5%;">
+
+              <p style="font-size: 11px; margin-left: 10%;" > Filtrar por tipo de punto </p>
+              <select style="font-size: 75%; margin-left: 5%;" [(ngModel)]="puntoSeleccionadoId" name="punto" (change) = "MostrarRankingSeleccionado()">
+                  <option *ngFor="let punto of listaSeleccionable" [value]="punto.id">
+                    {{punto.Nombre}}
+                  </option>
+              </select>
+      </ion-row>
+      </div>
+
+        <!--Se discrimina segun modo de juego Individual o Colectivo-->
+
+        <!--Para el caso de Juego Individual-->
+        <div *ngIf="juegoSeleccionado.Modo === 'Individual'" padding >
+
+          <ion-grid no-padding  >
+            <!--Se define la cabecera de la tabla que recoge los alumnos del juego-->
+            <ion-row class="cabecera" >
+              <ion-col col-2 style="margin-left:-2%">
+                <p>Pos.</p>
+              </ion-col >
+              <ion-col col-3 style="margin-left:2%">
+                <p >Nombre</p>
+              </ion-col>
+              <ion-col col-4 style="margin-left: 3%">
+                <p >Apellido</p>
+              </ion-col>
+              <ion-col col-3 style="margin-left:-5%">
+                <p>Puntos</p>
+              </ion-col>
+            </ion-row>
+
+            <!--Se define el contenido de la tabla que recoge los alumnos del juego-->
+            <ion-content id="fondo">
+              <div style="margin-top: -6%">
+                  <ion-row class="casillas" *ngFor="let item of rankingJuegoDePuntos"  >
+                      <ion-col col-2>
+                        <p><b>{{item.posicion}}</b></p>
+                      </ion-col>
+                      <ion-col col-3>
+                        <p >{{item.nombre}}</p>
+                      </ion-col>
+                      <ion-col col-5 style="margin-left: 3%">
+                        <p >{{item.primerApellido}}</p>
+                      </ion-col>
+                      <ion-col col-2 style="margin-left:-8%">
+                        <p>{{item.puntos}}</p>
+                      </ion-col>
+               </ion-row>
+              </div>
+
+            </ion-content>
+
+          </ion-grid>
+        </div>
+
+        <!--Para el caso de Juego Colectivo-->
+        <div *ngIf="juegoSeleccionado.Modo !== 'Individual'" padding >
+          <ion-grid no-padding  >
+            <!--Se define la cabecera de la tabla que recoge los equipos del juego-->
+            <ion-row class="cabecera" >
+              <ion-col col-4 style="margin-left:-2%">
+                <p>Pos.</p>
+              </ion-col >
+              <ion-col col-5 style="margin-left:-13%">
+                <p >Nombre</p>
+              </ion-col>
+              <ion-col col-3 style="margin-left:9%" >
+                <p>Puntos</p>
+              </ion-col>
+            </ion-row>
+
+            <!--Se define el contenido de la tabla que recoge los equipos del juego-->
+            <ion-content id="fondo">
+              <div style="margin-top: -6%">
+                  <ion-row class="casillas" *ngFor="let item of rankingEquiposJuegoDePuntos"  >
+                      <ion-col col-4>
+                        <p><b>{{item.posicion}}</b></p>
+                      </ion-col>
+                      <ion-col col-5 style="margin-left:-15%">
+                        <p id="NombreEquipos" >{{item.nombre}}</p>
+                      </ion-col>
+                      <ion-col col-3 style="margin-left:12%">
+                        <p>{{item.puntos}}</p>
+                      </ion-col>
+               </ion-row>
+              </div>
+
+            </ion-content>
+
+          </ion-grid>
+        </div>
+
+
+
+  </div>
+
+  <!--Para el caso de un juego de Colección-->
+  <div *ngIf= "juegoSeleccionado.Tipo === 'Juego De Colección'">
+
+    <!--Se definen en una misma fila dos botones que permiten obtener información sobre
+      los cromos a los que obtas , además de otro botón que permite asignar cromos-->
+    <ion-row>
+      <ion-col col-6 >
+          <ion-item  class="Informacion" (click) = irInformacion(juegoSeleccionado.coleccionId);> Información
+              <ion-icon style="color: white; margin-right: 2%;" name="information" item-left ></ion-icon>
+          </ion-item>
+      </ion-col>
+
+      <ion-col col-6>
+          <ion-item class="Asignar" (click) = AsignarCromos(juegoSeleccionado);>Asignar Cromos
+              <ion-icon style="color: white;  margin-right: 2%;" name="add" item-left ></ion-icon>
+        </ion-item>
+      </ion-col>
+
+    </ion-row>
+
+
+    <!--Se discrimina segun modo de juego Individual o Colectivo-->
+
+    <!--Para el caso de Juego Individual-->
+    <div *ngIf="juegoSeleccionado.Modo === 'Individual'" padding style="margin-top:10%">
+
+    <!--Mediante el ion-searchbar permitimos filtrar los alumnos y buscar el deseado-->
+    <ion-searchbar  (ionInput)="getItems($event)" placeholder="Filtrar por alumno" style="background-color: transparent; margin-bottom: 10%; margin-top:-10%"></ion-searchbar>
+
+      <ion-grid no-padding  >
+
+          <!--Se define la cabecera de la tabla que recoge los alumnos del juego-->
+          <ion-row class="cabecera" >
+            <ion-col col-3 style="margin-left:1%">
+              <p >Nombre</p>
+            </ion-col>
+            <ion-col col-6 style="margin-left:1%" >
+              <p >Apellidos</p>
+            </ion-col>
+            <ion-col col-3 style="margin-left:-7%">
+              <p>Acceder</p>
+            </ion-col>
+          </ion-row>
+
+          <!--Se define el contenido de la tabla que recoge los alumnos del juego-->
+          <ion-content id="fondo">
+            <div style="margin-top: -6%">
+                <ion-row class="casillas" *ngFor="let item of items"  >
+                    <ion-col col-3>
+                      <p >{{item.Nombre}}</p>
+                    </ion-col>
+                    <ion-col col-7 style="margin-left: 3%">
+                      <p >{{item.PrimerApellido}} {{item.SegundoApellido}}</p>
+                    </ion-col>
+                    <ion-col col-2 style="margin-top:3%;margin-left: -4%">
+                        <ion-icon color="primary" name="albums" (click)="irCromosActualesAlumno(item,juegoSeleccionado);"></ion-icon>
+                    </ion-col>
+             </ion-row>
+            </div>
+
+          </ion-content>
+
+      </ion-grid>
+    </div>
+
+    <!--Para el caso de Juego Colectivo-->
+    <div *ngIf="juegoSeleccionado.Modo !== 'Individual'" padding style="margin-top:10%" >
+
+       <!--Mediante el ion-searchbar permitimos filtrar los alumnos y buscar el deseado-->
+    <ion-searchbar  (ionInput)="getItems1($event)" placeholder="Filtrar por equipo" style="background-color: transparent;margin-bottom: 10%; margin-top:-10%"></ion-searchbar>
+
+        <ion-grid no-padding  >
+
+          <!--Se define la cabecera de la tabla que recoge los equipos del juego-->
+          <ion-row class="cabecera" >
+            <ion-col col-9>
+              <p >Nombre</p>
+            </ion-col>
+            <ion-col col-3 style="margin-left:-8%">
+              <p>Acceder</p>
+            </ion-col>
+          </ion-row>
+
+          <!--Se define el contenido de la tabla que recoge los equipos del juego-->
+          <ion-content id="fondo">
+            <div style="margin-top: -3%">
+                <ion-row class="casillas" *ngFor="let item of items"  >
+                    <ion-col col-9>
+                      <p >{{item.Nombre}}</p>
+                    </ion-col>
+                    <ion-col col-3 style="margin-top:3%;">
+                      <ion-icon color="primary" name="albums" (click)="irCromosActualesEquipo(item,juegoSeleccionado);"></ion-icon>
+                    </ion-col>
+
+             </ion-row>
+            </div>
+
+          </ion-content>
+
+        </ion-grid>
+    </div>
+
+  </div>
+
+</ion-content>
+

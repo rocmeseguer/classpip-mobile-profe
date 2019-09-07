@@ -1,0 +1,45 @@
+<!--Se definen los elementos que aparecerán en la cabecera de la pantalla de la aplicación-->
+<ion-header>
+
+    <!--CABECERA SUPERIOR ( JUNTO A MENU LATERAL )-->
+    <form class="ClasspipCabecera">
+        <button ion-button menuToggle >
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <img src="../../assets/icon/Icono Classpip.png">
+        <h2 style="color:white">Classpip</h2>
+      </form>
+
+    <!--CABECERA INFERIOR (PERMITIRA RETROCEDER A LAS PANTALLAS ANTERIORES mediante un NavBar)-->
+    <div>
+        <ion-navbar color="azulcabecera" >
+            <ion-title>EQUIPOS</ion-title>
+        </ion-navbar>
+    </div>
+
+</ion-header>
+
+<ion-content class="fondoDegradado"  >
+
+      <ion-content class="contenedorInformacion" >
+        <!--Al poner <b> permitimos que las palabras que esten dentro se visualicen en negrita-->
+            <p id="InformacionPantalla">Seleccione <b>el equipo</b> que desea observar: </p>
+      </ion-content>
+      <!--Al poner <b> permitimos que las palabras que esten dentro se visualicen en negrita-->
+
+
+      <!--Definimos una matriz de 2 columnas por fila ya que cada fila contiene 12 posiciones y
+      se ha definido que cada equipo 5 posiciones, por lo que habrán 2 equipos por fila. Se define
+      5 posiciones y no 6 y 6 para dejar margenes laterales entre ellos-->
+      <ion-grid >
+        <ion-row style="margin-left: 9%" >
+            <ion-col col-5 id="contenedorEquipo" *ngFor="let equipo of equipos;let i = index" (click)="obtenerAlumnos(equipo.id,equipo);" >
+                <ion-thumbnail item-start style="margin-top: 5%; margin-left:5%; margin-right:5%" >
+                    <img *ngIf="imagenes" [src]="imagenes[i]" >
+                    <h2 id="NombreEquipo">{{equipo.Nombre}}</h2>
+                </ion-thumbnail>
+            </ion-col>
+        </ion-row>
+      </ion-grid>
+
+</ion-content>

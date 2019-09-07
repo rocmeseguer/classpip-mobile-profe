@@ -1,0 +1,33 @@
+<!-- Código correspondiente al componente que despliega contenido de grupos-->
+
+<ion-card class="general">
+
+  <!-- Para ello se utilizan cards que permiten mostrar o ocultar
+  el contenido de la card mediante la función toggleAccordion -->
+
+  <!-- Haciendo click en la cabecera donde aparecerá el nombre
+  del grupo, se podrá mostrar el contenido de la carta -->
+
+  <ion-card-header (click)="toggleAccordion()">
+
+      <!--El title es un parámetro que entrará al citar al componente-->
+      <ion-item class="card-header"> {{ title }}
+
+      <!--Añadiendo el item-right conseguimos que el ion-icon se posicione
+      a la derecha del botón-->
+      <button ion-button clear small icon-only item-right>
+        <ion-icon class="item" color="light" [name]="icon"></ion-icon>
+      </button>
+
+      </ion-item>
+
+  </ion-card-header>
+
+
+  <ion-card-content #cc class="card-content">
+
+    <ng-content></ng-content>
+
+  </ion-card-content>
+
+</ion-card>

@@ -1,0 +1,72 @@
+<!--Se definen los elementos que aparecerán en la pantalla de inicio de nuestra app-->
+
+<ion-header>
+
+  <!--CABECERA SUPERIOR ( JUNTO A MENU LATERAL )-->
+  <form class="ClasspipCabecera" >
+    <button ion-button menuToggle >
+      <ion-icon name="menu" ></ion-icon>
+    </button>
+    <img src="../../assets/icon/Icono Classpip.png">
+    <h2 style="color:white">Classpip</h2>
+  </form>
+
+  <!--CABECERA INFERIOR (PERMITIRA RETROCEDER A LAS PANTALLAS ANTERIORES mediante un NavBar)-->
+  <div color="azulcabecera">
+    <ion-navbar color="azulcabecera" swipeBackEnabled="false">
+        <ion-title>MIS GRUPOS</ion-title>
+    </ion-navbar>
+  </div>
+
+</ion-header>
+
+
+
+<ion-content class="fondoDegradado">
+
+  <ion-content class="contenedorInformacion">
+    <!--Al poner <b> permitimos que las palabras que esten dentro se visualicen en negrita-->
+      <p id="p">Seleccione <b>el grupo</b> con el que desea trabajar: </p>
+  </ion-content>
+
+  <!--Se define el componente accordion , creado por nosotros, para plegar y desplegar
+  la información del grupo seleccionado-->
+  <accordion *ngFor="let grupo of lista; let i = index" [title]="grupo.Descripcion" >
+            <!-- Parráfo creado para que inicialmente aparezca un hueco en blanco al expandir el acordeón -->
+            <p>
+              <ion-item style="background-color:transparent"></ion-item>
+            </p>
+
+              <!--Se define el primer ion-card (similar a un botón) para acceder a la página Mis Alumnos-->
+              <ion-card class="subirizquierda">
+                  <ion-item class="carta-Alumnos" (click)="irAlumnos(grupo.id);"> Mis Alumnos
+                        <!--En los ion-icon, al poner name puedes cambiar el icono que quieres
+                        mostrar-->
+                        <ion-icon color="light" name="person" item-left ></ion-icon>
+                        <ion-icon color="light" name="arrow-forward" item-right ></ion-icon>
+                  </ion-item>
+              </ion-card>
+
+              <!--Se define el ion-card para acceder a la página Mis Equipos-->
+              <ion-card class="izquierda">
+                  <ion-item class="carta-Equipos" (click)="irEquipos(grupo.id);">Mis Equipos
+                        <!--En los ion-icon, al poner name puedes cambiar el icono que quieres
+                        mostrar-->
+                        <ion-icon color="light" name="people" item-left ></ion-icon>
+                        <ion-icon size="50%" color="light" name="arrow-forward" item-right  ></ion-icon>
+                  </ion-item>
+              </ion-card>
+
+              <!--Se define el ion-card para acceder a la página Mis Juegos-->
+              <ion-card class="izquierda">
+                  <ion-item class="carta-Juegos" (click)="irJuego(grupo.id);"> Mis Juegos
+                        <!--En los ion-icon, al poner name puedes cambiar el icono que quieres
+                        mostrar-->
+                        <ion-icon color="light" name="game-controller-b" item-left ></ion-icon>
+                        <ion-icon color="light" name="arrow-forward" item-right  ></ion-icon>
+                  </ion-item>
+             </ion-card>
+
+  </accordion>
+
+</ion-content>

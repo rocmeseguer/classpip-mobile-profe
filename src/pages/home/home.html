@@ -1,0 +1,40 @@
+<!--Se definen los elementos que aparecerán en la pantalla de registro (HOME) de nuestra app-->
+
+<ion-header>
+
+  <!--CABECERA-->
+  <div color="azulcabecera">
+    <ion-navbar color="azulcabecera">
+    </ion-navbar>
+  </div>
+
+</ion-header>
+
+
+<ion-content padding class="fondoDegradado" style="text-align: center;">
+
+      <!--Se define la fuente de donde cogeremos la imagen de Classpip -->
+      <img src="../../assets/icon/classpip1.png"  id="imagenClasspip">
+
+
+      <!--Se define el input del nombre de usuario y se aplica la relacion ngModel para
+      pasar el valor de nombre a la funcion Autentificar-->
+      <ion-item class="ContenedorInput" >
+        <ion-label fixed>Username</ion-label>
+        <ion-input type="text" value="" name="nombre" placeholder="nombre" requiered [(ngModel)]="nombre"></ion-input>
+      </ion-item>
+
+      <!--Se define el input de la contraseña del usuario y se aplica la relacion ngModel para
+      pasar la contraseña a la funcion Autentificar-->
+      <ion-item class="ContenedorInput" >
+          <ion-label fixed>Password</ion-label>
+          <ion-input type="password" name="apellido" placeholder="apellido" requiered [(ngModel)]="apellido"></ion-input>
+      </ion-item>
+
+      <!--Se define el boton de autentificar el usuario y se accede a la funcion Autentificar-->
+      <button (click)="Autentificar();" id="botonAutentificar" ion-button  round  >INICIAR SESIÓN
+      </button>
+
+</ion-content>
+
+

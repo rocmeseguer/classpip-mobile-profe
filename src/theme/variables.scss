@@ -1,0 +1,41 @@
+//Se define el path donde se encuentran las fuentes para personalizar la app
+$font-path: "../assets/fonts";
+
+
+//Se define la dirección de la aplicación para obtener estilos rtl
+$app-direction: ltr;
+
+
+@import "ionic.globals";
+
+
+//Se definen los colores que van a ser utilizados de manera general en la aplicación,
+//de esta manera evitamos tener que definirlos en cada página o componente
+// --------------------------------------------------
+
+$colors: (
+  primary:    rgb(34, 130, 226),
+  secondary:  #32db64,
+  danger:     #f53d3d,
+  light:      #f4f4f4,
+  dark:       #222,
+  azulcabecera: #5da1f0,
+  griscontent:rgba(150, 150, 150, 0.438),
+);
+
+
+//Se define el color de fondo de pantalla de la aplicación, en este caso particular consta de
+//un degradado desde el color azulcabecera hasta el light
+$app-background: linear-gradient(to bottom, color($colors, azulcabecera) 0%, color($colors,light) 100%);
+
+
+//Se importan los temas por defecto de ionic
+@import "ionic.theme.default";
+
+
+//Se importan los iconos por defecto de ionic
+@import "ionic.ionicons";
+
+//Se importan las fuentes que van a ser utilizadas en la aplicación
+@import "roboto";
+@import "noto-sans";
