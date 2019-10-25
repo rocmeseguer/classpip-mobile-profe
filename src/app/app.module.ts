@@ -28,6 +28,9 @@ import { AsignarCromosPageModule } from '../pages/asignar-cromos/asignar-cromos.
 import { MisColeccionesPageModule } from '../pages/mis-colecciones/mis-colecciones.module';
 import { MisCromosPageModule } from '../pages/mis-cromos/mis-cromos.module';
 import { MisCromosActualesPageModule } from '../pages/mis-cromos-actuales/mis-cromos-actuales.module';
+import { PeticionesApiProvider } from '../providers/peticiones-api/peticiones-api';
+import { SesionProvider } from '../providers/sesion/sesion';
+import { CalculosProvider } from '../providers/calculos/calculos';
 
 @NgModule({
   declarations: [
@@ -64,7 +67,10 @@ import { MisCromosActualesPageModule } from '../pages/mis-cromos-actuales/mis-cr
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    IdProfesorProvider
+    IdProfesorProvider,
+    PeticionesApiProvider,
+    SesionProvider,
+    CalculosProvider
   ]
 })
 export class AppModule {

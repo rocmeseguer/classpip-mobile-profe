@@ -5,6 +5,7 @@ import { ResponseContentType, Http} from '@angular/http';
 
 //Importamos las páginas necesarias
 import { AlumnosEquipoPage } from '../alumnos-equipo/alumnos-equipo';
+import { PeticionesApiProvider} from '../../providers/peticiones-api/peticiones-api';
 
 
 @IonicPage()
@@ -32,7 +33,8 @@ export class EquiposGrupoPage {
 
 
   constructor(public navCtrl: NavController,public navParams: NavParams,
-              private http: HttpClient,private http2: Http) {
+              private http: HttpClient,private http2: Http,
+              private peticionesAPI: PeticionesApiProvider ) {
     //Recogemos los valores de la pagina anterior y los añadimos en el parametro id y nombre
     this.id=navParams.get('id');
     this.nombre=navParams.get('nombre');
@@ -47,7 +49,8 @@ export class EquiposGrupoPage {
     this.imagenes=[];
 
     //Buscamos en la API los equipos del grupo
-    this.http.get<any[]>(this.APIUrlGrupos + '/' + this.id + '/equipos').subscribe(
+    this.peticionesAPI.DameEquiposDelGrupo(this.id).subscribe(
+    //this.http.get<any[]>(this.APIUrlGrupos + '/' + this.id + '/equipos').subscribe(
       equipos => {
         this.equipos = equipos;
         console.log ('Ya está la lista');
@@ -76,8 +79,9 @@ export class EquiposGrupoPage {
   if (this.equipos[i].FotoEquipo !== undefined) {
 
     // Busca en la base de datos la imágen con el nombre registrado en equipo.FotoEquipo y la recupera
-    this.http2.get('http://localhost:3000/api/imagenes/LogosEquipos/download/' + this.equipos[i].FotoEquipo,
-    { responseType: ResponseContentType.Blob })
+    // this.http2.get('http://localhost:3000/api/imagenes/LogosEquipos/download/' + this.equipos[i].FotoEquipo,
+    // { responseType: ResponseContentType.Blob })
+    this.peticionesAPI.DameLogoEquipo(this.equipos[i].FotoEquipo)
     .subscribe(response => {
       const blob = new Blob([response.blob()], { type: 'image/jpg'});
 

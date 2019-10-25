@@ -21,11 +21,10 @@
 </ion-header>
 
 <ion-content class="fondoDegradado">
-
+<!--
   <ion-content class="contenedorInformacion">
-    <!--Al poner <b> permitimos que las palabras que esten dentro se visualicen en negrita-->
     <p id="p">Seleccione <b>la colección de cromos </b> que desea visualizar: </p>
-  </ion-content>
+  </ion-content> -->
 
 
       <!--Definimos una matriz de 2 columnas por fila ya que cada fila contiene 12 posiciones y
@@ -34,6 +33,7 @@
 
       <!--Si coleccionesProfesor tiene algun valor, entonces me debe enseñar la matriz
       sino, deberá saltar el Aviso_no_colecciones-->
+      <br>
       <div *ngIf="coleccionesProfesor;else Aviso_no_colecciones" >
         <ion-grid >
           <ion-row style="margin-left: 9%" >

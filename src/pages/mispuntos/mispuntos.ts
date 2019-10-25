@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
 import { ResponseContentType, Http} from '@angular/http';
+import { PeticionesApiProvider } from '../../providers/peticiones-api/peticiones-api';
 
 
 @IonicPage()
@@ -26,7 +27,8 @@ export class MispuntosPage {
   // URLs que utilizaremos
   private APIUrlProfesor = 'http://localhost:3000/api/Profesores';
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private http: HttpClient, private http2: Http ) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private http: HttpClient, private http2: Http,
+    private peticionesApi: PeticionesApiProvider ) {
     this.id=navParams.get('id');
     this.Tipo = "Puntos";
   }
@@ -43,8 +45,8 @@ export class MispuntosPage {
 
   //Función que obtiene los puntos creados por el profesor desde la API
   PuntosDelProfesor() {
-
-    this.http.get<any[]>(this.APIUrlProfesor + '/' + this.id + '/puntos')
+    this.peticionesApi.DameTiposDePuntos (this.id)
+    //this.http.get<any[]>(this.APIUrlProfesor + '/' + this.id + '/puntos')
     .subscribe(puntos => {
       if (puntos[0] !== undefined) {
         console.log('Voy a dar la lista');
@@ -62,7 +64,8 @@ export class MispuntosPage {
 
       //Se inicializa el vector imagenesLogo a [] para limpiar las imagenes anteriores
       this.imagenesLogo=[];
-      this.http.get<any[]>(this.APIUrlProfesor + '/' + this.id + '/insignia')
+      this.peticionesApi.DameInsignias(this.id)
+      //this.http.get<any[]>(this.APIUrlProfesor + '/' + this.id + '/insignia')
       .subscribe(insignas => {
         if (insignas[0] !== undefined) {
           console.log('Voy a dar la lista');
@@ -84,9 +87,10 @@ export class MispuntosPage {
       for (let i = 0; i < insignias.length; i ++) {
       if (insignias[i].Imagen!== undefined) {
 
+        this.peticionesApi.DameLogoInsignia (insignias[i].Imagen)
         // Busca en la base de datos la imágen con el nombre registrado en equipo.FotoEquipo y la recupera
-        this.http2.get('http://localhost:3000/api/imagenes/ImagenInsignia/download/' + insignias[i].Imagen,
-        { responseType: ResponseContentType.Blob })
+        // this.http2.get('http://localhost:3000/api/imagenes/ImagenInsignia/download/' + insignias[i].Imagen,
+        // { responseType: ResponseContentType.Blob })
         .subscribe(response => {
           const blob = new Blob([response.blob()], { type: 'image/jpg'});
 

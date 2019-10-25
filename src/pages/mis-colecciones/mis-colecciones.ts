@@ -3,6 +3,8 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Http, ResponseContentType} from '@angular/http';
 import { HttpClient} from '@angular/common/http';
 
+import {PeticionesApiProvider } from '../../providers/peticiones-api/peticiones-api';
+
 //Importamos las clases necesarias
 import {Coleccion} from '../../clases/Coleccion';
 
@@ -29,7 +31,7 @@ export class MisColeccionesPage {
   private APIUrlProfesor = 'http://localhost:3000/api/Profesores';
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private http: Http, private https: HttpClient) {
+              private http: Http, private https: HttpClient, private peticionesApi: PeticionesApiProvider) {
     this.profesorId=navParams.get('id');
   }
 
@@ -42,7 +44,8 @@ export class MisColeccionesPage {
   //Función que obtiene las colecciones existentes del profesor desde la API
   ColeccionesDelProfesor() {
 
-    this.https.get<Coleccion[]>(this.APIUrlProfesor + '/' + this.profesorId + '/coleccions')
+    this.peticionesApi.DameColeccionesDelProfesor (this.profesorId)
+    //this.https.get<Coleccion[]>(this.APIUrlProfesor + '/' + this.profesorId + '/coleccions')
     .subscribe(coleccion => {
       if (coleccion[0] !== undefined) {
         console.log('Voy a dar la lista');
@@ -69,8 +72,9 @@ export class MisColeccionesPage {
     if (colecciones[i].ImagenColeccion !== undefined) {
 
     // Busca en la base de datos la imágen con el nombre registrado en equipo.FotoEquipo y la recupera
-    this.http.get('http://localhost:3000/api/imagenes/ImagenColeccion/download/' + colecciones[i].ImagenColeccion,
-    { responseType: ResponseContentType.Blob })
+    this.peticionesApi.DameImagenColeccion (colecciones[i].ImagenColeccion)
+    // this.http.get('http://localhost:3000/api/imagenes/ImagenColeccion/download/' + colecciones[i].ImagenColeccion,
+    // { responseType: ResponseContentType.Blob })
     .subscribe(response => {
       const blob = new Blob([response.blob()], { type: 'image/jpg'});
 

@@ -59,7 +59,7 @@ page-mispuntos {
 
   //Se definen los parámetros del contenedor que muestra la información de la pantalla actual
   .contenedorInformacion{
-    height: 27%;
+   // height: 27%;
     box-shadow: 0px 3px 6px 0px map-get($colors, primary);
     margin-bottom:5%;
     background-color: white;

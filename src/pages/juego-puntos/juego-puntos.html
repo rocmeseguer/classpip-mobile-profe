@@ -20,24 +20,8 @@
 
 <ion-content class="fondoDegradado" >
 
-    <!--CONTENIDO DE CONTENEDOR DONDE EXPLICAMOS INFORMACIÓN DE LA PANTALLA-->
-    <ion-content class="contenedorInformacion">
-      <!--Se define el contenedor donde aparecerá la información de la pantalla actual
-      además de un seleccionador donde se podrá visualizar los tipos de juego Activos
-      e Inactivos-->
-        <ion-row style="margin-bottom:8%">
-            <!--Al poner <b> permitimos que las palabras que esten dentro se visualicen en negrita-->
-            <p id="TipodeJuego">Seleccione el <b>tipo de Juego</b> a mostrar: </p>
-            <select class="select" [(ngModel)]="opcionSeleccionada" name="opcion" (change) = "ListaJuegoSeleccionado()">
-              <option (click) = "prueba()" *ngFor="let opcion of opcionesMostrar" [value]="opcion.id">
-                  {{opcion.nombre}}
-              </option>
-            </select>
-        </ion-row>
-    </ion-content>
-
     <!--CONTENEDOR PARA JUEGOS ACTIVOS-->
-    <ion-list padding>
+    <ion-list padding style="margin-top: 5%; ">
 
     <!--Se define la cabecera de los Juegos Activos-->
     <ion-item class="CabeceraActivos">Juegos Activos
@@ -46,11 +30,11 @@
 
           <!--Se define el contenido de la tabla de Juegos Activos-->
           <ion-list style="background-color: white; padding-bottom: 5%; padding-top:3%; border-bottom-right-radius: 20px; border-bottom-left-radius: 20px; box-shadow: 0px 3px 6px 0px rgb(86, 139, 84) ">
-              <div style="margin-top:3%" *ngIf="ListaJuegosSeleccionadoActivo;else Aviso_no_juegos_activos">
+              <div style="margin-top:3%" *ngIf="juegosActivos;else Aviso_no_juegos_activos">
                 <!--Si no tiene valor ListaJuegosSeleccionadoActivo,
                 entonces aparecerá la alerta de Aviso_no_Juegos_Activos-->
-                <div *ngIf="ListaJuegosSeleccionadoActivo[0];else Aviso_no_juegos_activos">
-                    <ion-list style="margin-top: 2%;  margin-bottom:-5% " *ngFor="let juego of ListaJuegosSeleccionadoActivo" (click) = JuegoSeleccionado(juego) >
+                <div *ngIf="juegosActivos;else Aviso_no_juegos_activos">
+                    <ion-list style="margin-top: 2%;  margin-bottom:-5% " *ngFor="let juego of juegosActivos" (click) = JuegoSeleccionado(juego) >
                       <h4 class = "Juegosactivos">{{juego.Tipo}}</h4>
                       <p class = "AvisoNoJuegosActivo"> {{juego.Modo}} </p>
                     </ion-list>
@@ -67,7 +51,8 @@
     </ion-list>
 
     <!--CONTENEDOR PARA JUEGOS INACTIVOS-->
-    <ion-list padding style="margin-top:-25%; ">
+    <!-- <ion-list padding style="margin-top:-55%; "> -->
+      <ion-list padding>
 
         <!--Se define la cabecera de los Juegos Inactivos-->
         <ion-item class="CabeceraInactivos" > Juegos Inactivos
@@ -76,12 +61,12 @@
 
           <!--Se define el contenido de la tabla de Juegos Inactivos-->
           <ion-list style="background-color: white; padding-bottom: 5%; padding-top:2%;border-bottom-right-radius: 20px; border-bottom-left-radius: 20px; box-shadow: 0px 3px 6px 0px rgba(199, 67, 67, 0.801)   ">
-              <div style="margin-top:3%" *ngIf="ListaJuegosSeleccionadoInactivo;else Aviso_no_juegos_inactivos">
+              <div style="margin-top:3%" *ngIf="juegosInactivos;else Aviso_no_juegos_inactivos">
                 <!--Si no tiene valor ListaJuegosSeleccionadoInactivo,
                 entonces aparecerá la alerta de Aviso_no_Juegos_inactivos-->
-                <div *ngIf="ListaJuegosSeleccionadoInactivo[0];else Aviso_no_juegos_inactivos">
-                    <ion-list style="margin-top: 2%; margin-bottom:-5% " *ngFor="let juego of ListaJuegosSeleccionadoInactivo">
-                      <h3 class = "JuegosInactivos" ion-line>{{juego.Tipo}}</h3>
+                <div *ngIf="juegosInactivos;else Aviso_no_juegos_inactivos">
+                    <ion-list style="margin-top: 2%; margin-bottom:-5% " *ngFor="let juego of juegosInactivos">
+                      <h3 class = "Juegosinactivos" ion-line>{{juego.Tipo}}</h3>
                       <p class = "AvisoNoJuegosActivo" ion-line> {{juego.Modo}} </p>
                     </ion-list>
                   </div>

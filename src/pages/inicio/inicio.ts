@@ -6,6 +6,9 @@ import { HttpClient } from '@angular/common/http';
 import { AlumnosGrupoPage } from '../alumnos-grupo/alumnos-grupo';
 import { EquiposGrupoPage } from '../equipos-grupo/equipos-grupo';
 import { JuegoPuntosPage } from '../juego-puntos/juego-puntos';
+import { SesionProvider} from '../../providers/sesion/sesion'
+import {PeticionesApiProvider} from '../../providers/peticiones-api/peticiones-api'
+import { Profesor } from '../../clases';
 
 @IonicPage()
 @Component({
@@ -24,9 +27,16 @@ id:number;
 lista : any[];
 data: any;
 nombre: string;
+profesor: Profesor;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private http: HttpClient) {
-  this.id=navParams.get('id');
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              private http: HttpClient,
+              private peticionesApi: PeticionesApiProvider,
+              private sesion: SesionProvider) {
+  //this.id=navParams.get('id');
+  //this.profesor = this.sesion.DameProfesor();
+  // Pido el profesor (por subscripción). Seguro que ya está en la sesión.
+  this.sesion.DameProfesor().subscribe ((profesor) => this.profesor = profesor);
 
   }
 
@@ -34,7 +44,8 @@ nombre: string;
   ionViewDidLoad() {
     console.log('El identificador del profesor es ' + this.id);
     //Se accede a la API y se obtiene la lista de grupos del profesor
-    this.http.get<any[]>(this.APIUrlProfesor + '/' + this.id + '/grupos').subscribe(
+    this.peticionesApi.DameGruposProfesor (this.profesor.id).subscribe (
+    //this.http.get<any[]>(this.APIUrlProfesor + '/' + this.id + '/grupos').subscribe(
       lista => {
         this.lista = lista;
         console.log ('Ya está la lista');

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams} from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
+import {PeticionesApiProvider} from '../../providers/peticiones-api/peticiones-api'
 
 
 
@@ -22,7 +23,9 @@ itemsAPI: any[];
 id:number;
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private http: HttpClient) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              private http: HttpClient,
+              private peticionesAPI: PeticionesApiProvider) {
     //Recogemos los valores de la pagina anterior y los añadimos en el parametro id
     this.id=navParams.get('id');
   }
@@ -37,7 +40,8 @@ id:number;
 
   //Buscamos en la API los alumnos del grupo
   cargarAlumnos(){
-    this.http.get<any[]>(this.APIUrlGrupos + '/' + this.id + '/alumnos').subscribe(
+    this.peticionesAPI.DameAlumnosGrupo (this.id).subscribe (
+    //this.http.get<any[]>(this.APIUrlGrupos + '/' + this.id + '/alumnos').subscribe(
       grupo => {
 
         //Copiamos el grupo en itemsAPI y en items para definir una lista

@@ -21,6 +21,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 //toda la aplicación ya que será necesario para acceder a las páginas disponibles del
 //menu lateral.
   import { IdProfesorProvider } from '../providers/id-profesor/id-profesor';
+  import {SesionProvider} from '../providers/sesion/sesion'
+import { Profesor } from '../clases';
 
 @Component({
   templateUrl: 'app.html'
@@ -30,51 +32,61 @@ export class MyApp {
 
 //Se define la variable grupo vacía para rellenarla con el provider del Profesor
   grupo: any[] = [];
+ // prof: any = {Nombre: 'Juan', Apellido: 'Lopez'};
+
+  profesor: Profesor;
+
+
 
 //Definimos la página que queremos que aparezca al iniciar la aplicación
   rootPage:any = SlidePage;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public proveedor : IdProfesorProvider ) {
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
+    public proveedor : IdProfesorProvider,
+    private sesion: SesionProvider ) {
+      console.log ('Empezamos');
     platform.ready().then(() => {
       statusBar.styleDefault();
       splashScreen.hide();
+
     });
 
-//Le pasamos al proveedor el Id del profesor y así guardarlo (subscribirlo al proveedor).
-    this.proveedor.idProfesor
-    .subscribe ((idProfe) =>this.grupo.push(idProfe));
+    // Me subscribo para que me envien el profesor cuando esté listo.
+    this.sesion.DameProfesor().subscribe ((profesor) => this.profesor = profesor);
   }
+
 
 
   irHome() {
 
 //Como estamos haciendo click a cerrar sesión, debemos borrar el Id del profesor del proveedor
 //para ello utilizamos un subscribe para entrar al proveedor y con el pop borramos el Id.
-    this.proveedor.idProfesor.subscribe (this.grupo.pop());
+    //this.proveedor.idProfesor.subscribe (this.grupo.pop());
 
 //Una vez borrado el Id, accedemos a la página de Login (HomePage)
+
     this.nav.setRoot(HomePage);
   }
 
-  irMisPuntos(i:number) {
+  irMisPuntos() {
 
 //Accedemos a la página de mis Puntos mediante un id que será el del profesor, obtenido
 //del proveedor.
-    this.nav.setRoot(MispuntosPage,{id:i});
+    this.nav.setRoot(MispuntosPage,{id:this.profesor.id});
   }
 
-  irMisGrupos(i:number) {
+  irMisGrupos() {
 
 //Accedemos a la página de mis Alumnos (InicioPage) mediante un id que será el del profesor, obtenido
 //del proveedor.
-    this.nav.setRoot(InicioPage,{id:i});
+    this.nav.setRoot(InicioPage,{id:this.profesor.id});
   }
 
-  irMisColecciones(i:number){
+  irMisColecciones(){
 
 //Accedemos a la página de mis Alumnos (InicioPage) mediante un id que será el del profesor, obtenido
 //del proveedor.
-    this.nav.setRoot(MisColeccionesPage,{id:i});
+    this.nav.setRoot(MisColeccionesPage,{id:this.profesor.id});
   }
 }
 
