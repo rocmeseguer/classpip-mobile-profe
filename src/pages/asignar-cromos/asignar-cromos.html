@@ -59,8 +59,8 @@
 
                         <ion-col col-5>
                               <!--Se define el desplegable de cromos que recibe los cromos desde cromosColeccion-->
-                              <select   style="font-size: 80%; margin-left:  15%;" [(ngModel)]=cromoSeleccionado (ngModelChange)="ionChange($event)"  name="cromo">
-                                  <option *ngFor="let cromo of cromosColeccion">
+                              <select   style="font-size: 80%; margin-left:  15%;" [(ngModel)]="cromoSeleccionadoId" (ngModelChange)="ionChange($event)"  name="cromo">
+                                  <option *ngFor="let cromo of cromosColeccion" [value]="cromo.id">
                                       {{cromo.Nombre}}
                                   </option>
                               </select>
@@ -71,20 +71,20 @@
                         </ion-col>
 
                         <!--Se define la estética del cromo según el nivel del propio cromo-->
-                        <ion-col col-4 *ngIf="cromo" style="margin-left:21%; " >
+                        <ion-col col-4 *ngIf="cromoSeleccionado" style="margin-left:21%; " >
                             <ion-thumbnail  item-start class="cromo" style="margin-top: -45%" name="cromo"
                             [ngClass]="{
-                            'Diamante' : cromo[0].Nivel === 'Diamante',
-                            'Platino' : cromo[0].Nivel === 'Platino',
-                            'Oro' : cromo[0].Nivel === 'Oro',
-                            'Plata' : cromo[0].Nivel === 'Plata',
-                            'Bronce' : cromo[0].Nivel === 'Bronce'}">
+                            'Diamante' : cromoSeleccionado.Nivel === 'Diamante',
+                            'Platino' : cromoSeleccionado.Nivel === 'Platino',
+                            'Oro' : cromoSeleccionado.Nivel === 'Oro',
+                            'Plata' : cromoSeleccionado.Nivel === 'Plata',
+                            'Bronce' : cromoSeleccionado.Nivel === 'Bronce'}">
 
                             <img class ="imagenCromo" [src]="imagenCromo" >
                             <div class="contenidoNombre" style="text-align: center">
-                              <h2 id="NombreCromo" >{{cromo[0].Nombre}}</h2>
+                              <h2 id="NombreCromo" >{{cromoSeleccionado.Nombre}}</h2>
                             </div>
-                            <h2 id="NivelCromo" ><i>{{cromo[0].Nivel}}</i></h2>
+                            <h2 id="NivelCromo" ><i>{{cromoSeleccionado.Nivel}}</i></h2>
 
                           </ion-thumbnail>
 

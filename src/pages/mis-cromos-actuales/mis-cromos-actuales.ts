@@ -10,7 +10,7 @@ import {AlbumDelAlumno} from '../../clases/AlbumDelAlumno';
 import {AlumnoJuegoDeColeccion} from '../../clases/AlumnoJuegoDeColeccion';
 import {EquipoJuegoDeColeccion} from '../../clases/EquipoJuegoDeColeccion';
 import {TablaAlumnoJuegoDeColeccion} from '../../clases/TablaAlumnoJuegoDeColeccion';
-
+import { PeticionesApiProvider } from '../../providers/peticiones-api/peticiones-api';
 
 @IonicPage()
 @Component({
@@ -47,75 +47,86 @@ export class MisCromosActualesPage {
   private APIURLAlumnoJuegoDeColeccion = 'http://localhost:3000/api/AlumnosJuegoDeColeccion';
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private http: HttpClient, public https: Http) {
+              private http: HttpClient, public https: Http, private peticionesApi: PeticionesApiProvider) {
     this.alumno=navParams.get('alumno');
     this.equipo=navParams.get('equipo');
     this.coleccion=navParams.get('coleccion');
     this.juego=navParams.get('juego');
+
+    console.log ('alumno ' + this.alumno);
   }
 
   //Se realizarán las siguiente tareas dependiendo del modo de Juego Seleccionado.
   ionViewDidLoad() {
     console.log('Bienvenido a la página de los cromos actuales');
     if (this.juego.Modo === 'Individual') {
-    this.RecuperarInscripcionesAlumnoJuego();}
+      this.CromosDelAlumno(this.alumno);
+    //this.RecuperarInscripcionesAlumnoJuego();}
+    }
     else{
-    this.RecuperarInscripcionesEquiposJuego();
+      this.CromosDelEquipo(this.equipo);
+   // this.RecuperarInscripcionesEquiposJuego();
     }
   }
 
 
-  // Recupera las inscripciones de los alumnos en el juego y los cromos que tienen
-  RecuperarInscripcionesAlumnoJuego() {
-    this.http.get<AlumnoJuegoDeColeccion[]>(this.APIURLAlumnoJuegoDeColeccion + '?filter[where][juegoDeColeccionId]='
-    + this.juego.id)
-    .subscribe(inscripciones => {
-      this.inscripcionesAlumnos = inscripciones;
-      console.log(this.inscripcionesAlumnos);
+  // // Recupera las inscripciones de los alumnos en el juego y los cromos que tienen
+  // RecuperarInscripcionesAlumnoJuego() {
+  //   this.peticionesApi.DameInscripcionesAlumnoJuegoDeColeccion (this.juego.id)
+  //   // this.http.get<AlumnoJuegoDeColeccion[]>(this.APIURLAlumnoJuegoDeColeccion + '?filter[where][juegoDeColeccionId]='
+  //   // + this.juego.id)
+  //   .subscribe(inscripciones => {
+  //     this.inscripcionesAlumnos = inscripciones;
+  //     console.log(this.inscripcionesAlumnos);
 
-      for (let i = 0; i < this.inscripcionesAlumnos.length ; i++) {
-        //alumno.id es el identificador del alumno seleccionado en la pantalla anterior
-        if (this.inscripcionesAlumnos[i].alumnoId=== this.alumno.id){
-          this.alumnoSeleccionado=this.inscripcionesAlumnos[i].id;
-        }
-      }
-      console.log(this.alumnoSeleccionado);
-      this.CromosDelAlumno(this.alumnoSeleccionado);
-      this.CromosDeLaColeccion(this.coleccion);
+  //     for (let i = 0; i < this.inscripcionesAlumnos.length ; i++) {
+  //       //alumno.id es el identificador del alumno seleccionado en la pantalla anterior
+  //       if (this.inscripcionesAlumnos[i].alumnoId=== this.alumno.id){
+  //         this.alumnoSeleccionado=this.inscripcionesAlumnos[i].id;
+  //       }
+  //     }
+  //     console.log(this.alumnoSeleccionado);
+  //     this.CromosDelAlumno(this.alumnoSeleccionado);
 
-    });
-  }
 
-   // Recupera las inscripciones de los equipos en el juego y los cromos que tienen
-  RecuperarInscripcionesEquiposJuego() {
+  //   });
+  // }
 
-    this.http.get<EquipoJuegoDeColeccion[]>(this.APIURLEquipoJuegoDeColeccion + '?filter[where][juegoDeColeccionId]='
-    + this.juego.id)
-    .subscribe(inscripciones => {
-      this.inscripcionesEquipos = inscripciones;
-      console.log(this.inscripcionesEquipos);
+  //  // Recupera las inscripciones de los equipos en el juego y los cromos que tienen
+  // RecuperarInscripcionesEquiposJuego() {
 
-      for (let i = 0; i < this.inscripcionesEquipos.length ; i++) {
-        //equipo.id es el identificador del equipo seleccionado en la pantalla anterior
-        if (this.inscripcionesEquipos[i].equipoId=== this.equipo.id){
-          this.equipoSeleccionado=this.inscripcionesEquipos[i].id;
-        }
-      }
-      console.log(this.equipoSeleccionado);
-      this.CromosDelEquipo(this.equipoSeleccionado);
-      this.CromosDeLaColeccion(this.coleccion);
-    });
-  }
+  //   this.peticionesApi.DameInscripcionesEquipoJuegoDeColeccion (this.juego.id)
+  //   // this.http.get<EquipoJuegoDeColeccion[]>(this.APIURLEquipoJuegoDeColeccion + '?filter[where][juegoDeColeccionId]='
+  //   // + this.juego.id)
+  //   .subscribe(inscripciones => {
+  //     this.inscripcionesEquipos = inscripciones;
+  //     console.log(this.inscripcionesEquipos);
+
+  //     for (let i = 0; i < this.inscripcionesEquipos.length ; i++) {
+  //       //equipo.id es el identificador del equipo seleccionado en la pantalla anterior
+  //       if (this.inscripcionesEquipos[i].equipoId=== this.equipo.id){
+  //         this.equipoSeleccionado=this.inscripcionesEquipos[i].id;
+  //       }
+  //     }
+  //     console.log(this.equipoSeleccionado);
+  //     this.CromosDelEquipo(this.equipoSeleccionado);
+
+  //   });
+  // }
 
   //Función que permite obtener desde la API los cromos disponibles del alumno seleccionado
   CromosDelAlumno(alumno:any) {
 
-    this.http.get<Cromo[]>(this.APIURLAlumnoJuegoDeColeccion + '/' + alumno + '/cromos')
+    console.log ('vamos a por los cromos del alumno ' + alumno.id);
+    this.peticionesApi.DameCromosAlumno (alumno.id)
+    //this.http.get<Cromo[]>(this.APIURLAlumnoJuegoDeColeccion + '/' + alumno + '/cromos')
     .subscribe(cromos => {
+      console.log ('Ya tengo los cromos del alumno ');
       this.cromosAlumno = cromos;
       console.log(this.cromosAlumno);
       this.OrdenarCromos(this.cromosAlumno);
       this.GET_ImagenCromo(this.cromosAlumno);
+      this.CromosDeLaColeccion(this.coleccion);
 
     });
   }
@@ -123,12 +134,14 @@ export class MisCromosActualesPage {
   //Función que permite obtener desde la API los cromos disponibles del equipo seleccionado
   CromosDelEquipo(equipo:any) {
 
-    this.http.get<Cromo[]>(this.APIURLEquipoJuegoDeColeccion + '/' + equipo + '/cromos')
+    this.peticionesApi.DameCromosEquipo (equipo.id)
+   // this.http.get<Cromo[]>(this.APIURLEquipoJuegoDeColeccion + '/' + equipo + '/cromos')
     .subscribe(cromos => {
       this.cromosEquipo = cromos;
       console.log(this.cromosEquipo);
       this.OrdenarCromos(this.cromosEquipo);
       this.GET_ImagenCromo(this.cromosEquipo);
+      this.CromosDeLaColeccion(this.coleccion);
 
     });
   }
@@ -140,7 +153,8 @@ export class MisCromosActualesPage {
       console.log('voy a mostrar los cromos de la coleccion ' + coleccion.id);
 
       // Busca los cromos dela coleccion en la base de datos
-      this.http.get<Cromo[]>(this.APIUrl + '/' + coleccion.id + '/cromos')
+      this.peticionesApi.DameCromosColeccion (coleccion.id)
+      //this.http.get<Cromo[]>(this.APIUrl + '/' + coleccion.id + '/cromos')
       .subscribe(res => {
         if (res[0] !== undefined) {
           this.cromosColeccion = res;
@@ -166,8 +180,9 @@ export class MisCromosActualesPage {
 
         if (cromo.Imagen !== undefined ) {
           // Busca en la base de datos la imágen con el nombre registrado en equipo.FotoEquipo y la recupera
-          this.https.get('http://localhost:3000/api/imagenes/ImagenCromo/download/' + cromo.Imagen,
-          { responseType: ResponseContentType.Blob })
+          this.peticionesApi.DameImagenCromo (cromo.Imagen)
+          // this.https.get('http://localhost:3000/api/imagenes/ImagenCromo/download/' + cromo.Imagen,
+          //{ responseType: ResponseContentType.Blob })
           .subscribe(response => {
             const blob = new Blob([response.blob()], { type: 'image/jpg'});
 

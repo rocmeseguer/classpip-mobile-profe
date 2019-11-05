@@ -20,18 +20,19 @@
 <ion-content class="fondoDegradado">
 
     <!--CONTENIDO DE CONTENEDOR DONDE EXPLICAMOS INFORMACIÓN DE LA PANTALLA-->
-    <ion-content class="contenedorInformacion">
+    <!-- <ion-content class="contenedorInformacion">
         <ion-row>
             <ion-col col-12>
-                <!--Al poner <b> permitimos que las palabras que esten dentro se visualicen en negrita-->
                 <p id="p">Se ha seleccionado un <b>{{juegoSeleccionado.Tipo}}</b> de tipo <b>{{juegoSeleccionado.Modo}}</b> . </p>
             </ion-col>
         </ion-row>
-    </ion-content>
+    </ion-content> -->
 
   <!--SE HACE DISTINCIÓN ENTRE TIPO DE JUEGO DE PUNTOS Y DE COLECCIONES-->
 
   <!--Para el caso de un juego de Puntos-->
+  <br>
+  <br>
  <div *ngIf= "juegoSeleccionado.Tipo === 'Juego De Puntos'">
 
       <!--Se definen en una misma fila dos botones que permiten obtener información sobre

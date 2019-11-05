@@ -32,7 +32,7 @@
         <!--Se define un desplegable que muestra los puntos disponibles recibidos
         desde puntosDelJuego-->
         <select style="font-size: 80%; margin-left: 8%;" [(ngModel)]="puntoSeleccionadoId" name="punto" >
-            <option *ngFor="let punto of puntosDelJuego" [value]="punto.id"  >
+            <option *ngFor="let punto of tiposPuntosDelJuego" [value]="punto.id"  >
                 {{punto.Nombre}}
             </option>
         </select>

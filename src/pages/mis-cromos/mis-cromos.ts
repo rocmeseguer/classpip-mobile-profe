@@ -6,6 +6,7 @@ import { HttpClient} from '@angular/common/http';
 //Importamos las CLASES necesarias
 import {Cromo} from '../../clases/Cromo';
 import {Coleccion} from '../../clases/Coleccion';
+import { PeticionesApiProvider } from '../../providers/peticiones-api/peticiones-api';
 
 
 @IonicPage()
@@ -30,13 +31,14 @@ export class MisCromosPage {
   private APIUrl = 'http://localhost:3000/api/Colecciones';
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private http: Http, private https: HttpClient) {
+              private http: Http, private https: HttpClient,
+              private peticionesApi: PeticionesApiProvider) {
     this.coleccion=navParams.get('coleccion');
   }
 
   //Se realizarán las siguiente tareas al inicializar la pantalla.
   ionViewDidLoad() {
-    console.log('Bienvenido a la página de cromos de la coleccion');
+    console.log('Bienvenido a la página de cromos de la coleccion ' + this.coleccion);
     this.CromosEImagenDeLaColeccion(this.coleccion);
     this.GET_Imagen();
   }
@@ -49,9 +51,7 @@ export class MisCromosPage {
     // Si la coleccion tiene una foto (recordemos que la foto no es obligatoria)
     if (coleccion.ImagenColeccion !== undefined) {
 
-      // Busca en la base de datos la imágen con el nombre registrado en equipo.FotoEquipo y la recupera
-      this.http.get('http://localhost:3000/api/imagenes/ImagenColeccion/download/' + coleccion.ImagenColeccion,
-      { responseType: ResponseContentType.Blob })
+      this.peticionesApi.DameImagenColeccion (coleccion.ImagenColeccion)
       .subscribe(response => {
         const blob = new Blob([response.blob()], { type: 'image/jpg'});
 
@@ -75,7 +75,7 @@ export class MisCromosPage {
     console.log('voy a mostrar los cromos de la coleccion ' + coleccion.id);
 
     // Busca los cromos dela coleccion en la base de datos
-    this.https.get<Cromo[]>(this.APIUrl + '/' + coleccion.id + '/cromos')
+    this.peticionesApi.DameCromosColeccion (coleccion.id)
     .subscribe(res => {
       if (res[0] !== undefined) {
         this.cromosColeccion = res;
@@ -99,8 +99,7 @@ export class MisCromosPage {
 
     if (this.cromo.Imagen !== undefined ) {
       // Busca en la base de datos la imágen con el nombre registrado en equipo.FotoEquipo y la recupera
-      this.http.get('http://localhost:3000/api/imagenes/ImagenCromo/download/' + this.cromo.Imagen,
-      { responseType: ResponseContentType.Blob })
+      this.peticionesApi.DameImagenCromo (this.cromo.Imagen)
       .subscribe(response => {
         const blob = new Blob([response.blob()], { type: 'image/jpg'});
 
@@ -126,9 +125,9 @@ export class MisCromosPage {
   GET_Imagen() {
 
     if (this.coleccion.ImagenColeccion !== undefined ) {
+
       // Busca en la base de datos la imágen con el nombre registrado en equipo.FotoEquipo y la recupera
-      this.http.get('http://localhost:3000/api/imagenes/ImagenColeccion/download/' + this.coleccion.ImagenColeccion,
-      { responseType: ResponseContentType.Blob })
+      this.peticionesApi.DameImagenColeccion (this.coleccion.ImagenColeccion)
       .subscribe(response => {
         const blob = new Blob([response.blob()], { type: 'image/jpg'});
 

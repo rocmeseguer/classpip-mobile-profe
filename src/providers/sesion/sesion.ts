@@ -210,49 +210,49 @@ export class SesionProvider {
   // }
 
 
-  // public TomaDatosParaAsignarPuntos(
-  //         tiposPuntosDelJuego: any,
-  //         nivelesDelJuego: any,
-  //         alumnosDelJuego: any,
-  //         listaAlumnosOrdenadaPorPuntos: any,
-  //         rankingJuegoDePuntos: any,
-  //         equiposDelJuego: any,
-  //         listaEquiposOrdenadaPorPuntos: any,
-  //         rankingEquiposJuegoDePuntos: any
-  //       ) {
+  public TomaDatosParaAsignarPuntos(
+          tiposPuntosDelJuego: any,
+          nivelesDelJuego: any,
+          alumnosDelJuego: any,
+          listaAlumnosOrdenadaPorPuntos: any,
+          rankingJuegoDePuntos: any,
+          equiposDelJuego: any,
+          listaEquiposOrdenadaPorPuntos: any,
+          rankingEquiposJuegoDePuntos: any
+        ) {
 
-  //       this.tiposPuntosDelJuego = tiposPuntosDelJuego;
-  //       this.nivelesDelJuego = nivelesDelJuego;
-  //       this.alumnosDelJuego = alumnosDelJuego;
-  //       this.listaAlumnosOrdenadaPorPuntos = listaAlumnosOrdenadaPorPuntos;
-  //       this.rankingJuegoDePuntos = rankingJuegoDePuntos;
-  //       this.equiposDelJuego = equiposDelJuego;
-  //       this.listaEquiposOrdenadaPorPuntos = listaEquiposOrdenadaPorPuntos;
-  //       this.rankingEquiposJuegoDePuntos = rankingEquiposJuegoDePuntos;
-  //       console.log ('Sesion ' + this.rankingEquiposJuegoDePuntos );
-  //       console.log ('Sesion ' + this.equiposDelJuego );
-  //       console.log ('Sesion ' + this.listaEquiposOrdenadaPorPuntos );
+        this.tiposPuntosDelJuego = tiposPuntosDelJuego;
+        this.nivelesDelJuego = nivelesDelJuego;
+        this.alumnosDelJuego = alumnosDelJuego;
+        this.listaAlumnosOrdenadaPorPuntos = listaAlumnosOrdenadaPorPuntos;
+        this.rankingJuegoDePuntos = rankingJuegoDePuntos;
+        this.equiposDelJuego = equiposDelJuego;
+        this.listaEquiposOrdenadaPorPuntos = listaEquiposOrdenadaPorPuntos;
+        this.rankingEquiposJuegoDePuntos = rankingEquiposJuegoDePuntos;
+        console.log ('Sesion ' + this.rankingEquiposJuegoDePuntos );
+        console.log ('Sesion ' + this.equiposDelJuego );
+        console.log ('Sesion ' + this.listaEquiposOrdenadaPorPuntos );
 
-  // }
+  }
 
-  // public DameDatosParaAsignarPuntos(): any {
-  //   const datos = {
-  //   tiposPuntosDelJuego: this.tiposPuntosDelJuego,
-  //   nivelesDelJuego: this.nivelesDelJuego,
-  //   alumnosDelJuego: this.alumnosDelJuego,
-  //   listaAlumnosOrdenadaPorPuntos: this.listaAlumnosOrdenadaPorPuntos,
-  //   rankingJuegoDePuntos: this.rankingJuegoDePuntos,
-  //   equiposDelJuego: this.equiposDelJuego,
-  //   listaEquiposOrdenadaPorPuntos: this.listaEquiposOrdenadaPorPuntos,
-  //   rankingEquiposJuegoDePuntos: this.rankingEquiposJuegoDePuntos
-  //   };
-  //   console.log ('Sesion regreso ' + datos.rankingEquiposJuegoDePuntos );
+  public DameDatosParaAsignarPuntos(): any {
+    const datos = {
+    tiposPuntosDelJuego: this.tiposPuntosDelJuego,
+    nivelesDelJuego: this.nivelesDelJuego,
+    alumnosDelJuego: this.alumnosDelJuego,
+    listaAlumnosOrdenadaPorPuntos: this.listaAlumnosOrdenadaPorPuntos,
+    rankingJuegoDePuntos: this.rankingJuegoDePuntos,
+    equiposDelJuego: this.equiposDelJuego,
+    listaEquiposOrdenadaPorPuntos: this.listaEquiposOrdenadaPorPuntos,
+    rankingEquiposJuegoDePuntos: this.rankingEquiposJuegoDePuntos
+    };
+    console.log ('Sesion regreso ' + datos.rankingEquiposJuegoDePuntos );
 
-  //   return datos;
-  // }
-  // public DameRankingEquipos(): any {
-  //   return this.rankingEquiposJuegoDePuntos;
-  // }
+    return datos;
+  }
+  public DameRankingEquipos(): any {
+    return this.rankingEquiposJuegoDePuntos;
+  }
 
   // public TomaAlumnosDelJuego( alumnos: any) {
   //   this.alumnosDelJuego = alumnos;

@@ -87,7 +87,7 @@ export class MispuntosPage {
       for (let i = 0; i < insignias.length; i ++) {
       if (insignias[i].Imagen!== undefined) {
 
-        this.peticionesApi.DameLogoInsignia (insignias[i].Imagen)
+        this.peticionesApi.DameImagenInsignia (insignias[i].Imagen)
         // Busca en la base de datos la imágen con el nombre registrado en equipo.FotoEquipo y la recupera
         // this.http2.get('http://localhost:3000/api/imagenes/ImagenInsignia/download/' + insignias[i].Imagen,
         // { responseType: ResponseContentType.Blob })

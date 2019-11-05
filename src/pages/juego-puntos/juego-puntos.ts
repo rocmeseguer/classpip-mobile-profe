@@ -225,6 +225,7 @@ opcionesMostrar: OpcionSeleccionada[] = [
 
   // Función que usaremos para clicar en un juego y entrar en él, enviándolo al servicio
   JuegoSeleccionado(juego: any) {
+    console.log ('Has seleccionado este juego ' + juego)
     this.navCtrl.push (JuegoSeleccionadoPage,{juego:juego});
   }
 

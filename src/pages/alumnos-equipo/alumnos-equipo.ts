@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
 import { ResponseContentType, Http } from '@angular/http';
 
-
+import {PeticionesApiProvider} from '../../providers/peticiones-api/peticiones-api';
 
 @IonicPage()
 @Component({
@@ -27,7 +27,8 @@ export class AlumnosEquipoPage {
   equipo:any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private http: HttpClient, private http2: Http) {
+              private http: HttpClient, private http2: Http,
+              private peticionesApi: PeticionesApiProvider) {
 
   //Recogemos los valores de la pagina anterior y los añadimos en el parametro id y equipo
     this.id=navParams.get('id');
@@ -39,8 +40,9 @@ export class AlumnosEquipoPage {
     console.log('Bienvenido a la página de los Alumnos del Equipo');
     console.log('El id del equipo mostrado es: '+ this.id);
 
-    //Buscamos en la API los alumnos del equipo
-    this.http.get<any[]>(this.APIUrlEquipos + '/' + this.id + '/alumnos').subscribe(
+    //Buscamos en la API los alumnos del
+    this.peticionesApi.DameAlumnosEquipo (this.id)
+    .subscribe(
       alumnosEquipo => {
 
       //Copiamos los alumnosEquipo en itemsGrupo y en items para definir una lista
@@ -61,10 +63,10 @@ export class AlumnosEquipoPage {
       console.log(this.equipo.FotoEquipo);
       // Si el equipo tiene una foto (recordemos que la foto no es obligatoria)
       if (this.equipo.FotoEquipo !== undefined) {
-
+        this.peticionesApi.DameLogoEquipo(this.equipo.FotoEquipo)
         // Busca en la base de datos la imágen con el nombre registrado en equipo.FotoEquipo y la recupera
-        this.http2.get('http://localhost:3000/api/imagenes/LogosEquipos/download/' + this.equipo.FotoEquipo,
-        { responseType: ResponseContentType.Blob })
+        // this.http2.get('http://localhost:3000/api/imagenes/LogosEquipos/download/' + this.equipo.FotoEquipo,
+        // { responseType: ResponseContentType.Blob })
         .subscribe(response => {
           const blob = new Blob([response.blob()], { type: 'image/jpg'});
 
@@ -91,19 +93,19 @@ export class AlumnosEquipoPage {
 
   //Función correspondiente al ion-searchbar que nos permitirá visualizar los alumnos que
   //tengas las caracteristicas definidas en el filtro
-  getItems(ev: any) {
-      // Reset items back to all of the items
-      this.fijarAlumnos(this.itemsGrupo);
-      // set val to the value of the searchbar
-      let val = ev.target.value;
+  // getItems(ev: any) {
+  //     // Reset items back to all of the items
+  //     this.fijarAlumnos(this.itemsGrupo);
+  //     // set val to the value of the searchbar
+  //     let val = ev.target.value;
 
-          if (val && val.trim() !== '') {
-          this.items = this.items.filter(function(item) {
-            return (item.Nombre.toLowerCase().includes(val.toLowerCase())||
-            item.PrimerApellido.toLowerCase().includes(val.toLowerCase())||
-            item.SegundoApellido.toLowerCase().includes(val.toLowerCase()));
-          });
-        }
-  }
+  //         if (val && val.trim() !== '') {
+  //         this.items = this.items.filter(function(item) {
+  //           return (item.Nombre.toLowerCase().includes(val.toLowerCase())||
+  //           item.PrimerApellido.toLowerCase().includes(val.toLowerCase())||
+  //           item.SegundoApellido.toLowerCase().includes(val.toLowerCase()));
+  //         });
+  //       }
+  // }
 
 }

@@ -16,6 +16,9 @@ import {Punto} from '../../clases/Punto';
 import { Alumno } from '../../clases/Alumno';
 import {Equipo} from '../../clases/Equipo';
 import {Coleccion} from '../../clases/Coleccion';
+import {PeticionesApiProvider} from '../../providers/peticiones-api/peticiones-api';
+import { CalculosProvider } from '../../providers/calculos/calculos';
+import { SesionProvider } from '../../providers/sesion/sesion';
 
 
 @IonicPage()
@@ -31,7 +34,7 @@ export class JuegoSeleccionadoPage  {
   // Recupera la informacion del juego seleccionado además de los alumnos o los equipos, los puntos y los niveles del juego
   alumnosDelJuego: any[];
   equiposDelJuego: any[];
-  puntosDelJuego: any[];
+  tiposPuntosDelJuego: any[];
   nivelesDelJuego: any[];
   alumnosEquipo: any[];
   puntoSeleccionadoId: number;
@@ -45,6 +48,9 @@ export class JuegoSeleccionadoPage  {
   listaAlumnosOrdenadaPorPuntos: any[];
   listaEquiposOrdenadaPorPuntos: any[];
 
+  inscripcionesAlumnosJuegoColeccion: any[];
+  inscripcionesEquiposJuegoColeccion: any[];
+
    // Muestra la posición del alumno, el nombre y los apellidos del alumno, los puntos y el nivel
    rankingJuegoDePuntos: any[] = [];
    rankingJuegoDePuntosTotal: any[] = [];
@@ -53,7 +59,10 @@ export class JuegoSeleccionadoPage  {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private http: HttpClient) {
+              private http: HttpClient,
+              private calculos: CalculosProvider,
+              private sesion: SesionProvider,
+              private peticionesApi: PeticionesApiProvider) {
     this.juegoSeleccionado=navParams.get('juego');
 
   }
@@ -71,12 +80,13 @@ export class JuegoSeleccionadoPage  {
   ionViewDidLoad() {
     console.log(this.juegoSeleccionado);
 
+
     //Se discrimina por tipo de Juego: Puntos o Coleccion
 
     if (this.juegoSeleccionado.Tipo === 'Juego De Puntos') {
       this.listaSeleccionable[0] =  new Punto('Totales');
 
-      this.PuntosDelJuego();
+      this.TraeTiposPuntosDelJuego();
       this.NivelesDelJuego();
 
       //Se discrimina por modo de Juego: Individual o Colectivo
@@ -98,329 +108,200 @@ export class JuegoSeleccionadoPage  {
     }
   }
 
-  // Recupera los alumnos que pertenecen al juego de Colecciones desde la API
-  AlumnosDelJuegoColeccion() {
-    this.http.get<Alumno[]>(this.APIRURLJuegoDeColeccion + '/' + this.juegoSeleccionado.id + '/alumnos')
+
+  // Recupera los alumnos que pertenecen al juego de Puntos
+  AlumnosDelJuego() {
+    this.peticionesApi.DameAlumnosJuegoDePuntos (this.juegoSeleccionado.id)
+    // this.http.get<any[]>(this.APIRURLJuegoDePuntos + '/' + this.juegoSeleccionado.id + '/alumnos')
     .subscribe(alumnosJuego => {
       console.log(alumnosJuego);
+      this.alumnosDelJuego = alumnosJuego;
       this.items = alumnosJuego;
       this.itemsAPI=alumnosJuego;
       this.RecuperarInscripcionesAlumnoJuego();
+    });
+  }
+
+    // Recupera los equipos que pertenecen al juego de Puntos
+  EquiposDelJuego() {
+      this.peticionesApi.DameEquiposJuegoDePuntos (this.juegoSeleccionado.id)
+      // this.http.get<any[]>(this.APIRURLJuegoDePuntos + '/' + this.juegoSeleccionado.id + '/equipos')
+      .subscribe(equiposJuego => {
+        this.equiposDelJuego= equiposJuego;
+        console.log ('Equipos ' + this.equiposDelJuego);
+        this.items = equiposJuego;
+        this.itemsAPI=equiposJuego;
+        this.RecuperarInscripcionesEquiposJuego();
+      });
+    }
+
+
+
+    // Recupera los puntos que se pueden asignar en el juego
+  TraeTiposPuntosDelJuego() {
+      this.peticionesApi.DamePuntosJuegoDePuntos(this.juegoSeleccionado.id)
+      .subscribe(puntos => {
+        this.tiposPuntosDelJuego = puntos;
+        this.listaSeleccionable = [];
+        this.listaSeleccionable[0] =  new Punto('Totales');
+        // tslint:disable-next-line:prefer-for-of
+        for (let i = 0; i < this.tiposPuntosDelJuego.length; i ++) {
+          this.listaSeleccionable.push(this.tiposPuntosDelJuego[i]);
+        }
+      });
+  }
+
+
+    // Recupera los niveles de los que dispone el juego
+  NivelesDelJuego() {
+      this.peticionesApi.DameNivelesJuegoDePuntos(this.juegoSeleccionado.id)
+      .subscribe(niveles => {
+        this.nivelesDelJuego = niveles;
+      });
+  }
+
+
+
+  // Recupera los alumnos que pertenecen al juego de Colecciones desde la API
+  AlumnosDelJuegoColeccion() {
+    this.peticionesApi.DameAlumnosJuegoDeColeccion (this.juegoSeleccionado.id)
+    // this.http.get<Alumno[]>(this.APIRURLJuegoDeColeccion + '/' + this.juegoSeleccionado.id + '/alumnos')
+    .subscribe(alumnosJuego => {
+      console.log(alumnosJuego);
+      this.alumnosDelJuego = alumnosJuego;
+      this.items = alumnosJuego;
+      this.itemsAPI=alumnosJuego;
+      this.RecuperarInscripcionesAlumnoJuegoColeccion();
       this.ColeccionDelJuego();
     });
   }
 
   // Recupera los equipos que pertenecen al juego de Colecciones desde la API
   EquiposDelJuegoColeccion() {
-    this.http.get<Equipo[]>(this.APIRURLJuegoDeColeccion + '/' + this.juegoSeleccionado.id + '/equipos')
+    this.peticionesApi.DameEquiposJuegoDeColeccion (this.juegoSeleccionado.id)
+    // this.http.get<Equipo[]>(this.APIRURLJuegoDeColeccion + '/' + this.juegoSeleccionado.id + '/equipos')
     .subscribe(equiposJuego => {
+      this.equiposDelJuego= equiposJuego;
       this.items = equiposJuego;
       this.itemsAPI= equiposJuego;
       console.log(equiposJuego);
-      this.RecuperarInscripcionesEquiposJuego();
+      this.RecuperarInscripcionesEquiposJuegoColeccion();
       this.ColeccionDelJuego();
     });
   }
 
   // Recupera la colección de cromos que pertenece al juego de Colecciones desde la API
   ColeccionDelJuego() {
-    this.http.get<Coleccion>(this.APIRURLColecciones + '/' + this.juegoSeleccionado.coleccionId)
+    console.log('voy por la colección ' + this.juegoSeleccionado.coleccionId );
+    this.peticionesApi.DameColeccion (this.juegoSeleccionado.coleccionId)
+    //this.peticionesApi.DameColeccionesDelProfesor (this.juegoSeleccionado.coleccionId)
+    // this.http.get<Coleccion>(this.APIRURLColecciones + '/' + this.juegoSeleccionado.coleccionId)
     .subscribe(coleccion => {
       this.coleccion = coleccion;
-      console.log('voy a enviar la coleccion');
+      console.log('ya tengo la colección ' + this.coleccion );
     });
   }
 
-   // Recupera los puntos que se pueden asignar en el juego de Puntos
-   PuntosDelJuego() {
-    this.http.get<any[]>(this.APIRURLJuegoDePuntos + '/' + this.juegoSeleccionado.id + '/puntos')
-    .subscribe(puntos => {
-      this.puntosDelJuego = puntos;
-
-      // tslint:disable-next-line:prefer-for-of
-      for (let i = 0; i < this.puntosDelJuego.length; i ++) {
-        this.listaSeleccionable.push(this.puntosDelJuego[i]);
-      }
-    });
-  }
-
-  // Recupera los niveles de los que dispone el juego de Puntos
-  NivelesDelJuego() {
-    this.http.get<any[]>(this.APIRURLJuegoDePuntos + '/' + this.juegoSeleccionado.id + '/nivels')
-    .subscribe(niveles => {
-      this.nivelesDelJuego = niveles;
-      console.log(this.nivelesDelJuego);
-    });
-  }
-
-  // Recupera los alumnos que pertenecen al juego de Puntos
-  AlumnosDelJuego() {
-    this.http.get<any[]>(this.APIRURLJuegoDePuntos + '/' + this.juegoSeleccionado.id + '/alumnos')
-    .subscribe(alumnosJuego => {
-      console.log(alumnosJuego);
-      this.items = alumnosJuego;
-      this.itemsAPI=alumnosJuego;
-      this.RecuperarInscripcionesAlumnoJuego();
-    });
-  }
-
-  // Recupera los equipos que pertenecen al juego de Puntos
-  EquiposDelJuego() {
-    this.http.get<any[]>(this.APIRURLJuegoDePuntos + '/' + this.juegoSeleccionado.id + '/equipos')
-    .subscribe(equiposJuego => {
-      this.items = equiposJuego;
-      this.itemsAPI=equiposJuego;
-      this.RecuperarInscripcionesEquiposJuego();
-    });
-  }
 
   // Recupera las inscripciones de los alumnos en el juego y los puntos que tienen y los ordena de mayor a menor valor
   RecuperarInscripcionesAlumnoJuego() {
-    this.http.get<any[]>(this.APIURLAlumnoJuegoDePuntos + '?filter[where][juegoDePuntosId]=' + this.juegoSeleccionado.id)
+    this.peticionesApi.DameInscripcionesAlumnoJuegoDePuntos(this.juegoSeleccionado.id)
     .subscribe(inscripciones => {
       this.listaAlumnosOrdenadaPorPuntos = inscripciones;
-      this.OrdenarPorPuntos();
+      // ordena la lista por puntos
+      // tslint:disable-next-line:only-arrow-functions
+      this.listaAlumnosOrdenadaPorPuntos = this.listaAlumnosOrdenadaPorPuntos.sort(function(obj1, obj2) {
+        return obj2.PuntosTotalesAlumno - obj1.PuntosTotalesAlumno;
+      });
+      console.log ('ya tengo las inscripciones');
+      // this.OrdenarPorPuntos();
       this.TablaClasificacionTotal();
     });
   }
+
+
+    // Recupera las inscripciones de los alumnos en el juego y los puntos que tienen y los ordena de mayor a menor valor
+    RecuperarInscripcionesEquiposJuego() {
+
+      this.peticionesApi.DameInscripcionesEquipoJuegoDePuntos(this.juegoSeleccionado.id)
+      .subscribe(inscripciones => {
+        this.listaEquiposOrdenadaPorPuntos = inscripciones;
+        console.log(this.listaEquiposOrdenadaPorPuntos);
+
+        // ordenamos por puntos
+        // tslint:disable-next-line:only-arrow-functions
+        this.listaEquiposOrdenadaPorPuntos = this.listaEquiposOrdenadaPorPuntos.sort(function(obj1, obj2) {
+          return obj2.PuntosTotalesEquipo - obj1.PuntosTotalesEquipo;
+        });
+        console.log ('ya tengo las inscripciones');
+        this.TablaClasificacionTotal();
+      });
+    }
+
+
 
   // Recupera las inscripciones de los alumnos en el juego y los puntos que tienen y los ordena de mayor a menor valor
-  RecuperarInscripcionesEquiposJuego() {
-
-    this.http.get<any[]>(this.APIURLEquiposJuegoDePuntos + '?filter[where][juegoDePuntosId]=' + this.juegoSeleccionado.id)
+  RecuperarInscripcionesAlumnoJuegoColeccion() {
+    this.peticionesApi.DameInscripcionesAlumnoJuegoDeColeccion(this.juegoSeleccionado.id)
     .subscribe(inscripciones => {
-      this.listaEquiposOrdenadaPorPuntos = inscripciones;
-      console.log(this.listaEquiposOrdenadaPorPuntos);
-      this.OrdenarPorPuntosEquipos();
-      this.TablaClasificacionTotal();
+      this.inscripcionesAlumnosJuegoColeccion = inscripciones;
+
     });
   }
 
-  // Recoge la lista de alumnos y la ordena por puntos de mayor a menor
-  OrdenarPorPuntos() {
 
-    // tslint:disable-next-line:only-arrow-functions
-    this.listaAlumnosOrdenadaPorPuntos = this.listaAlumnosOrdenadaPorPuntos.sort(function(obj1, obj2) {
-      return obj2.PuntosTotalesAlumno - obj1.PuntosTotalesAlumno;
+
+    // Recupera las inscripciones de los alumnos en el juego y los puntos que tienen y los ordena de mayor a menor valor
+  RecuperarInscripcionesEquiposJuegoColeccion() {
+
+    this.peticionesApi.DameInscripcionesEquipoJuegoDeColeccion(this.juegoSeleccionado.id)
+    .subscribe(inscripciones => {
+      this.inscripcionesEquiposJuegoColeccion = inscripciones;
     });
-    return this.listaAlumnosOrdenadaPorPuntos;
   }
 
-  // Recoge la lista de equipos y la ordena por puntos de mayor a menor
-  OrdenarPorPuntosEquipos() {
-
-    // tslint:disable-next-line:only-arrow-functions
-    this.listaEquiposOrdenadaPorPuntos = this.listaEquiposOrdenadaPorPuntos.sort(function(obj1, obj2) {
-      return obj2.PuntosTotalesEquipo - obj1.PuntosTotalesEquipo;
-    });
-    return this.listaEquiposOrdenadaPorPuntos;
-  }
-
-  //Función que permite buscar el alumno y su información a partir de el id que tiene asignado
-  //ese alumno en el juego.
-  //***(NO TIENE PORQUE COINCIDIR EL ID DEL ALUMNO CON EL ID DEL ALUMNO EN EL JUEGO)***
-  BuscarAlumno(alumnoId: number): any {
-
-    let alumno: any;
-    alumno = this.items.filter(res => res.id === alumnoId)[0];
-    return alumno;
-  }
-
-   //Función que permite buscar el equipo y su información a partir de el id que tiene asignado
-  //ese equipo en el juego.
-  //***(NO TIENE PORQUE COINCIDIR EL ID DEL EQUIPO CON EL ID DEL EQUIPO EN EL JUEGO)***
-  BuscarEquipo(equipoId: number): any {
-
-    let equipo: any;
-    // tslint:disable-next-line:no-unused-expression
-    equipo = this.items.filter(res => res.id === equipoId)[0];
-    return equipo;
-  }
-
-  //Mediante el identificador del nivel introducido como parámetro, se obtiene el nivel entero
-  BuscarNivel(nivelId: number): any {
-
-    let nivel: any;
-    console.log(this.nivelesDelJuego.filter(res => res.id === nivelId)[0]);
-
-    nivel = this.nivelesDelJuego.filter(res => res.id === nivelId)[0];
-
-    return nivel;
-  }
-
-   // En función del modo, recorremos la lista de Alumnos o de Equipos y vamos rellenando el rankingJuegoDePuntos
-   TablaClasificacionTotal() {
+  // En función del modo, recorremos la lisa de Alumnos o de Equipos y vamos rellenando el rankingJuegoDePuntos
+  // ESTO DEBERIA IR AL SERVICIO DE CALCULO, PERO DE MOMENTO NO LO HAGO PORQUE SE GENERAN DOS TABLAS
+  // Y NO COMPRENDO BIEN LA NECESIDAD DE LAS DOS
+  TablaClasificacionTotal() {
 
     if (this.juegoSeleccionado.Modo === 'Individual') {
-
-      for (let i = 0; i < this.listaAlumnosOrdenadaPorPuntos.length; i++) {
-        let alumno: any;
-        let nivel: any;
-
-        alumno = this.BuscarAlumno(this.listaAlumnosOrdenadaPorPuntos[i].alumnoId);
-
-        if (this.listaAlumnosOrdenadaPorPuntos[i].nivelId !== undefined) {
-          console.log(this.listaAlumnosOrdenadaPorPuntos[i].alumnoId);
-          nivel = this.BuscarNivel(this.listaAlumnosOrdenadaPorPuntos[i].nivelId);
-          console.log(this.listaAlumnosOrdenadaPorPuntos[i].nivelId);
-        }
-
-        if (nivel !== undefined) {
-          this.rankingJuegoDePuntos[i] = new TablaAlumnoJuegoDePuntos (i + 1, alumno.Nombre, alumno.PrimerApellido, alumno.SegundoApellido,
-            this.listaAlumnosOrdenadaPorPuntos[i].PuntosTotalesAlumno, nivel.Nombre);
-
-          this.rankingJuegoDePuntosTotal[i] = new TablaAlumnoJuegoDePuntos (i + 1, alumno.Nombre, alumno.PrimerApellido,
-            alumno.SegundoApellido, this.listaAlumnosOrdenadaPorPuntos[i].PuntosTotalesAlumno, nivel.Nombre);
-        } else {
-          this.rankingJuegoDePuntos[i] = new TablaAlumnoJuegoDePuntos (i + 1, alumno.Nombre, alumno.PrimerApellido, alumno.SegundoApellido,
-            this.listaAlumnosOrdenadaPorPuntos[i].PuntosTotalesAlumno);
-
-          this.rankingJuegoDePuntosTotal[i] = new TablaAlumnoJuegoDePuntos (i + 1, alumno.Nombre, alumno.PrimerApellido,
-            alumno.SegundoApellido, this.listaAlumnosOrdenadaPorPuntos[i].PuntosTotalesAlumno);
-        }
-      }
-
+      this.rankingJuegoDePuntos = this.calculos.PrepararTablaRankingIndividual (
+        this.listaAlumnosOrdenadaPorPuntos,
+        this.alumnosDelJuego,
+        this.nivelesDelJuego
+      );
+      console.log ('Ya tengo la tabla');
+      // tslint:disable-next-line:max-line-length
+     // this.rankingJuegoDePuntosTotal = this.calculos.DameRanking (this.listaAlumnosOrdenadaPorPuntos, this.alumnosDelJuego, this.nivelesDelJuego);
+     // this.datasourceAlumno = new MatTableDataSource(this.rankingJuegoDePuntos);
 
     } else {
-      for (let i = 0; i < this.listaEquiposOrdenadaPorPuntos.length; i++) {
-        let equipo: any;
-        let nivel: any;
 
-        equipo = this.BuscarEquipo(this.listaEquiposOrdenadaPorPuntos[i].equipoId);
-
-        if (this.listaEquiposOrdenadaPorPuntos[i].nivelId !== undefined) {
-          console.log(this.listaEquiposOrdenadaPorPuntos[i].equipoId);
-          nivel = this.BuscarNivel(this.listaEquiposOrdenadaPorPuntos[i].nivelId);
-          console.log(this.listaEquiposOrdenadaPorPuntos[i].nivelId);
-        }
-
-        if (nivel !== undefined) {
-          this.rankingEquiposJuegoDePuntos[i] = new TablaEquipoJuegoDePuntos (i + 1, equipo.Nombre, equipo.id,
-            this.listaEquiposOrdenadaPorPuntos[i].PuntosTotalesEquipo, nivel.Nombre);
-
-          this.rankingEquiposJuegoDePuntosTotal[i] = new TablaEquipoJuegoDePuntos (i + 1, equipo.Nombre, equipo.id,
-            this.listaEquiposOrdenadaPorPuntos[i].PuntosTotalesEquipo, nivel.Nombre);
-        } else {
-          this.rankingEquiposJuegoDePuntos[i] = new TablaEquipoJuegoDePuntos (i + 1, equipo.Nombre, equipo.id,
-            this.listaEquiposOrdenadaPorPuntos[i].PuntosTotalesEquipo);
-
-          this.rankingEquiposJuegoDePuntosTotal[i] = new TablaEquipoJuegoDePuntos (i + 1, equipo.Nombre, equipo.id,
-            this.listaEquiposOrdenadaPorPuntos[i].PuntosTotalesEquipo);
-        }
-      }
+      this.rankingEquiposJuegoDePuntos = this.calculos.PrepararTablaRankingEquipos (
+        this.listaEquiposOrdenadaPorPuntos, this.equiposDelJuego, this.nivelesDelJuego
+      );
+      console.log ('ranking ' + this.rankingEquiposJuegoDePuntos);
+      //this.datasourceEquipo = new MatTableDataSource(this.rankingEquiposJuegoDePuntos);
 
     }
   }
 
-  //Ordena la tabla por puntos de mayor a menor. Se realiza distinción entre modo Individual o colectivo
-  OrdenarTablaPorPuntos() {
-    if (this.juegoSeleccionado.Modo === 'Individual') {
-      console.log('Voy a orddenar la tabla');
-      // tslint:disable-next-line:only-arrow-functions
-      this.rankingJuegoDePuntos = this.rankingJuegoDePuntos.sort(function(obj1, obj2) {
-        return obj2.puntos - obj1.puntos;
-      });
-      // tslint:disable-next-line:prefer-for-of
-      for (let i = 0; i < this.rankingJuegoDePuntos.length; i++) {
-        this.rankingJuegoDePuntos[i].posicion = i + 1;
-      }
-    } else {
 
-      console.log('Voy a ordenar la tabla de equipos');
 
-      this.rankingEquiposJuegoDePuntos = this.rankingEquiposJuegoDePuntos.sort(function(obj1, obj2) {
-        return obj2.puntos - obj1.puntos;
-      });
-      // tslint:disable-next-line:prefer-for-of
-      for (let i = 0; i < this.rankingEquiposJuegoDePuntos.length; i++) {
-        this.rankingEquiposJuegoDePuntos[i].posicion = i + 1;
-      }
-    }
-
-  }
-
-  //Calcula las posiciones de los alumnos segun el tipo de punto seleccionado
   ClasificacionPorTipoDePunto() {
+
     if (this.juegoSeleccionado.Modo === 'Individual') {
-
-      for (let i = 0; i < this.listaAlumnosOrdenadaPorPuntos.length; i ++) {
-
-        let alumno: any;
-        let nivel: any;
-
-        alumno = this.BuscarAlumno(this.listaAlumnosOrdenadaPorPuntos[i].alumnoId);
-
-        if (this.listaAlumnosOrdenadaPorPuntos[i].nivelId !== undefined) {
-          console.log(this.listaAlumnosOrdenadaPorPuntos[i].alumnoId);
-          nivel = this.BuscarNivel(this.listaAlumnosOrdenadaPorPuntos[i].nivelId);
-          console.log(this.listaAlumnosOrdenadaPorPuntos[i].nivelId);
-        }
-
-        this.http.get<any[]>(this.APIURLHistorialPuntosAlumno + '?filter[where][alumnoJuegoDePuntosId]='
-        + this.listaAlumnosOrdenadaPorPuntos[i].id + '&filter[where][puntoId]=' + this.puntoSeleccionadoId)
-        .subscribe(historial => {
-          let puntos = 0;
-          // tslint:disable-next-line:prefer-for-of
-          for (let j = 0; j < historial.length; j ++) {
-            puntos = puntos + historial[j].ValorPunto;
-          }
-
-          if (nivel !== undefined) {
-            // tslint:disable-next-line:max-line-length
-            this.rankingJuegoDePuntos[i] = new TablaAlumnoJuegoDePuntos (i + 1, alumno.Nombre, alumno.PrimerApellido, alumno.SegundoApellido,
-              puntos, nivel.Nombre);
-          } else {
-            // tslint:disable-next-line:max-line-length
-            this.rankingJuegoDePuntos[i] = new TablaAlumnoJuegoDePuntos (i + 1, alumno.Nombre, alumno.PrimerApellido, alumno.SegundoApellido,
-              puntos);
-          }
-
-          if (i === this.listaAlumnosOrdenadaPorPuntos.length - 1 ) {
-            this.OrdenarTablaPorPuntos();
-          }
-        });
-      }
+      // tslint:disable-next-line:max-line-length
+      console.log('Voy a por la clasficiacion del punto de tipo ' + this.puntoSeleccionadoId);
+      // tslint:disable-next-line:max-line-length
+      this.calculos.DameRankingPuntoSeleccionadoAlumnos (this.listaAlumnosOrdenadaPorPuntos, this.alumnosDelJuego, this.nivelesDelJuego, this.puntoSeleccionadoId).
+      subscribe ( res => this.rankingJuegoDePuntos = res);
     } else {
-
-      // tslint:disable-next-line:prefer-for-of
-      for (let i = 0; i < this.listaEquiposOrdenadaPorPuntos.length; i ++) {
-
-        let equipo: any;
-        let nivel: any;
-
-        equipo = this.BuscarEquipo(this.listaEquiposOrdenadaPorPuntos[i].equipoId);
-
-        if (this.listaEquiposOrdenadaPorPuntos[i].nivelId !== undefined) {
-
-          nivel = this.BuscarNivel(this.listaEquiposOrdenadaPorPuntos[i].nivelId);
-        }
-
-        this.http.get<any[]>(this.APIURLHistorialPuntosEquipo + '?filter[where][equipoJuegoDePuntosId]='
-        + this.listaEquiposOrdenadaPorPuntos[i].id + '&filter[where][puntoId]=' + this.puntoSeleccionadoId)
-        .subscribe(historial => {
-
-          let puntos = 0;
-          // tslint:disable-next-line:prefer-for-of
-          for (let j = 0; j < historial.length; j ++) {
-            puntos = puntos + historial[j].ValorPunto;
-          }
-
-
-          if (nivel !== undefined) {
-            this.rankingEquiposJuegoDePuntos[i] = new TablaEquipoJuegoDePuntos (i + 1, equipo.Nombre, equipo.id,
-              puntos, nivel.Nombre);
-          } else {
-            this.rankingEquiposJuegoDePuntos[i] = new TablaEquipoJuegoDePuntos (i + 1, equipo.Nombre, equipo.id,
-              puntos);
-          }
-
-          if (i === this.listaEquiposOrdenadaPorPuntos.length - 1 ) {
-            this.OrdenarTablaPorPuntos();
-          }
-        });
-      }
+      // tslint:disable-next-line:max-line-length
+      this.calculos.DameRankingPuntoSeleccionadoEquipos (this.listaEquiposOrdenadaPorPuntos, this.equiposDelJuego, this.nivelesDelJuego, this.puntoSeleccionadoId).
+      subscribe ( res => this. rankingEquiposJuegoDePuntos = res);
     }
-
 
   }
 
@@ -429,7 +310,7 @@ export class JuegoSeleccionadoPage  {
   MostrarRankingSeleccionado() {
 
     // Si es indefinido muestro la tabla del total de puntos
-    if (this.puntosDelJuego.filter(res => res.id === Number(this.puntoSeleccionadoId))[0] === undefined) {
+    if (this.tiposPuntosDelJuego.filter(res => res.id === Number(this.puntoSeleccionadoId))[0] === undefined) {
 
       console.log('Tabla del principio');
       this.TablaClasificacionTotal();
@@ -448,17 +329,32 @@ export class JuegoSeleccionadoPage  {
     this.navCtrl.push (InfoJuegoPuntosPage,{juego:juego});
     }
     else{
-    console.log ('Accediendo a Información de Juego de Colecciones');
-    this.ColeccionDelJuego();
+    console.log ('Accediendo a Información de Juego de Colecciones ' + this.coleccion);
     this.navCtrl.push (MisCromosPage,{coleccion:this.coleccion});
     }
 }
 
-//Función que permite redirigirte a la página de asignación de puntos
 AsignarPuntos(juego: any) {
-  console.log ('Accediendo a Asignación de Puntos');
+  // Para enviar la tabla de los puntos totales
+  this.TablaClasificacionTotal();
+
+
+  // enviamos a la sesión la información que se necesitará para asignar
+  // puntos, que es mucha
+  // Esto hay que mejorarlo
+  this.sesion.TomaDatosParaAsignarPuntos (
+        this.tiposPuntosDelJuego,
+        this.nivelesDelJuego,
+        this.alumnosDelJuego,
+        this.listaAlumnosOrdenadaPorPuntos,
+        this.rankingJuegoDePuntos,
+        this.equiposDelJuego,
+        this.listaEquiposOrdenadaPorPuntos,
+        this.rankingEquiposJuegoDePuntos);
   this.navCtrl.push (AsignarPuntosPage,{juego:juego});
 }
+
+
 
 //Función que permite redirigirte a la página de asignación de cromos
 AsignarCromos(juego: any) {
@@ -505,13 +401,18 @@ fijarItems(items :any[]){
 
     //Función que permite redirigirte a la página de cromos disponibles de un alumno
     irCromosActualesAlumno(alumno:any,juego: any){
-      console.log ('Accediendo a Asignación de Puntos');
-      this.navCtrl.push (MisCromosActualesPage,{alumno:alumno,coleccion:this.coleccion,juego:juego });
+      console.log ('FILTER ' + alumno.id);
+      console.log ('FILTER ' + this.inscripcionesAlumnosJuegoColeccion);
+      let al = this.inscripcionesAlumnosJuegoColeccion.filter(res => res.alumnoId === alumno.id)[0];
+
+      console.log ('Accediendo a ver cromos de ' + al);
+      this.navCtrl.push (MisCromosActualesPage,{alumno:al,coleccion:this.coleccion,juego:juego });
     }
 
     //Función que permite redirigirte a la página de cromos disponibles de un equipo
     irCromosActualesEquipo(equipo:any,juego: any){
       console.log ('Accediendo a Asignación de Puntos');
-      this.navCtrl.push (MisCromosActualesPage,{equipo:equipo,coleccion:this.coleccion, juego:juego });
+      let eq = this.inscripcionesEquiposJuegoColeccion.filter(res => res.equipoId === equipo.id)[0];
+      this.navCtrl.push (MisCromosActualesPage,{equipo:eq ,coleccion:this.coleccion, juego:juego });
     }
 }

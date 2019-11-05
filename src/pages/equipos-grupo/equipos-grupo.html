@@ -20,17 +20,17 @@
 </ion-header>
 
 <ion-content class="fondoDegradado"  >
-
+<!--
       <ion-content class="contenedorInformacion" >
-        <!--Al poner <b> permitimos que las palabras que esten dentro se visualicen en negrita-->
             <p id="InformacionPantalla">Seleccione <b>el equipo</b> que desea observar: </p>
-      </ion-content>
+      </ion-content> -->
       <!--Al poner <b> permitimos que las palabras que esten dentro se visualicen en negrita-->
 
 
       <!--Definimos una matriz de 2 columnas por fila ya que cada fila contiene 12 posiciones y
       se ha definido que cada equipo 5 posiciones, por lo que habrán 2 equipos por fila. Se define
       5 posiciones y no 6 y 6 para dejar margenes laterales entre ellos-->
+      <br>
       <ion-grid >
         <ion-row style="margin-left: 9%" >
             <ion-col col-5 id="contenedorEquipo" *ngFor="let equipo of equipos;let i = index" (click)="obtenerAlumnos(equipo.id,equipo);" >

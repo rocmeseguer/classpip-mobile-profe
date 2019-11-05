@@ -14,6 +14,10 @@ import {EquipoJuegoDeColeccion} from '../../clases/EquipoJuegoDeColeccion';
 import {Album} from '../../clases/Album';
 import {AlbumEquipo} from '../../clases/AlbumEquipo';
 
+import {PeticionesApiProvider} from  '../../providers/peticiones-api/peticiones-api';
+import { CalculosProvider} from '../../providers/calculos/calculos';
+import { runInThisContext } from 'vm';
+import { ThrowStmt } from '@angular/compiler';
 
 @IonicPage()
 @Component({
@@ -68,7 +72,8 @@ export class AsignarCromosPage {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private http: HttpClient, private https: Http,
+              private http: HttpClient, private https: Http, private peticionesApi: PeticionesApiProvider,
+              private calculos: CalculosProvider,
               public alertCtrl: AlertController, public loadingCtrl: LoadingController) {
 
     this.juegoSeleccionado=navParams.get('juego');
@@ -112,69 +117,10 @@ export class AsignarCromosPage {
   //Cada vez que se seleccione otro como el seleccionador de cromos, la función se ejecutará
   //y mostrará la estética del cromo al lado del nombre del cromo seleccionado.
   ionChange(){
-    console.log(this.cromoSeleccionado);
+
+    this.cromoSeleccionado = this.cromosColeccion.filter(res => res.id === Number(this.cromoSeleccionadoId))[0];
+
     this.GET_ImagenCromo();
-  }
-
-  //Se ejecutará cuando se haga click a validar asignación de cromos
-  validar(tipo:any){
-
-    //Inicialmente indicamos que no hay ningún alumno/equipo seleccionado
-    this.haySeleccionado = false;
-    if (this.studentsSelectedArray.length >= 1) {
-      for (let i = 0; i < this.studentsSelectedArray.length; i++) {
-        if (this.studentsSelectedArray[i].selected) {
-          //En el caso de que el vector de estudiantes seleccionados sea mayor que 0,
-          //entonces el booleano haySeleccionado será true e indicará que almenos se ha
-          //seleccionado un checkbox de un alumno.
-            this.haySeleccionado = true;
-            this.vectorCorrectos[i]=this.studentsSelectedArray[i];
-        }
-      }
-    }
-
-    //Se distingue entre tipo 1 y tipo 2, según si la asignación se ha realizado Manualmente
-    //(Tipo 1) o Aleatorioa (Tipo 2), de esta manera se generará un mensaje u otro.
-      if (tipo === 1)
-      {
-        //En el caso de que no se haya seleccionado un alumno/equipo (haySeleccionado!==true)
-        if (this.haySeleccionado!==true)
-        {
-          //Mostrará el mensaje de loading hasta que se generá la alerta showAlert1,
-          //que indica que no se ha seleccionado ningún alumno/equipo.
-          this.showLoading('Espere mientras se asignan los cromos.');
-          setTimeout(() => {
-            this.loading.dismiss();
-            this.showAlert1();
-          },1500);
-
-        }
-        //En el caso de que se haya seleccionado un alumno/equipo (haySeleccionado===true)
-        else{
-          //Mostrará el mensaje de loading y se asignará el correspondiente cromo al
-          //correspondiente alumno.
-          this.showLoading('Espere mientras se asignan los cromos.');
-          this.AsignarCromos();
-        }
-
-      }
-      //Mismo caso pero para la Asignación Aleatoria
-      else{
-        if (this.haySeleccionado!==true)
-        {
-          this.showLoading('Espere mientras se asignan los cromos.');
-          setTimeout(() => {
-            this.loading.dismiss();
-            this.showAlert1();
-          },1500);
-
-        }
-        else{
-          this.showLoading('Espere mientras se asignan los cromos.');
-          this.AsignarCromosAleatorios();
-        }
-
-      }
   }
 
   //Función que permitirá Asignar cromos Manualmente pasandole el identificador del cromo como parámetro
@@ -197,7 +143,7 @@ export class AsignarCromosPage {
 
     //Se resetea el vectorCorrectos para que así en la próxima asignación de cromos,
     //no aparezcan los alumnos asignados anteriormente.
-    this.vectorCorrectos = [];
+    this.studentsSelectedArray = [];
 
   }
 
@@ -219,164 +165,42 @@ export class AsignarCromosPage {
     }
   }
 
-  //Función que genera un índice aleatorio para posteriormente utilizarlo al asignar cromos
-  //aleatorioamente
-  randomIndex(
-    probabilities: number[],
-    randomGenerator: () => number = Math.random): number {
-
-      // get the cumulative distribution function
-      let acc = 0;
-      const cdf = probabilities
-          .map(v => acc += v) // running total [4,7,9,10]
-          .map(v => v / acc); // normalize to max 1 [0.4,0.7,0.9,1]
-
-      // pick a random number between 0 and 1
-      const randomNumber = randomGenerator();
-
-      // find the first index of cdf where it exceeds randomNumber
-      // (findIndex() is in ES2015+)
-      return cdf.findIndex(p => randomNumber < p);
-  }
-
-  //Función que añade los cromos aleatorios en el alumno seleccionado
   AsignarCromosAleatoriosAlumno() {
-
-
-    for (let i = 0; i < this.vectorCorrectos.length; i++) {
+    for (let i = 0; i < this.studentsSelectedArray.length; i++) {
 
       // Buscamos los alumnos que hemos seleccionado
-      if (this.vectorCorrectos [i]) {
-
-        let alumno: Alumno;
-        alumno = this.items[i];
-        console.log(alumno.Nombre + ' seleccionado');
-
-        let alumnoJuegoDeColeccion: AlumnoJuegoDeColeccion;
-
-        alumnoJuegoDeColeccion = this.inscripcionesAlumnos.filter(res => res.alumnoId === alumno.id)[0];
-        console.log(alumnoJuegoDeColeccion);
-
-        //Se define la probabilidad con la que ese cromo puede salir
-        let hits = this.probabilidadCromos.map(x => 0);
-
-
-        for (let k = 0; k < this.numeroCromosRandom; k++) {
-
-          console.log('Voy a hacer el post del cromo ' + k);
-
-          //Se genera el índica aleatorio para indicar que cromo será el elegido
-          this.indexCromo = this.randomIndex(this.probabilidadCromos);
-          hits[this.indexCromo]++;
-
-          //Se muestra en consola el cromo Seleccionado
-          console.log('El cromo seleccionado es'+ this.cromosColeccion[this.indexCromo].Nombre);
-
-          //Finalmente se realiza un post en la API, para añadir ese cromo en el Album de
-          //cromos del Alumno Seleccionado.
-          this.http.post<Album>(this.APIRURLAlbum, new Album (alumnoJuegoDeColeccion.id,
-          this.cromosColeccion[this.indexCromo].id)).subscribe(res => {
-
-            //Se generará la alerta de confirmación de asignación del cromo en caso de
-            //que en res no haya aparecido ningún error.
-            if (res !== undefined) {
-              setTimeout(() => {
-                this.loading.dismiss();
-                console.log(res);
-                this.showAlert();
-              },1500);}
-
-            //En caso de haber encontrado un valor en res, eso implica que ha aparecido un error
-            //y consecuentemente deberá generarse la alerta de revisar asignación de cromos.
-            else{
-            setTimeout(() => {
-              this.loading.dismiss();
-              this.showAlert1();
-            },1500);
-
-            }
-
-          });
-
-        }
-        console.log(hits);
+      if (this.studentsSelectedArray [i]) {
+                this.calculos.AsignarCromosAleatoriosAlumno  (
+                  this.items[i], this.inscripcionesAlumnos, this.numeroCromosRandom, this.probabilidadCromos, this.cromosColeccion
+                  );
       }
-    }
+    };
   }
 
-  //Función que añade los cromos aleatorios en el equipo seleccionado
   AsignarCromosAleatoriosEquipo() {
 
-    for (let i = 0; i < this.vectorCorrectos.length; i++) {
+    for (let i = 0; i < this.studentsSelectedArray.length; i++) {
 
-      // Buscamos los equipos que hemos seleccionado
-      if (this.vectorCorrectos [i]) {
-
-        let equipo: Equipo;
-        equipo = this.items[i];
-        console.log(equipo.Nombre + ' seleccionado');
-
-        let equipoJuegoDeColeccion: EquipoJuegoDeColeccion;
-
-        equipoJuegoDeColeccion = this.inscripcionesEquipos.filter(res => res.equipoId === equipo.id)[0];
-        console.log(equipoJuegoDeColeccion);
-
-        //Se define la probabilidad con la que ese cromo puede salir
-        let hits = this.probabilidadCromos.map(x => 0);
-
-
-        for (let k = 0; k < this.numeroCromosRandom; k++) {
-
-          console.log('Voy a hacer el post del cromo ' + k);
-
-          //Se genera el índice aleatorio para indicar que cromo será el elegido
-          this.indexCromo = this.randomIndex(this.probabilidadCromos);
-          hits[this.indexCromo]++;
-
-          //Se muestra en consola el cromo Seleccionado
-          console.log(this.cromosColeccion[this.indexCromo].Nombre);
-
-          //Finalmente se realiza un post en la API, para añadir ese cromo en el Album de
-          //cromos del Equipo Seleccionado.
-          this.http.post<AlbumEquipo>(this.APIRURLAlbumEquipo, new AlbumEquipo (equipoJuegoDeColeccion.id,
-          this.cromosColeccion[this.indexCromo].id)).subscribe(res => {
-
-            //Se generará la alerta de confirmación de asignación del cromo en caso de
-            //que en res no haya aparecido ningún error.
-            if (res !== undefined) {
-              setTimeout(() => {
-                this.loading.dismiss();
-                console.log(res);
-                this.showAlert();
-              },1500);}
-
-            //En caso de haber encontrado un valor en res, eso implica que ha aparecido un error
-            //y consecuentemente deberá generarse la alerta de revisar asignación de cromos.
-            else{
-            setTimeout(() => {
-              this.loading.dismiss();
-              this.showAlert1();
-            },1500);
-
-            }
-
-          });
-        }
-        console.log(hits);
+      // Buscamos los alumnos que hemos seleccionado
+      if (this.studentsSelectedArray [i]) {
+                // tslint:disable-next-line:max-line-length
+                this.calculos.AsignarCromosAleatoriosEquipo (this.items[i], this.inscripcionesEquipos, this.numeroCromosRandom, this.probabilidadCromos, this.cromosColeccion);
       }
-    }
-  }
+    };
+}
+
+
 
   //Función que añade los cromos seleccionados en el alumno seleccionado
   AsignarCromoAlumnos(cromoSeleccionado) {
 
     //Muestra en consola el cromoSeleccionado desde el seleccionador
-    console.log(cromoSeleccionado);
+    console.log('cromo' + cromoSeleccionado);
 
-    for (let i = 0; i < this.vectorCorrectos.length; i++) {
+    for (let i = 0; i < this.studentsSelectedArray.length; i++) {
 
        // Buscamos los alumnos que hemos seleccionado
-       if (this.vectorCorrectos [i]) {
+       if (this.studentsSelectedArray [i]) {
 
         let alumno: Alumno;
         alumno = this.items[i];
@@ -386,31 +210,10 @@ export class AsignarCromosPage {
 
         alumnoJuegoDeColeccion = this.inscripcionesAlumnos.filter(res => res.alumnoId === alumno.id)[0];
         console.log(alumnoJuegoDeColeccion);
-
-        //Se realiza un post en la API, para añadir ese cromo en el Album de
-        //cromos del Alumno Seleccionado.
-        this.http.post<Album>(this.APIRURLAlbum, new Album (alumnoJuegoDeColeccion.id, cromoSeleccionado))
+        this.peticionesApi.AsignarCromoAlumno (new Album (alumnoJuegoDeColeccion.id, cromoSeleccionado))
         .subscribe(res => {
-
-          //Se generará la alerta de confirmación de asignación del cromo en caso de
-          //que en res no haya aparecido ningún error.
-          if (res !== undefined) {
-            setTimeout(() => {
-              this.loading.dismiss();
-              console.log(res);
-              this.showAlert();
-            },1500);}
-
-          //En caso de haber encontrado un valor en res, eso implica que ha aparecido un error
-          //y consecuentemente deberá generarse la alerta de revisar asignación de cromos.
-          else{
-          setTimeout(() => {
-            this.loading.dismiss();
-            this.showAlert1();
-          },1500);
-
-          }});
-
+            console.log(res);
+          });
        }
     }
   }
@@ -420,10 +223,10 @@ export class AsignarCromosPage {
 
     console.log(cromoSeleccionado);
     // tslint:disable-next-line:prefer-for-of
-    for (let i = 0; i < this.vectorCorrectos.length; i++) {
+    for (let i = 0; i < this.studentsSelectedArray.length; i++) {
 
        // Buscamos los equipos que hemos seleccionado
-       if (this.vectorCorrectos [i]) {
+       if (this.studentsSelectedArray [i]) {
 
         let equipo: Equipo;
         equipo = this.items[i];
@@ -436,38 +239,20 @@ export class AsignarCromosPage {
 
         //Se realiza un post en la API, para añadir ese cromo en el Album de
         //cromos del Equipo Seleccionado.
-        this.http.post<Album>(this.APIRURLAlbumEquipo, new AlbumEquipo (equipoJuegoDeColeccion.id, cromoSeleccionado))
-        .subscribe(res => {
-
-          //Se generará la alerta de confirmación de asignación del cromo en caso de
-          //que en res no haya aparecido ningún error.
-          if (res !== undefined) {
-            setTimeout(() => {
-              this.loading.dismiss();
-              console.log(res);
-              this.showAlert();
-            },1500);}
-
-          //En caso de haber encontrado un valor en res, eso implica que ha aparecido un error
-          //y consecuentemente deberá generarse la alerta de revisar asignación de cromos.
-          else{
-          setTimeout(() => {
-            this.loading.dismiss();
-            this.showAlert1();
-          },1500);
-
-          }
-
+        this.peticionesApi.AsignarCromoEquipo (new AlbumEquipo (equipoJuegoDeColeccion.id, cromoSeleccionado))
+       // this.http.post<Album>(this.APIRURLAlbumEquipo, new AlbumEquipo (equipoJuegoDeColeccion.id, cromoSeleccionado))
+       .subscribe(res => {
+        console.log(res);
         });
-
-       }
+      }
     }
   }
 
   // Recupera las inscripciones de los alumnos en el juego de colección seleccionado
   RecuperarInscripcionesAlumnoJuego() {
-    this.http.get<AlumnoJuegoDeColeccion[]>(this.APIURLAlumnoJuegoDeColeccion + '?filter[where][juegoDeColeccionId]='
-    + this.juegoSeleccionado.id)
+    this.peticionesApi.DameInscripcionesAlumnoJuegoDeColeccion (this.juegoSeleccionado.id)
+    // this.http.get<AlumnoJuegoDeColeccion[]>(this.APIURLAlumnoJuegoDeColeccion + '?filter[where][juegoDeColeccionId]='
+    // + this.juegoSeleccionado.id)
     .subscribe(inscripciones => {
       this.inscripcionesAlumnos = inscripciones;
       console.log(this.inscripcionesAlumnos);
@@ -476,9 +261,9 @@ export class AsignarCromosPage {
 
   // Recupera las inscripciones de los equipos en el juego de colección seleccionado
   RecuperarInscripcionesEquiposJuego() {
-
-      this.http.get<EquipoJuegoDeColeccion[]>(this.APIURLEquipoJuegoDeColeccion + '?filter[where][juegoDeColeccionId]='
-    + this.juegoSeleccionado.id)
+    this.peticionesApi.DameInscripcionesEquipoJuegoDeColeccion (this.juegoSeleccionado.id)
+    //   this.http.get<EquipoJuegoDeColeccion[]>(this.APIURLEquipoJuegoDeColeccion + '?filter[where][juegoDeColeccionId]='
+    // + this.juegoSeleccionado.id)
       .subscribe(inscripciones => {
         this.inscripcionesEquipos = inscripciones;
         console.log(this.inscripcionesEquipos);
@@ -494,14 +279,19 @@ export class AsignarCromosPage {
   //Función que permite obtener los cromos de la colección del juego seleccionado y
   //la correspondiente imagen del cromo
   CromosColeccion() {
+    console.log ('Voy a por los cromos');
     // Busca los cromos de la coleccion en la base de datos
-    this.http.get<Cromo[]>(this.APIUrl + '/' + this.juegoSeleccionado.coleccionId + '/cromos')
+    this.peticionesApi.DameCromosColeccion (this.juegoSeleccionado.coleccionId)
     .subscribe(res => {
       if (res[0] !== undefined) {
         this.cromosColeccion = res;
         this.cromoSeleccionadoId=this.cromosColeccion[0].id;
-        this.cromoSeleccionado=this.cromosColeccion[0].Nombre;
+        this.cromoSeleccionado=this.cromosColeccion[0];
+        console.log ('muestro el cromo ' + this.cromoSeleccionado.Nombre);
         this.GET_ImagenCromo();
+
+
+
 
         for (let i = 0; i < this.cromosColeccion.length; i ++) {
           if (this.cromosColeccion[i].Probabilidad === 'Muy Baja') {
@@ -535,37 +325,33 @@ export class AsignarCromosPage {
     });
   }
 
-  // Busca la imagen que tiene el nombre del cromo.Imagen y lo carga en imagenCromo
-  GET_ImagenCromo() {
 
-    this.http.get<any>(this.APIUrlCromos + '?filter[where][Nombre]=' + this.cromoSeleccionado)
-    .subscribe(res => {
-      this.cromo=res;
-      console.log(this.cromo);
-      console.log(this.cromo[0].Imagen);
-
-      if (this.cromo[0].Imagen !== undefined ) {
+    // Busca la imagen que tiene el nombre del cromo.Imagen y lo carga en imagenCromo
+    GET_ImagenCromo() {
+      if (this.cromoSeleccionado.Imagen !== undefined ) {
+        console.log ('Voy a por la imagen');
         // Busca en la base de datos la imágen con el nombre registrado en equipo.FotoEquipo y la recupera
-        this.https.get('http://localhost:3000/api/imagenes/ImagenCromo/download/' + this.cromo[0].Imagen,
-        { responseType: ResponseContentType.Blob })
+        this.peticionesApi.DameImagenCromo (this.cromoSeleccionado.Imagen)
         .subscribe(response => {
           const blob = new Blob([response.blob()], { type: 'image/jpg'});
 
           const reader = new FileReader();
           reader.addEventListener('load', () => {
-            this.imagenCromo= reader.result.toString();
+            console.log ('Ya la tengo');
+            this.imagenCromo = reader.result.toString();
           }, false);
 
           if (blob) {
             reader.readAsDataURL(blob);
           }
       });
-    }})
+      }
   }
 
   //Función que obtiene los Alumnos registrado en Juego de Colección
   Get_AlumnosColeccion(){
-    this.http.get<any[]>(this.APIRURLJuegoDeColeccion + '/' + this.juegoSeleccionado.id + '/alumnos')
+    this.peticionesApi.DameAlumnosJuegoDeColeccion (this.juegoSeleccionado.id)
+    //this.http.get<any[]>(this.APIRURLJuegoDeColeccion + '/' + this.juegoSeleccionado.id + '/alumnos')
     .subscribe(alumnosJuego => {
 
       //Se define itemsAPI y items para mantener uno fijo y otro que se pueda modificar al
@@ -577,7 +363,8 @@ export class AsignarCromosPage {
 
   //Función que obtiene los Alumnos registrado en Juego de Colección
   Get_EquiposColeccion(){
-    this.http.get<any[]>(this.APIRURLJuegoDeColeccion + '/' + this.juegoSeleccionado.id + '/equipos')
+    this.peticionesApi.DameEquiposJuegoDeColeccion (this.juegoSeleccionado.id)
+    //this.http.get<any[]>(this.APIRURLJuegoDeColeccion + '/' + this.juegoSeleccionado.id + '/equipos')
     .subscribe(equiposJuego => {
 
       //Se define itemsAPI y items para mantener uno fijo y otro que se pueda modificar al
@@ -642,8 +429,8 @@ export class AsignarCromosPage {
           {
             text: 'Aceptar',
             handler: () => {
-              console.log('Agree clicked');
-              this.validar(1);
+              console.log('Agree clickeeee');
+              this.AsignarCromos();
             }
           }
         ]
@@ -668,8 +455,8 @@ export class AsignarCromosPage {
           {
             text: 'Aceptar',
             handler: () => {
-              console.log('Agree clicked');
-              this.validar(2);
+              console.log('Agree clickedddd');
+              this.AsignarCromosAleatorios();
             }
           }
         ]
@@ -677,24 +464,5 @@ export class AsignarCromosPage {
       confirm.present();
   }
 
-  //Alerta que se generará al haber finalizado la asignación de los cromos correspondientes
-  showAlert() {
-      const alert = this.alertCtrl.create({
-        title: 'Asignación efectuada',
-        subTitle: 'Para comprobar la asignación, retroceda al álbum del grupo/alumno deseado.',
-        buttons: ['Cerrar']
-      });
-      alert.present();
-    }
-
-  //Alerta que se generará al detectar un error en la asignación de los cromos
-  showAlert1() {
-      const alert = this.alertCtrl.create({
-        title: 'Asignación Abortada',
-        subTitle: 'Compruebe que ha seleccionado el alumno/equipo deseado.',
-        buttons: ['Cerrar']
-      });
-      alert.present();
-  }
 
 }

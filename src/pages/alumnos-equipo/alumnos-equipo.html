@@ -21,21 +21,22 @@
 </ion-header>
 
 <ion-content class="fondoDegradado" >
-
+<!--
       <ion-content class="contenedorInformacion">
-      <!--Al poner <b> permitimos que las palabras que esten dentro se visualicen en negrita-->
           <p class="InformacionPantalla"> A continuación se muestran <b>los alumnos</b> del equipo:</p>
       </ion-content>
-
+ -->
       <!-- Se recibe de Alumnos-equipo.ts el equipo y se displaya el
       Nombre y la imagen del Equipo-->
-
+      <br>
+      <br>
+      <br>
       <img id ="logoEquipo" *ngIf="imagenLogo"  mat-card-image [src]="imagenLogo" >
       <h2 id="NombreEquipo">{{equipo.Nombre}}</h2>
 
 
       <!--Mediante el ion-searchbar permitimos filtrar los alumnos y buscar el deseado-->
-      <ion-searchbar (ionInput)="getItems($event)" placeholder="Filtrar por alumno" style="background-color: transparent" ></ion-searchbar>
+      <!-- <ion-searchbar (ionInput)="getItems($event)" placeholder="Filtrar por alumno" style="background-color: transparent" ></ion-searchbar> -->
       <ion-content id="ContenidoAlumnos" padding>
             <ion-list>
               <!--Los alumnos es lo que hemos definidos como item, ya que sino no podriamos
