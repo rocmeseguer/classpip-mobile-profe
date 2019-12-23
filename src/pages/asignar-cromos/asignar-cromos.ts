@@ -16,8 +16,6 @@ import {AlbumEquipo} from '../../clases/AlbumEquipo';
 
 import {PeticionesApiProvider} from  '../../providers/peticiones-api/peticiones-api';
 import { CalculosProvider} from '../../providers/calculos/calculos';
-import { runInThisContext } from 'vm';
-import { ThrowStmt } from '@angular/compiler';
 
 @IonicPage()
 @Component({
