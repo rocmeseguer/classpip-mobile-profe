@@ -24,42 +24,51 @@
 
   <!--SE DEFINE EL CONTENIDO INFORMATIVO DE LA PARTE SUPERIOR DE LA PANTALLA-->
 
-  <ion-content class="contenedorInformacion" style="height: 30%;">
+  <!-- <ion-content class="contenedorInformacion" style="height: 30%;"> -->
 
+
+  <br>
+
+
+
+    <ion-row>
     <!--Al poner <b> permitimos que las palabras que esten dentro se visualicen en negrita-->
-    <p class="InformacionPantalla"> Seleccione el <b>tipo de punto</b> a asignar:</p>
 
         <!--Se define un desplegable que muestra los puntos disponibles recibidos
         desde puntosDelJuego-->
-        <select style="font-size: 80%; margin-left: 8%;" [(ngModel)]="puntoSeleccionadoId" name="punto" >
+      <ion-col col-5>
+        <p style="color: white; text-align: center; background-color: rgb(0,0,0,0);" >  <b>Tipo de punto</b></p>
+        <select style="font-size: 80%; margin-left:  15%;"   [(ngModel)]="puntoSeleccionadoId" name="punto" >
             <option *ngFor="let punto of tiposPuntosDelJuego" [value]="punto.id"  >
                 {{punto.Nombre}}
             </option>
         </select>
-
-    <p class="InformacionPantalla"> Seleccione la <b>cantidad de puntos</b> a asignar:</p>
-
-    <!--Se define un input donde por defecto aparece el valor 1 y donde el usuario deberá
-    escoger la cantidad de puntos a asignar-->
-    <input style="font-size: 80%; margin-left: 8%;" (keyup)="Disabled()" type="number" name="valorPunto" placeholder="Cantidad de puntos" requiered [(ngModel)]="valorPunto">
-  </ion-content>
+      </ion-col>
+      <ion-col col-5>
+        <p style="color: white;  text-align: center; background-color: rgb(0,0,0,0);" >  <b>Cantidad de puntos</b></p>
+        <input style="font-size: 80%; width: 50%;"  type="number" name="valorPunto" requiered [(ngModel)]="valorPunto">
+      </ion-col>
+    </ion-row>
+    <br>
+    <br>
+  <!-- </ion-content> -->
 
           <!--SE REALIZA UNA DISTINCIÓN ENTRE UN JUEGO INDIVIDUAL O COLECTIVO-->
   <!--De esta manera se consigue bien mostrar los alumnos si se trata de un juego individual
   o de equipos si se trata de un juego colectivo-->
 
-  <div *ngIf="rankingJuegoDePuntos[0]" padding >
+  <div *ngIf="juegoSeleccionado.Modo == 'Individual'" padding >
 
     <!--Se define la cabecera de la tabla que recoge los alumnos del juego-->
     <ion-grid no-padding  >
       <ion-row class="cabecera" >
         <ion-col col-2 style="margin-top:5%">
-          <ion-checkbox></ion-checkbox>
+          <ion-checkbox [(ngModel)]=todos (ionChange)="CambarSeleccion(rankingJuegoDePuntos)"></ion-checkbox>
         </ion-col >
-        <ion-col col-3 style="margin-left:2%">
+        <ion-col col-3 style=" color: white; margin-left:2%">
           <p >Nombre</p>
         </ion-col>
-        <ion-col col-4 style="margin-left: 5%">
+        <ion-col col-5 style="color: white; margin-left: 5%">
           <p >Apellidos</p>
         </ion-col>
       </ion-row>
@@ -69,31 +78,64 @@
         <div style="margin-top: -6%">
             <ion-row class="casillas" *ngFor="let alumno of rankingJuegoDePuntos"  >
                 <ion-col col-2 style="margin-top:5%; margin-left:-1%;">
-                  <ion-checkbox [ngModelOptions]="{standalone: true}" [(ngModel)]=alumno.selected (ionChange)="getSelectedStudents(rankingJuegoDePuntos)" required ></ion-checkbox>
+                  <ion-checkbox [ngModelOptions]="{standalone: true}" [(ngModel)]=alumno.selected (ionChange)="TomaElegibles(rankingJuegoDePuntos)" required ></ion-checkbox>
                 </ion-col>
-                <ion-col col-3 style="margin-left:3%">
-                  <p >{{alumno.nombre}}</p>
+
+                <ion-col col-3 *ngIf = "alumnoElegido && alumno.nombre === alumnoElegido.nombre
+                                        && alumno.primerApellido === alumnoElegido.primerApellido
+                                        && alumno.segundoApellido === alumnoElegido.segundoApellido"
+                                style = "margin-left:3%; margin-top:3%;color:green;font-weight: bold; font-size: 120%;">
+                  {{alumno.nombre}}
                 </ion-col>
-                <ion-col col-6  style="margin-left: 6%">
-                  <p >{{alumno.primerApellido}} {{alumno.segundoApellido}}</p>
+                <ion-col col-3 *ngIf = "alumnoElegido===undefined || alumno.nombre !== alumnoElegido.nombre
+                                        || alumno.primerApellido !== alumnoElegido.primerApellido
+                                        || alumno.segundoApellido !== alumnoElegido.segundoApellido"
+                                style = "margin-left:3%; margin-top:3%; color:black; font-size: 100%;">
+                  {{alumno.nombre}}
+                </ion-col>
+                <ion-col col-5 *ngIf = "alumnoElegido && alumno.nombre === alumnoElegido.nombre
+                                        && alumno.primerApellido === alumnoElegido.primerApellido
+                                        && alumno.segundoApellido === alumnoElegido.segundoApellido"
+                                style = "margin-left:3%; margin-top:3%;color:green;font-weight: bold; font-size: 120%;">
+                  {{alumno.primerApellido}}  {{alumno.segundoApellido}}
+                </ion-col>
+                <ion-col col-5 *ngIf = "alumnoElegido===undefined || alumno.nombre !== alumnoElegido.nombre
+                                        || alumno.primerApellido !== alumnoElegido.primerApellido
+                                        || alumno.segundoApellido !== alumnoElegido.segundoApellido"
+                                style = "margin-left:3%; margin-top:3%; color:black; font-size: 100%;">
+                  {{alumno.primerApellido}}  {{alumno.segundoApellido}}
                 </ion-col>
          </ion-row>
         </div>
 
       </ion-content>
     </ion-grid>
+
+    <div align= "center">
+    <button ion-button round style ='width: 100%;' [disabled]="PreparadaAsignacionSeleccionados()" color="primary" size="large" (click)= PedirConfirmacionAsignacionAlumnosSeleccionados(); >
+      Asignar puntos a alumnos seleccionados
+    </button>
+    <br>
+    <button ion-button round style ='width: 100%;'[disabled]="PreparadaAsignacionAleatoria()" color="primary" size="large" (click)= PedirConfirmacionAsignacionAlumnoAleatorio();>
+      Asignar puntos a alumno aleatorio
+    </button>
+    <br>
+    <br>
+    </div>
+
   </div>
 
-  <div *ngIf="rankingEquiposJuegoDePuntos[0]" padding >
+  <div *ngIf="juegoSeleccionado.Modo != 'Individual'" padding >
 
       <!--Se define la cabecera de la tabla que recoge los equipos del juego-->
       <ion-grid no-padding  >
         <ion-row class="cabecera" >
           <ion-col col-2 style="margin-top:5%">
-            <ion-checkbox></ion-checkbox>
+            <ion-checkbox [(ngModel)]=todos (ionChange)="CambarSeleccion(rankingEquiposJuegoDePuntos)">
+            </ion-checkbox>
           </ion-col >
-          <ion-col col-6 style="margin-left:2%">
-            <p >Nombre del equipo</p>
+          <ion-col  col-6 style="margin-left:2%">
+            <p style= "color: white">Nombre del equipo</p>
           </ion-col>
         </ion-row>
 
@@ -102,22 +144,30 @@
           <div style="margin-top: -6%">
               <ion-row  *ngFor="let equipo of rankingEquiposJuegoDePuntos"  >
                   <ion-col col-2 style="margin-top:5%; margin-left:-1%;">
-                    <ion-checkbox [ngModelOptions]="{standalone: true}" [(ngModel)]=equipo.selected (ionChange)="getSelectedStudents(rankingEquiposJuegoDePuntos)" required ></ion-checkbox>
+                    <ion-checkbox [ngModelOptions]="{standalone: true}" [(ngModel)]=equipo.selected (ionChange)="TomaElegibles(rankingEquiposJuegoDePuntos)" required ></ion-checkbox>
                   </ion-col>
-                  <ion-col col-9 style="margin-left:3%">
-                    <p >{{equipo.nombre}}</p>
+                  <ion-col col-6  *ngIf = "equipoElegido && equipo.nombre === equipoElegido.nombre" style = "margin-left:3%; margin-top:3%;color:green;font-weight: bold; font-size: 150%;">
+                    {{equipo.nombre}}
+                  </ion-col>
+                  <ion-col col-6  *ngIf = "equipoElegido === undefined || (equipo.nombre !== equipoElegido.nombre)" style = "margin-left:3%; margin-top:3%; color:black; font-size: 100%;">
+                    {{equipo.nombre}}
                   </ion-col>
            </ion-row>
           </div>
 
         </ion-content>
       </ion-grid>
+      <div align= "center">
+      <button ion-button round style ='width: 100%;' [disabled]="PreparadaAsignacionSeleccionados()" color="primary" size="large" (click)= PedirConfirmacionAsignacionEquiposSeleccionados(); >
+        Asignar puntos a equipos seleccionados
+      </button>
+      <br>
+      <button ion-button round style ='width: 100%;'[disabled]="PreparadaAsignacionAleatoria()" color="primary" size="large" (click)= PedirConfirmacionAsignacionEquipoAleatorio();>
+        Asignar puntos a equipo aleatorio
+      </button>
+      <br>
+      <br>
+      </div>
   </div>
-
-
-  <!--Se define el botón de verificación para aceptar la asignación de puntos-->
-  <ion-item class="Validacion" (click)="showConfirm();"> Validar
-    <ion-icon style="color: white; margin-right: 14%;" name="checkbox" item-left ></ion-icon>
-  </ion-item>
 
 </ion-content>

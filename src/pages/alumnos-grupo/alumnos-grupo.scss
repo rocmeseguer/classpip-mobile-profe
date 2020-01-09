@@ -1,10 +1,58 @@
 //Como se puede apreciar, todos los identificadores se encuentran dentro de page-alumnos-grupo
 //con ello se consigue particularizar dichos parametros esteticos a esta pantalla unicamente
+.bloque{
+  // display: flex;
+  // display: -webkit-flex;
+  // display: -ms-flexbox;
+
+  // justify-content: left ;
+  // flex-direction: column;
+  // // align-items: flex-start;
+  // border: solid transparent;
+  width: 100%;
+  background: $app-background;
+}
+
+.searchbar { background: rgba(0, 0, 0, 0) !important; }
+.searchbar-input { background: rgba(0, 0, 0, 0) !important; border-radius: 30px !important; height: 40px !important; max-width: 400px; font-size: 1.25em !important; border: 1px solid transparent; }
+
+.searchbar-input-container{
+  .searchbar-input{
+    &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+      color: white;
+    }
+    &::-moz-placeholder { /* Firefox 19+ */
+      color: white;
+    }
+    &:-ms-input-placeholder { /* IE 10+ */
+      color: white;
+    }
+    &:-moz-placeholder { /* Firefox 18- */
+      color: white;
+    }
+  }
+}
+
 
 page-alumnos-grupo {
 
 //Se define el contenedor donde aparecerá la información de los alumnos, con esquinas redondeadas
 //con sombras de color primary y con color blanco de fondo
+
+.enColumna{
+  // display: flex;
+  // display: -webkit-flex;
+  // display: -ms-flexbox;
+
+  // justify-content: left ;
+  // flex-direction: column;
+  // // align-items: flex-start;
+  // border: solid transparent;
+  align-items: center;
+  width: 100%;
+  background: $app-background;
+}
+
 .ContenidoAlumnos {
   background:white;
   height: 75%;
@@ -43,7 +91,7 @@ page-alumnos-grupo {
 //Se define los parametros esteticos del pequeño texto informativo de los alumnos.
 #InformacionAlumno {
   color: black;
-  font-size: 14px;
+  font-size: 20px;
   text-align: start;
 }
 }

@@ -67,18 +67,17 @@ export class JuegoSeleccionadoPage  {
 
   }
 
-  // URLs que utilizaremos
-  private APIRURLJuegoDePuntos = 'http://localhost:3000/api/JuegosDePuntos';
-  private APIURLAlumnoJuegoDePuntos = 'http://localhost:3000/api/AlumnoJuegosDePuntos';
-  private APIURLEquiposJuegoDePuntos = 'http://localhost:3000/api/EquiposJuegosDePuntos';
-  private APIURLHistorialPuntosAlumno = 'http://localhost:3000/api/HistorialesPuntosAlumno';
-  private APIURLHistorialPuntosEquipo = 'http://localhost:3000/api/HistorialesPuntosEquipo';
-  private APIRURLJuegoDeColeccion = 'http://localhost:3000/api/JuegosDeColeccion';
-  private APIRURLColecciones = 'http://localhost:3000/api/Colecciones';
-
+  ionViewDidEnter () {
+    console.log(' Entramos' + this.juegoSeleccionado);
+    if (this.juegoSeleccionado.Tipo === 'Juego De Puntos') {
+      // Esto es para que al volver a esta página se muestre el ranking según
+      // el tipo de puntos que esté en ese momento seleccionado
+      this.MostrarRankingSeleccionado();
+    }
+  }
   //Se realizarán las siguiente tareas al inicializar la página.
   ionViewDidLoad() {
-    console.log(this.juegoSeleccionado);
+    console.log(' Entramos' + this.juegoSeleccionado);
 
 
     //Se discrimina por tipo de Juego: Puntos o Coleccion
@@ -371,7 +370,9 @@ fijarItems(items :any[]){
   //tengas las caracteristicas definidas en el filtro
   getItems(ev: any) {
     // Reset items back to all of the items
+
     this.fijarItems(this.itemsAPI);
+    console.log ('filtro con ' + this.items);
     // set val to the value of the searchbar
     let val = ev.target.value;
 

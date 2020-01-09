@@ -20,34 +20,33 @@
 
 </ion-header>
 
-<ion-content class="fondoDegradado">
+<ion-content>
+  <div  class = "bloque" align="center">
 
     <!-- <ion-content class="contenedorInformacion" > -->
       <!--Al poner <b> permitimos que las palabras que esten dentro se visualicen en negrita-->
         <!-- <p id="InformacionPantalla"> A continuación se muestran <b>los alumnos</b> del grupo:</p>
     </ion-content> -->
 
+    <button ion-button round style ='width: 80%;' color="primary" size="large" (click)= ElegirAleatoriamente(); >
+      Elegir un alumno aleatoriamente
+    </button>
+    <br>
+    <button ion-button round style ='width: 80%;' color="primary" size="large" (click)= ProcesarSeleccionados(); >
+      Procesar seleccionados
+    </button>
+    <br>
+    <br>
+
     <!--Mediante el ion-searchbar permitimos filtrar los alumnos(Items) y buscar el deseado-->
-    <ion-searchbar  (ionInput)="getItems($event)" placeholder="Filtrar por alumno" style="background-color: transparent; margin-top: -5%; "></ion-searchbar>
+    <ion-searchbar  (ionInput)="getItems($event)" placeholder="Filtrar por alumno"></ion-searchbar>
+    <!-- style="background-color: rgba(0, 0, 0, 0);" -->
+    <ion-list>
+      <ion-item style="background-color: rgba(0, 0, 0, 0);" *ngFor="let item of items; let i = index">
+        <ion-label id="InformacionAlumno">{{item.Nombre}} {{item.PrimerApellido}} {{item.SegundoApellido}}</ion-label>
+        <ion-checkbox slot="end" [(ngModel)]="seleccionados[i]"></ion-checkbox>
+      </ion-item>
+    </ion-list>
 
-    <ion-content class="ContenidoAlumnos" padding>
-            <ion-list >
-                <!--Los alumnos es lo que hemos definidos como item, ya que sino no podriamos
-                hacer uso de la funcion filtrar.-->
-                <ion-item no-lines no-padding *ngFor="let item of items">
-
-                  <!--Se define una imagen predefinida para cada alumno, deberá modificarse y permitir
-                  que esa foto se seleccione desde la API-->
-                    <ion-avatar item-start style="margin-left:5%;" >
-                        <img src="../../assets/icon/icon-student.svg">
-                    </ion-avatar>
-
-                    <p id="InformacionAlumno"> {{item.Nombre}} {{item.PrimerApellido}} {{item.SegundoApellido}}</p>
-
-                </ion-item>
-            </ion-list>
-    </ion-content>
-
-
-
+    </div>
 </ion-content>

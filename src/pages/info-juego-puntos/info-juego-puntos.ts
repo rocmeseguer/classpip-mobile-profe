@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
 import { ResponseContentType, Http} from '@angular/http';
+import {PeticionesApiProvider} from '../../providers/peticiones-api/peticiones-api';
+
 
 @IonicPage()
 @Component({
@@ -26,7 +28,8 @@ export class InfoJuegoPuntosPage {
   // URLs que utilizaremos
   private APIRURLJuegoDePuntos = 'http://localhost:3000/api/JuegosDePuntos';
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private http: HttpClient, private http2: Http ) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private http: HttpClient, private http2: Http,
+    private peticionesAPi: PeticionesApiProvider ) {
     this.juegoSeleccionado=navParams.get('juego');
     this.Tipo = "Puntos";
   }
@@ -41,7 +44,8 @@ export class InfoJuegoPuntosPage {
 
   //Función que obtiene los niveles del juego de puntos seleccionado desde la API
   RecibirNivelesDelServicio(){
-    this.http.get<any[]>(this.APIRURLJuegoDePuntos + '/' + this.juegoSeleccionado.id + '/nivels').subscribe(
+    this.peticionesAPi.DameNivelesJuegoDePuntos (this.juegoSeleccionado.id)
+    .subscribe (
       lista => {
         this.nivelesDelJuego = lista;
         console.log ('Ya está la lista');
@@ -52,7 +56,8 @@ export class InfoJuegoPuntosPage {
 
   //Función que obtiene los puntos del juego de puntos seleccionado desde la API
   RecibirPuntosDelServicio(){
-    this.http.get<any[]>(this.APIRURLJuegoDePuntos + '/' + this.juegoSeleccionado.id + '/puntos').subscribe(
+    this.peticionesAPi.DamePuntosJuegoDePuntos (this.juegoSeleccionado.id)
+    .subscribe (
       lista => {
         this.puntosDelJuego = lista;
         console.log ('Ya está la lista');
@@ -65,9 +70,9 @@ export class InfoJuegoPuntosPage {
     for (let i = 0; i < this.nivelesDelJuego.length; i ++) {
     if (this.nivelesDelJuego[i].Imagen!== undefined) {
 
+
       // Busca en la base de datos la imágen con el nombre registrado en equipo.FotoEquipo y la recupera
-      this.http2.get('http://localhost:3000/api/imagenes/imagenNivel/download/' + this.nivelesDelJuego[i].Imagen,
-      { responseType: ResponseContentType.Blob })
+      this.peticionesAPi.DameImagenNivel (this.nivelesDelJuego[i].Imagen)
       .subscribe(response => {
         const blob = new Blob([response.blob()], { type: 'image/jpg'});
 

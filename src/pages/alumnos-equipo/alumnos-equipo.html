@@ -31,9 +31,11 @@
       <br>
       <br>
       <br>
-      <img id ="logoEquipo" *ngIf="imagenLogo"  mat-card-image [src]="imagenLogo" >
-      <h2 id="NombreEquipo">{{equipo.Nombre}}</h2>
 
+      <ion-thumbnail item-start style="margin-top: 5%; margin-left:5%; margin-right:5%" >
+        <img id ="logoEquipo" *ngIf="imagenLogo"  mat-card-image [src]="imagenLogo" >
+        <h2 id="NombreEquipo">{{equipo.Nombre}}</h2>
+      </ion-thumbnail>
 
       <!--Mediante el ion-searchbar permitimos filtrar los alumnos y buscar el deseado-->
       <!-- <ion-searchbar (ionInput)="getItems($event)" placeholder="Filtrar por alumno" style="background-color: transparent" ></ion-searchbar> -->

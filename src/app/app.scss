@@ -59,15 +59,15 @@
     background-color: rgb(34, 130, 226);
     display: inline-flex;
     width: 100%;
-    text-align: center;
+    //text-align: center;
   }
 
       .ClasspipCabecera button {
-          position:relative;
-          margin-left:-63%;
+         // position:relative;
+          margin-left:-40%;
           margin-top:6%;
-          height:50%;
-          background-color:rgba(34, 130, 226, 0);;
+          height:100%;
+         // background-color:rgba(34, 130, 226, 0);;
       }
 
       .ClasspipCabecera h2{
@@ -75,10 +75,10 @@
       }
 
       .ClasspipCabecera img{
-          position:relative;
+          //position:relative;
           width:25px;
           height:25px;
-          margin-left: 32%;
+          margin-left: 20%;
           margin-right: 2%;
           margin-top: 5%;
       }

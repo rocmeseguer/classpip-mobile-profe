@@ -52,7 +52,7 @@
 
                   <img class ="imagenCromo" *ngIf="imagenCromoArray[i]" [src]="imagenCromoArray[i]" >
                   <div class="contenidoNombre" style="text-align: center">
-                    <h2 id="NombreCromo" >{{cromo.Nombre}}</h2>
+                    <ion-label id="NombreCromo" >{{cromo.Nombre}} <ion-badge color="dark">{{repeticiones[i]}}</ion-badge></ion-label>
                   </div>
                   <h2 id="NivelCromo" ><i>{{cromo.Nivel}}</i></h2>
 

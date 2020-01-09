@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams} from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
 import {PeticionesApiProvider} from '../../providers/peticiones-api/peticiones-api'
-
+import swal from 'sweetalert';
 
 
 @IonicPage()
@@ -21,6 +21,8 @@ itemsAPI: any[];
 
 // PARAMETROS QUE RECOGEMOS DE LA PAGINA PREVIA
 id:number;
+
+seleccionados: boolean[];
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -51,6 +53,7 @@ id:number;
         console.log ('Ya está la lista');
         console.log(this.itemsAPI);
         this.items = grupo;
+        this.seleccionados = new Array (this.items.length).fill (false);
     })
   }
 
@@ -76,7 +79,24 @@ id:number;
     }
   }
 
+  ProcesarSeleccionados () {
+    console.log ('Seleccionados ' + this.seleccionados);
+    this.seleccionados.fill (false);
+    swal('Aún no está decidido lo que hacer con los seleccionados', 'success');
 
+  }
+
+
+  ElegirAleatoriamente() {
+
+
+    console.log ('Entramos');
+    const numeroAlumnos = this.items.length;
+    const elegido = Math.floor(Math.random() * numeroAlumnos);
+    const alumnoElegido = this.items[elegido];
+    console.log ('Hemos elegido a ' + elegido);
+    swal(alumnoElegido.Nombre + ' ' + alumnoElegido.PrimerApellido, 'Enhorabuena', 'success');
+  }
 
 
 }

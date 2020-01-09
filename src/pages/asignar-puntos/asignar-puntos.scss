@@ -1,5 +1,17 @@
 page-asignar-puntos {
 
+  .enFila{
+
+    border: 10px solid transparent;
+
+    display: flex;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+
+    justify-content: space-between;
+    width: 100%;
+  }
+
                    //*************Paneles con comentarios sobre pantallas*************//
 
 //Se define los parametros esteticos del pequeño texto explicativo de la pantalla y además se
@@ -12,7 +24,7 @@ page-asignar-puntos {
     margin-left: 8%;
     margin-right: 2%;
     margin-bottom:3%;
-    margin-top:5%;
+    //margin-top:5%;
 
     b {
       color: map-get($colors, primary);
@@ -31,11 +43,11 @@ page-asignar-puntos {
     border-top-right-radius: 20px;
     padding-inline-start: 7%;
 
-    p {
-      font-size: 13px;
-      line-height: 1.5;
-      color: rgb(255, 255, 255);
-    }
+    // p {
+    //   font-size: 13px;
+    //   line-height: 1.5;
+    //   color: rgb(255, 255, 255);
+    // }
   }
 
 //Se define las características del botón de Validación, desde el color de fondo hasta el tamaño
@@ -60,7 +72,7 @@ page-asignar-puntos {
 
   #fondo {
     background:white;
-    height: 170px;
+    height: 400px;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
     box-shadow: 0px 3px 6px 0px map-get($colors, primary);

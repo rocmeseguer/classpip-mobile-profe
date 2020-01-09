@@ -11,6 +11,9 @@ import {AlumnoJuegoDeColeccion} from '../../clases/AlumnoJuegoDeColeccion';
 import {EquipoJuegoDeColeccion} from '../../clases/EquipoJuegoDeColeccion';
 import {TablaAlumnoJuegoDeColeccion} from '../../clases/TablaAlumnoJuegoDeColeccion';
 import { PeticionesApiProvider } from '../../providers/peticiones-api/peticiones-api';
+import { CalculosProvider } from '../../providers/calculos/calculos';
+import { transition } from '@angular/core/src/animation/dsl';
+
 
 @IonicPage()
 @Component({
@@ -34,20 +37,19 @@ export class MisCromosActualesPage {
   AlbumDelAlumno: AlbumDelAlumno[] = [];
 
   //PARAMETROS DE UN CROMO
-  cromo: Cromo;
+  cromoConNumeroRepetidos: any;
   cromosAlumno: Cromo[];
   cromosEquipo: Cromo[];
   cromosColeccion: Cromo[];
   imagenCromoArray: string[] = [];
 
+  listaCromosSinRepetidos: any[];
+  repeticiones: number[] = [];
 
-  // URLs que utilizaremos
-  private APIUrl = 'http://localhost:3000/api/Colecciones';
-  private APIURLEquipoJuegoDeColeccion = 'http://localhost:3000/api/EquiposJuegoDeColeccion';
-  private APIURLAlumnoJuegoDeColeccion = 'http://localhost:3000/api/AlumnosJuegoDeColeccion';
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private http: HttpClient, public https: Http, private peticionesApi: PeticionesApiProvider) {
+              private http: HttpClient, public https: Http, private peticionesApi: PeticionesApiProvider,
+              private calculos: CalculosProvider) {
     this.alumno=navParams.get('alumno');
     this.equipo=navParams.get('equipo');
     this.coleccion=navParams.get('coleccion');
@@ -70,50 +72,6 @@ export class MisCromosActualesPage {
   }
 
 
-  // // Recupera las inscripciones de los alumnos en el juego y los cromos que tienen
-  // RecuperarInscripcionesAlumnoJuego() {
-  //   this.peticionesApi.DameInscripcionesAlumnoJuegoDeColeccion (this.juego.id)
-  //   // this.http.get<AlumnoJuegoDeColeccion[]>(this.APIURLAlumnoJuegoDeColeccion + '?filter[where][juegoDeColeccionId]='
-  //   // + this.juego.id)
-  //   .subscribe(inscripciones => {
-  //     this.inscripcionesAlumnos = inscripciones;
-  //     console.log(this.inscripcionesAlumnos);
-
-  //     for (let i = 0; i < this.inscripcionesAlumnos.length ; i++) {
-  //       //alumno.id es el identificador del alumno seleccionado en la pantalla anterior
-  //       if (this.inscripcionesAlumnos[i].alumnoId=== this.alumno.id){
-  //         this.alumnoSeleccionado=this.inscripcionesAlumnos[i].id;
-  //       }
-  //     }
-  //     console.log(this.alumnoSeleccionado);
-  //     this.CromosDelAlumno(this.alumnoSeleccionado);
-
-
-  //   });
-  // }
-
-  //  // Recupera las inscripciones de los equipos en el juego y los cromos que tienen
-  // RecuperarInscripcionesEquiposJuego() {
-
-  //   this.peticionesApi.DameInscripcionesEquipoJuegoDeColeccion (this.juego.id)
-  //   // this.http.get<EquipoJuegoDeColeccion[]>(this.APIURLEquipoJuegoDeColeccion + '?filter[where][juegoDeColeccionId]='
-  //   // + this.juego.id)
-  //   .subscribe(inscripciones => {
-  //     this.inscripcionesEquipos = inscripciones;
-  //     console.log(this.inscripcionesEquipos);
-
-  //     for (let i = 0; i < this.inscripcionesEquipos.length ; i++) {
-  //       //equipo.id es el identificador del equipo seleccionado en la pantalla anterior
-  //       if (this.inscripcionesEquipos[i].equipoId=== this.equipo.id){
-  //         this.equipoSeleccionado=this.inscripcionesEquipos[i].id;
-  //       }
-  //     }
-  //     console.log(this.equipoSeleccionado);
-  //     this.CromosDelEquipo(this.equipoSeleccionado);
-
-  //   });
-  // }
-
   //Función que permite obtener desde la API los cromos disponibles del alumno seleccionado
   CromosDelAlumno(alumno:any) {
 
@@ -123,6 +81,9 @@ export class MisCromosActualesPage {
     .subscribe(cromos => {
       console.log ('Ya tengo los cromos del alumno ');
       this.cromosAlumno = cromos;
+      this.listaCromosSinRepetidos = this.calculos.GeneraListaSinRepetidos(this.cromosAlumno);
+      this.listaCromosSinRepetidos.sort((a, b) => a.cromo.Nombre.localeCompare(b.cromo.Nombre));
+
       console.log(this.cromosAlumno);
       this.OrdenarCromos(this.cromosAlumno);
       this.GET_ImagenCromo(this.cromosAlumno);
@@ -138,6 +99,9 @@ export class MisCromosActualesPage {
    // this.http.get<Cromo[]>(this.APIURLEquipoJuegoDeColeccion + '/' + equipo + '/cromos')
     .subscribe(cromos => {
       this.cromosEquipo = cromos;
+      this.listaCromosSinRepetidos = this.calculos.GeneraListaSinRepetidos(this.cromosEquipo);
+      this.listaCromosSinRepetidos.sort((a, b) => a.cromo.Nombre.localeCompare(b.cromo.Nombre));
+
       console.log(this.cromosEquipo);
       this.OrdenarCromos(this.cromosEquipo);
       this.GET_ImagenCromo(this.cromosEquipo);
@@ -205,20 +169,19 @@ export class MisCromosActualesPage {
 
       for (let i = 0; i < this.cromosColeccion.length; i++) {
 
-        if (this.juego.Modo === 'Individual') {
-        this.cromo = this.cromosAlumno.filter(res => res.id === this.cromosColeccion[i].id)[0];
-        }
-        else{
-        this.cromo = this.cromosEquipo.filter(res => res.id === this.cromosColeccion[i].id)[0];
-        }
+ //     if (this.juego.Modo === 'Individual') {
+        this.cromoConNumeroRepetidos = this.listaCromosSinRepetidos.filter(res => res.cromo.id === this.cromosColeccion[i].id)[0];
+        // }
+        // else{
+        // this.cromoConNumeroRepetidos = this.cromosEquipo.filter(res => res.id === this.cromosColeccion[i].id)[0];
+        // }
 
-        if (this.cromo !== undefined) {
-          console.log('Tengo ' + this.cromo.Nombre);
+        if (this.cromoConNumeroRepetidos !== undefined) {
           this.AlbumDelAlumno[i] = new AlbumDelAlumno(this.cromosColeccion[i].Nombre, this.cromosColeccion[i].Imagen,
             this.cromosColeccion[i].Probabilidad, this.cromosColeccion[i].Nivel, true);
+          this.repeticiones[i] = this.cromoConNumeroRepetidos.rep;
 
         } else {
-          console.log('No tengo ' + this.cromosColeccion[i].Nombre);
           this.AlbumDelAlumno[i] = new AlbumDelAlumno(this.cromosColeccion[i].Nombre, this.cromosColeccion[i].Imagen,
             this.cromosColeccion[i].Probabilidad, this.cromosColeccion[i].Nivel, false);
         }

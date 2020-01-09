@@ -31,13 +31,25 @@
   <!--SE HACE DISTINCIÓN ENTRE TIPO DE JUEGO DE PUNTOS Y DE COLECCIONES-->
 
   <!--Para el caso de un juego de Puntos-->
-  <br>
-  <br>
+
  <div *ngIf= "juegoSeleccionado.Tipo === 'Juego De Puntos'">
+  <ion-row>
+    <ion-col col-6 >
+      <button ion-button round style ='width: 100%;' color="primary" size="large" (click)=  irInformacion(juegoSeleccionado);; >
+        Información
+      </button>
+    </ion-col>
+    <ion-col col-6 >
+      <button ion-button round style ='width: 100%;' color="primary" size="large" (click)= AsignarPuntos(juegoSeleccionado);>
+        Asignar Puntos
+      </button>
+    </ion-col>
+
+    </ion-row>
 
       <!--Se definen en una misma fila dos botones que permiten obtener información sobre
       los puntos y niveles a los que obtas , además de otro botón que permite asignar puntos-->
-      <ion-row>
+      <!-- <ion-row>
           <ion-col col-6 >
               <ion-item  class="Informacion" (click) = irInformacion(juegoSeleccionado);> Información
                   <ion-icon style="color: white; margin-right: 2%;" name="information" item-left ></ion-icon>
@@ -50,42 +62,52 @@
             </ion-item>
           </ion-col>
 
-      </ion-row>
+      </ion-row> -->
+
 
       <!--Se define contenedor donde se podrá seleccionar el punto que quieres visualizar
       y consecuentemente la tabla que se visualizará. Esto se realiza mediante un select y
       un option-->
-      <div class="contenedorInformacion">
-          <ion-row style="margin-top:5%;">
+      <!-- <div class="contenedorInformacion"> -->
 
-              <p style="font-size: 11px; margin-left: 10%;" > Filtrar por tipo de punto </p>
-              <select style="font-size: 75%; margin-left: 5%;" [(ngModel)]="puntoSeleccionadoId" name="punto" (change) = "MostrarRankingSeleccionado()">
-                  <option *ngFor="let punto of listaSeleccionable" [value]="punto.id">
+      <ion-row>
+        <ion-col>
+            <p style="color: white; text-align: center; background-color: rgb(0,0,0,0);" > Filtrar por tipo de punto </p>
+        </ion-col>
+        <ion-col>
+            <select style = "font-size: 80%; margin-top: 5%; height: 60%"  [(ngModel)]="puntoSeleccionadoId" name="punto" (change) = "MostrarRankingSeleccionado()">
+                <option style = "font-size: 80%" *ngFor="let punto of listaSeleccionable" [value]="punto.id">
                     {{punto.Nombre}}
-                  </option>
-              </select>
+                </option>
+            </select>
+        </ion-col>
       </ion-row>
-      </div>
+      <br>
+      <!-- </div> -->
 
         <!--Se discrimina segun modo de juego Individual o Colectivo-->
 
         <!--Para el caso de Juego Individual-->
         <div *ngIf="juegoSeleccionado.Modo === 'Individual'" padding >
+           <!--Mediante el ion-searchbar permitimos filtrar los alumnos y buscar el deseado-->
 
           <ion-grid no-padding  >
             <!--Se define la cabecera de la tabla que recoge los alumnos del juego-->
             <ion-row class="cabecera" >
-              <ion-col col-2 style="margin-left:-2%">
+              <ion-col col-2 >
                 <p>Pos.</p>
               </ion-col >
-              <ion-col col-3 style="margin-left:2%">
+              <ion-col>
                 <p >Nombre</p>
               </ion-col>
-              <ion-col col-4 style="margin-left: 3%">
+              <ion-col>
                 <p >Apellido</p>
               </ion-col>
-              <ion-col col-3 style="margin-left:-5%">
+              <ion-col>
                 <p>Puntos</p>
+              </ion-col>
+              <ion-col>
+                <p>Nivel</p>
               </ion-col>
             </ion-row>
 
@@ -93,17 +115,20 @@
             <ion-content id="fondo">
               <div style="margin-top: -6%">
                   <ion-row class="casillas" *ngFor="let item of rankingJuegoDePuntos"  >
-                      <ion-col col-2>
-                        <p><b>{{item.posicion}}</b></p>
+                      <ion-col >
+                        <p ><b>{{item.posicion}}</b></p>
                       </ion-col>
-                      <ion-col col-3>
-                        <p >{{item.nombre}}</p>
+                      <ion-col >
+                        <p style = 'text-align: left;' >{{item.nombre}}</p>
                       </ion-col>
-                      <ion-col col-5 style="margin-left: 3%">
-                        <p >{{item.primerApellido}}</p>
+                      <ion-col >
+                        <p style = 'text-align: left;'  >{{item.primerApellido}}</p>
                       </ion-col>
-                      <ion-col col-2 style="margin-left:-8%">
-                        <p>{{item.puntos}}</p>
+                      <ion-col>
+                        <p style = 'text-align: right;' >{{item.puntos}}</p>
+                      </ion-col>
+                      <ion-col>
+                        <p style = 'text-align: center;' >{{item.nivel}}</p>
                       </ion-col>
                </ion-row>
               </div>
@@ -118,29 +143,36 @@
           <ion-grid no-padding  >
             <!--Se define la cabecera de la tabla que recoge los equipos del juego-->
             <ion-row class="cabecera" >
-              <ion-col col-4 style="margin-left:-2%">
+              <ion-col col-2>
                 <p>Pos.</p>
               </ion-col >
-              <ion-col col-5 style="margin-left:-13%">
+              <ion-col col-6>
                 <p >Nombre</p>
               </ion-col>
-              <ion-col col-3 style="margin-left:9%" >
+              <ion-col>
                 <p>Puntos</p>
               </ion-col>
+              <ion-col>
+                <p>Nivel</p>
+              </ion-col>
+
             </ion-row>
 
             <!--Se define el contenido de la tabla que recoge los equipos del juego-->
             <ion-content id="fondo">
               <div style="margin-top: -6%">
-                  <ion-row class="casillas" *ngFor="let item of rankingEquiposJuegoDePuntos"  >
-                      <ion-col col-4>
+                <ion-row class="casillas" *ngFor="let item of rankingEquiposJuegoDePuntos"  >
+                      <ion-col col-2>
                         <p><b>{{item.posicion}}</b></p>
                       </ion-col>
-                      <ion-col col-5 style="margin-left:-15%">
-                        <p id="NombreEquipos" >{{item.nombre}}</p>
+                      <ion-col col-6>
+                        <p style = 'text-align: left;' >{{item.nombre}}</p>
                       </ion-col>
-                      <ion-col col-3 style="margin-left:12%">
-                        <p>{{item.puntos}}</p>
+                      <ion-col>
+                        <p style = 'text-align: right;'>{{item.puntos}}</p>
+                      </ion-col>
+                      <ion-col>
+                        <p style = 'text-align: center;'>{{item.nivel}}</p>
                       </ion-col>
                </ion-row>
               </div>
@@ -159,20 +191,20 @@
 
     <!--Se definen en una misma fila dos botones que permiten obtener información sobre
       los cromos a los que obtas , además de otro botón que permite asignar cromos-->
-    <ion-row>
-      <ion-col col-6 >
-          <ion-item  class="Informacion" (click) = irInformacion(juegoSeleccionado.coleccionId);> Información
-              <ion-icon style="color: white; margin-right: 2%;" name="information" item-left ></ion-icon>
-          </ion-item>
-      </ion-col>
+      <ion-row>
+        <ion-col col-6 >
+          <button ion-button round style ='width: 100%;' color="primary" size="large" (click)=  irInformacion(juegoSeleccionado.coleccionId); >
+            Información
+          </button>
+        </ion-col>
+        <ion-col col-6 >
+          <button ion-button round style ='width: 100%;' color="primary" size="large" (click)= AsignarCromos(juegoSeleccionado);>
+            Asignar Cromos
+          </button>
+        </ion-col>
 
-      <ion-col col-6>
-          <ion-item class="Asignar" (click) = AsignarCromos(juegoSeleccionado);>Asignar Cromos
-              <ion-icon style="color: white;  margin-right: 2%;" name="add" item-left ></ion-icon>
-        </ion-item>
-      </ion-col>
+        </ion-row>
 
-    </ion-row>
 
 
     <!--Se discrimina segun modo de juego Individual o Colectivo-->
@@ -194,7 +226,7 @@
               <p >Apellidos</p>
             </ion-col>
             <ion-col col-3 style="margin-left:-7%">
-              <p>Acceder</p>
+              <p>Ver album</p>
             </ion-col>
           </ion-row>
 
@@ -233,7 +265,7 @@
               <p >Nombre</p>
             </ion-col>
             <ion-col col-3 style="margin-left:-8%">
-              <p>Acceder</p>
+              <p>Ver album</p>
             </ion-col>
           </ion-row>
 

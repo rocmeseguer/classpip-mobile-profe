@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 
 import {PeticionesApiProvider} from '../peticiones-api/peticiones-api';
 
-import { Juego, Nivel, Alumno, Equipo, TablaAlumnoJuegoDePuntos,
+import { Juego, Nivel, Alumno, Equipo, TablaAlumnoJuegoDePuntos, Cromo,
   TablaEquipoJuegoDePuntos, AlumnoJuegoDePuntos, HistorialPuntosAlumno, EquipoJuegoDePuntos,
   HistorialPuntosEquipo, AlumnoJuegoDeColeccion, EquipoJuegoDeColeccion, Album, AlbumEquipo } from '../../clases/index';
 import {Observable } from 'rxjs';
@@ -185,6 +185,51 @@ private DameNivelId( nivelesDelJuego: Nivel[], puntos: number): number {
 }
 
 
+// public AsignarPuntosAlumno(
+//   alumno: AlumnoJuegoDePuntos,
+//   nivelesDelJuego: Nivel[],
+//   puntosNuevos: any,
+//   puntoSeleccionadoId: any,
+// ) {
+
+//       alumno.PuntosTotalesAlumno = alumno.PuntosTotalesAlumno + puntosNuevos;
+//       if (nivelesDelJuego !== undefined) {
+//         const nivelId = this.DameNivelId (nivelesDelJuego, alumno.PuntosTotalesAlumno );
+//         alumno.nivelId = nivelId;
+//       }
+//       this.peticionesAPI.PonPuntosJuegoDePuntos(alumno, alumno.id).
+//       subscribe ();
+//       const fechaAsignacionPunto = new Date();
+//       const fechaString = fechaAsignacionPunto.toLocaleDateString() + '  ' + fechaAsignacionPunto.toLocaleTimeString();
+//       // tslint:disable-next-line:max-line-length
+//       this.peticionesAPI.PonHistorialPuntosAlumno(new HistorialPuntosAlumno (puntosNuevos, puntoSeleccionadoId, alumno.id, fechaString))
+//           // tslint:disable-next-line:no-shadowed-variable
+//       .subscribe(res => console.log(res));
+// }
+
+
+// public AsignarPuntosEquipo(
+//   equipo: EquipoJuegoDePuntos,
+//   nivelesDelJuego: Nivel[],
+//   puntosNuevos: any,
+//   puntoSeleccionadoId: any,
+// ) {
+
+//       equipo.PuntosTotalesEquipo = equipo.PuntosTotalesEquipo + puntosNuevos;
+//       if (nivelesDelJuego !== undefined) {
+//         const nivelId = this.DameNivelId (nivelesDelJuego, equipo.PuntosTotalesEquipo );
+//         equipo.nivelId = nivelId;
+//       }
+//       this.peticionesAPI.PonPuntosEquiposJuegoDePuntos(equipo, equipo.id).
+//       subscribe ();
+//       const fechaAsignacionPunto = new Date();
+//       const fechaString = fechaAsignacionPunto.toLocaleDateString() + '  ' + fechaAsignacionPunto.toLocaleTimeString();
+//       // tslint:disable-next-line:max-line-length
+//       this.peticionesAPI.PonHistorialPuntosEquipo(new HistorialPuntosEquipo (puntosNuevos, puntoSeleccionadoId, equipo.id, fechaString))
+//           // tslint:disable-next-line:no-shadowed-variable
+//       .subscribe(res => console.log(res));
+// }
+
 public AsignarPuntosAlumno(
   alumno: AlumnoJuegoDePuntos,
   nivelesDelJuego: Nivel[],
@@ -193,7 +238,7 @@ public AsignarPuntosAlumno(
 ) {
 
       alumno.PuntosTotalesAlumno = alumno.PuntosTotalesAlumno + puntosNuevos;
-      if (nivelesDelJuego !== undefined) {
+      if (nivelesDelJuego.length > 0 ) {
         const nivelId = this.DameNivelId (nivelesDelJuego, alumno.PuntosTotalesAlumno );
         alumno.nivelId = nivelId;
       }
@@ -208,6 +253,7 @@ public AsignarPuntosAlumno(
 }
 
 
+
 public AsignarPuntosEquipo(
   equipo: EquipoJuegoDePuntos,
   nivelesDelJuego: Nivel[],
@@ -216,7 +262,7 @@ public AsignarPuntosEquipo(
 ) {
 
       equipo.PuntosTotalesEquipo = equipo.PuntosTotalesEquipo + puntosNuevos;
-      if (nivelesDelJuego !== undefined) {
+      if (nivelesDelJuego.length > 0 ) {
         const nivelId = this.DameNivelId (nivelesDelJuego, equipo.PuntosTotalesEquipo );
         equipo.nivelId = nivelId;
       }
@@ -229,6 +275,7 @@ public AsignarPuntosEquipo(
           // tslint:disable-next-line:no-shadowed-variable
       .subscribe(res => console.log(res));
 }
+
 
 
 public DameRankingPuntoSeleccionadoEquipos(
@@ -375,6 +422,9 @@ public AsignarCromosAleatoriosAlumno(
   cromosColeccion: any,
 
 ) {
+  console.log ('Vamos a asignar ' + alumno.Nombre);
+  console.log ('Vamos a asignar ' + inscripcionesAlumnos);
+
   let alumnoJuegoDeColeccion: AlumnoJuegoDeColeccion;
   alumnoJuegoDeColeccion = inscripcionesAlumnos.filter(res => res.alumnoId === alumno.id)[0];
   console.log(alumnoJuegoDeColeccion);
@@ -429,5 +479,21 @@ public AsignarCromosAleatoriosEquipo(
   }
 
 }
+
+
+// Esta función recibe una lista de cromos en la que puede haber repetidos
+  // y geneera otra en la que cada cromo aparece una sola vez y se le asocia el número
+  // de veces que aparece reperido en la lista de entrada
+  GeneraListaSinRepetidos(listaCromos: Cromo []): any [] {
+    const listaCromosSinRepetidos: any [] = [];
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < listaCromos.length; i++) {
+      const n = listaCromos.filter (cromo => cromo.Nombre === listaCromos[i].Nombre).length;
+      if (listaCromosSinRepetidos.filter (res => res.cromo.Nombre === listaCromos[i].Nombre).length === 0) {
+        listaCromosSinRepetidos.push ({rep: n, cromo: listaCromos[i]});
+      }
+    }
+    return listaCromosSinRepetidos;
+  }
 
 }

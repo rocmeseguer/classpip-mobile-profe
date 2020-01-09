@@ -19,39 +19,40 @@ import {  Alumno, Grupo,Profesor, Juego, Punto, Insignia, AlumnoJuegoDePuntos,
 export class PeticionesApiProvider {
 
 
+  //private URLBase = 'http://localhost:3000/api/';
+  private URLBase = 'http://147.83.118.92:3000/api/';
 
+  private APIUrlProfesores = this.URLBase + 'Profesores';
 
-  private APIUrlProfesores = 'http://localhost:3000/api/Profesores';
+  private APIUrlGrupos = this.URLBase + 'Grupos';
 
-  private APIUrlGrupos = 'http://localhost:3000/api/Grupos';
+  private APIUrlMatriculas = this.URLBase + 'Matriculas';
 
-  private APIUrlMatriculas = 'http://localhost:3000/api/Matriculas';
+  private APIUrlEquipos = this.URLBase + 'Equipos';
 
-  private APIUrlEquipos = 'http://localhost:3000/api/Equipos';
+  private APIUrlColecciones =this.URLBase + 'Colecciones';
 
-  private APIUrlColecciones = 'http://localhost:3000/api/Colecciones';
+  private APIRUrlJuegoDePuntos = this.URLBase + 'JuegosDePuntos';
+  private APIUrlAlumnoJuegoDePuntos = this.URLBase + 'AlumnoJuegosDePuntos';
+  private APIUrlEquipoJuegoDePuntos = this.URLBase + 'EquiposJuegosDePuntos';
+  private APIUrlPuntosJuego = this.URLBase + 'AsignacionPuntosJuego';
+  private APIUrlHistorialPuntosAlumno = this.URLBase + 'HistorialesPuntosAlumno';
+  private APIUrlHistorialPuntosEquipo = this.URLBase + 'HistorialesPuntosEquipo';
 
-  private APIRUrlJuegoDePuntos = 'http://localhost:3000/api/JuegosDePuntos';
-  private APIUrlAlumnoJuegoDePuntos = 'http://localhost:3000/api/AlumnoJuegosDePuntos';
-  private APIUrlEquipoJuegoDePuntos = 'http://localhost:3000/api/EquiposJuegosDePuntos';
-  private APIUrlPuntosJuego = 'http://localhost:3000/api/AsignacionPuntosJuego';
-  private APIUrlHistorialPuntosAlumno = 'http://localhost:3000/api/HistorialesPuntosAlumno';
-  private APIUrlHistorialPuntosEquipo = 'http://localhost:3000/api/HistorialesPuntosEquipo';
-
-  private APIRUrlJuegoDeColeccion = 'http://localhost:3000/api/JuegosDeColeccion';
-  private APIUrlAlumnoJuegoDeColeccion = 'http://localhost:3000/api/AlumnosJuegoDeColeccion';
-  private APIUrlEquipoJuegoDeColeccion = 'http://localhost:3000/api/EquiposJuegoDeColeccion';
-  private APIRUrlAlbum = 'http://localhost:3000/api/Albumes';
-  private APIRUrlAlbumEquipo = 'http://localhost:3000/api/albumsEquipo';
+  private APIRUrlJuegoDeColeccion = this.URLBase + 'JuegosDeColeccion';
+  private APIUrlAlumnoJuegoDeColeccion = this.URLBase + 'AlumnosJuegoDeColeccion';
+  private APIUrlEquipoJuegoDeColeccion = this.URLBase + 'EquiposJuegoDeColeccion';
+  private APIRUrlAlbum = this.URLBase + 'Albumes';
+  private APIRUrlAlbumEquipo = this.URLBase + 'albumsEquipo';
 
 
   // Para cargar y descargar imagenes
-  private APIUrlImagenAlumno = 'http://localhost:3000/api/imagenes/imagenAlumno';
-  private APIUrlImagenColeccion = 'http://localhost:3000/api/imagenes/ImagenColeccion';
-  private APIUrlImagenCromo = 'http://localhost:3000/api/imagenes/ImagenCromo';
-  private APIUrlImagenNivel = 'http://localhost:3000/api/imagenes/imagenNivel';
-  private APIURLImagenInsignia = 'http://localhost:3000/api/imagenes/ImagenInsignia';
-  private APIUrlLogosEquipos = 'http://localhost:3000/api/imagenes/LogosEquipos';
+  private APIUrlImagenAlumno = this.URLBase + 'imagenes/imagenAlumno';
+  private APIUrlImagenColeccion = this.URLBase + 'imagenes/ImagenColeccion';
+  private APIUrlImagenCromo = this.URLBase + 'imagenes/ImagenCromo';
+  private APIUrlImagenNivel = this.URLBase + 'imagenes/imagenNivel';
+  private APIURLImagenInsignia = this.URLBase + 'imagenes/ImagenInsignia';
+  private APIUrlLogosEquipos = this.URLBase + 'imagenes/LogosEquipos';
 
 
   constructor(
