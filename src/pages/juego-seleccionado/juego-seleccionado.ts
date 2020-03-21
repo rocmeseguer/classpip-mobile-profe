@@ -230,8 +230,6 @@ export class JuegoSeleccionadoPage  {
       });
       console.log(this.items);
       this.rankingIndividualFormulaUno = this.items;
-    } else {
-      this.rankingIndividualFormulaUno = this.itemsAPI;
     }
   }
 
@@ -247,6 +245,7 @@ export class JuegoSeleccionadoPage  {
       this.items = this.items.filter(function(item) {
       return (item.Nombre.toLowerCase().includes(val.toLowerCase()));
       });
+      this.rankingEquiposFormulaUno = this.items;
     }
   }
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
