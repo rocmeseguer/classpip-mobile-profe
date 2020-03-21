@@ -20,9 +20,6 @@ export interface OpcionSeleccionada {
 })
 export class JuegoPuntosPage {
 
-  // URLs que utilizaremos
-  private APIUrlGrupos = 'http://localhost:3000/api/Grupos';
-
   // PARAMETROS QUE RECOGEMOS DE LA PAGINA PREVIA
   grupoId: number;
 
@@ -31,7 +28,8 @@ opcionesMostrar: OpcionSeleccionada[] = [
   {nombre: 'Todos los juegos', id: 'todosLosJuegos'},
   {nombre: 'Juegos de puntos', id: 'juegosDePuntos'},
   {nombre: 'Juegos de colección', id: 'juegosDeColeccion'},
-  {nombre: 'Juegos de competición', id: 'juegosDeCompeticion'},
+  {nombre: 'Juegos de competición Liga', id: 'juegosDeCompeticionLiga'},
+  {nombre: 'Juegos de competición Fórmula Uno', id: 'juegosDeCompeticionFormulaUno'},
 ];
 
   // Recogemos los tres tipos de juegos que tenemos y las metemos en una lista, tanto activos como inactivos

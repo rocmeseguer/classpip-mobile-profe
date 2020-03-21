@@ -288,6 +288,139 @@
         </ion-grid>
     </div>
 
+
+
+  </div>
+
+  <!--Para el caso de un juego de Competición Liga-->
+  <div *ngIf= "  juegoSeleccionado.Tipo === 'Juego De Competición Liga'">
+
+    <ion-row>
+      <ion-col col-6 >
+        <button ion-button round style ='width: 100%;' color="primary" size="large" (click)=  irInformacion(juegoSeleccionado);; >
+          Información
+        </button>
+      </ion-col>
+      <ion-col col-6 >
+        <button ion-button round style ='width: 100%;' color="primary" size="large" (click)= AsignarPuntos(juegoSeleccionado);>
+          Asignar Puntos
+        </button>
+      </ion-col>
+
+    </ion-row>
+
+
+    <!--Se discrimina segun modo de juego Individual o Colectivo-->
+
+    <!--Para el caso de Juego Individual-->
+    <div *ngIf="juegoSeleccionado.Modo === 'Individual'" padding style="margin-top:10%">
+
+    <!--Mediante el ion-searchbar permitimos filtrar los alumnos y buscar el deseado-->
+    <ion-searchbar  (ionInput)="getItems($event)" placeholder="Filtrar por alumno" style="background-color: transparent; margin-bottom: 10%; margin-top:-10%"></ion-searchbar>
+
+      <ion-grid no-padding  >
+
+          <!--Se define la cabecera de la tabla que recoge los alumnos del juego-->
+          <ion-row class="cabecera" >
+            <ion-col col-3 style="margin-top:3%; margin-left:-5%">
+              <p >Nombre</p>
+            </ion-col>
+            <ion-col col-6 style="margin-top:3%; margin-left:-8%" >
+              <p >Apellidos</p>
+            </ion-col>
+            <ion-col col-3 style="margin-left:-26%">
+              <p>Partidos Totales</p>
+            </ion-col>
+            <ion-col col-3 style="margin-left:-6%">
+              <p>Partidos Jugados</p>
+            </ion-col>
+            <ion-col col-3 style="margin-left:-6%">
+              <p>Puntos Totales</p>
+            </ion-col>
+          </ion-row>
+
+          <!--Se define el contenido de la tabla que recoge los alumnos del juego-->
+          <ion-content id="fondo">
+            <div style="margin-top: -6%">
+                <ion-row class="casillas" *ngFor="let item of rankingAlumnoJuegoDeCompeticion"  >
+                    <ion-col col-3 style="margin-top:3%">
+                      <p >{{item.nombre}}</p>
+                    </ion-col>
+                    <ion-col col-7 style="margin-left: -9%">
+                      <p >{{item.primerApellido}}</p>
+                      <p >{{item.segundoApellido}}</p>
+                    </ion-col>
+                    <ion-col col-2 style="margin-top:3%;margin-left: -29%">
+                      <p >{{item.partidosTotales}}</p>
+                    </ion-col>
+                    <ion-col col-2 style="margin-top:3%;margin-left: 2%">
+                      <p >{{item.partidosJugados}}</p>
+                    </ion-col>
+                    <ion-col col-2 style="margin-top:3%;margin-left: 2%">
+                      <p >{{item.puntos}}</p>
+                    </ion-col>
+             </ion-row>
+            </div>
+
+          </ion-content>
+
+      </ion-grid>
+    </div>
+
+    <!--Para el caso de Juego Colectivo-->
+    <div *ngIf="juegoSeleccionado.Modo !== 'Individual'" padding style="margin-top:10%" >
+
+       <!--Mediante el ion-searchbar permitimos filtrar los alumnos y buscar el deseado-->
+    <ion-searchbar  (ionInput)="getItems1($event)" placeholder="Filtrar por equipo" style="background-color: transparent;margin-bottom: 10%; margin-top:-10%"></ion-searchbar>
+
+    <ion-grid no-padding  >
+
+      <!--Se define la cabecera de la tabla que recoge los alumnos del juego-->
+      <ion-row class="cabecera" >
+        <ion-col col-2 style="margin-top:3%">
+          <p>Pos.</p>
+        </ion-col >
+        <ion-col col-3 style="margin-top:3%; margin-left:-5%">
+          <p >Nombre</p>
+        </ion-col>
+        <ion-col col-3 style="margin-left:0%">
+          <p>Partidos Totales</p>
+        </ion-col>
+        <ion-col col-3 style="margin-left:-6%">
+          <p>Partidos Jugados</p>
+        </ion-col>
+        <ion-col col-3 style="margin-left:-6%">
+          <p>Puntos Totales</p>
+        </ion-col>
+      </ion-row>
+
+      <!--Se define el contenido de la tabla que recoge los alumnos del juego-->
+      <ion-content id="fondo">
+        <div style="margin-top: -6%">
+            <ion-row class="casillas" *ngFor="let item of rankingEquiposJuegoDeCompeticion"  >
+                <ion-col col-2 style="margin-top:3%">
+                <p><b>{{item.posicion}}</b></p>
+                </ion-col>
+                <ion-col col-3 style="margin-top:0%">
+                  <p >{{item.nombre}}</p>
+                </ion-col>
+                <ion-col col-2 style="margin-top:3%;margin-left: 3%">
+                  <p >{{item.partidosTotales}}</p>
+                </ion-col>
+                <ion-col col-2 style="margin-top:3%;margin-left: 2%">
+                  <p >{{item.partidosJugados}}</p>
+                </ion-col>
+                <ion-col col-2 style="margin-top:3%;margin-left: 2%">
+                  <p >{{item.puntos}}</p>
+                </ion-col>
+         </ion-row>
+        </div>
+
+      </ion-content>
+
+  </ion-grid>
+    </div>
+
   </div>
 
 </ion-content>

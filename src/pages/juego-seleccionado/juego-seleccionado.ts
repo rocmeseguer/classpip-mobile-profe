@@ -8,6 +8,7 @@ import { AsignarPuntosPage } from '../asignar-puntos/asignar-puntos';
 import { AsignarCromosPage } from '../asignar-cromos/asignar-cromos';
 import { MisCromosPage } from '../mis-cromos/mis-cromos';
 import { MisCromosActualesPage } from '../mis-cromos-actuales/mis-cromos-actuales';
+import { InfoJuegoLigaPage } from '../info-juego-liga/info-juego-liga';
 
 //Importamos las clases necesarias
 import {TablaAlumnoJuegoDePuntos} from '../../clases/TablaAlumnoJuegoDePuntos';
@@ -19,6 +20,14 @@ import {Coleccion} from '../../clases/Coleccion';
 import {PeticionesApiProvider} from '../../providers/peticiones-api/peticiones-api';
 import { CalculosProvider } from '../../providers/calculos/calculos';
 import { SesionProvider } from '../../providers/sesion/sesion';
+import {Jornada} from '../../clases/Jornada';
+import {EnfrentamientoLiga} from '../../clases/EnfrentamientoLiga';
+import {TablaAlumnoJuegoDeCompeticion} from '../../clases/TablaAlumnoJuegoDeCompeticion';
+import {TablaEquipoJuegoDeCompeticion} from '../../clases/TablaEquipoJuegoDeCompeticion';
+import {AlumnoJuegoDeCompeticionLiga} from '../../clases/AlumnoJuegoDeCompeticionLiga';
+import {EquipoJuegoDeCompeticionLiga} from '../../clases/EquipoJuegoDeCompeticionLiga';
+import {InformacionPartidosLiga} from '../../clases/InformacionPartidosLiga';
+import {TablaJornadas} from '../../clases/TablaJornadas';
 
 
 @IonicPage()
@@ -56,6 +65,19 @@ export class JuegoSeleccionadoPage  {
    rankingJuegoDePuntosTotal: any[] = [];
    rankingEquiposJuegoDePuntos: any[] = [];
    rankingEquiposJuegoDePuntosTotal: any[] = [];
+
+
+  JornadasCompeticion: TablaJornadas[] = [];
+
+  // Muestra la posición del alumno, el nombre y los apellidos del alumno y los puntos
+  rankingAlumnoJuegoDeCompeticion: TablaAlumnoJuegoDeCompeticion[] = [];
+  rankingEquiposJuegoDeCompeticion: TablaEquipoJuegoDeCompeticion[] = [];
+
+  jornadas: Jornada[];
+  informacionPartidos: InformacionPartidosLiga[];
+  enfrentamientosDelJuego: Array<Array<EnfrentamientoLiga>>;
+  alumnosDelJuegoLiga: Alumno[];
+  equiposDelJuegoLiga: Equipo[];
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -104,6 +126,12 @@ export class JuegoSeleccionadoPage  {
         } else {
           this.EquiposDelJuegoColeccion();
         }
+    }
+
+    if (this.juegoSeleccionado.Tipo === 'Juego De Competición Liga') {
+      console.log('Vamos a por las jornadas');
+      this.DameJornadasDelJuegoDeCompeticionSeleccionado();
+      // this.DameJuegosdePuntosActivos();
     }
   }
 
@@ -324,13 +352,18 @@ export class JuegoSeleccionadoPage  {
   //Función que permite redirigirte a la página de información de juego de puntos o juego de coleccion
   irInformacion(juego: any) {
     if (this.juegoSeleccionado.Tipo === 'Juego De Puntos') {
-    console.log ('Accediendo a Información de Juego de Puntos');
-    this.navCtrl.push (InfoJuegoPuntosPage,{juego:juego});
-    }
-    else{
-    console.log ('Accediendo a Información de Juego de Colecciones ' + this.coleccion);
-    this.navCtrl.push (MisCromosPage,{coleccion:this.coleccion});
-    }
+      console.log ('Accediendo a Información de Juego de Puntos');
+      this.navCtrl.push (InfoJuegoPuntosPage,{juego:juego});
+      }
+      else if (this.juegoSeleccionado.Tipo === 'Juego De Colección') {
+      console.log ('Accediendo a Información de Juego de Colecciones');
+      this.ColeccionDelJuego();
+      this.navCtrl.push (MisCromosPage,{coleccion:this.coleccion});
+      } else if (this.juegoSeleccionado.Tipo === 'Juego De Competición Liga') {
+        console.log ('Accediendo a Información de Juego de Liga');
+        this.JornadasCompeticion = this.DameTablaJornadasLiga(this.juegoSeleccionado, this.jornadas, this.enfrentamientosDelJuego);
+        this.navCtrl.push (InfoJuegoLigaPage,{juego:juego, rankingAlumnoJuegoDeCompeticion: this.rankingAlumnoJuegoDeCompeticion, rankingEquiposJuegoDeCompeticion: this.rankingEquiposJuegoDeCompeticion, jornadas: this.jornadas, JornadasCompeticion: this.JornadasCompeticion});
+      }
 }
 
 AsignarPuntos(juego: any) {
@@ -415,5 +448,173 @@ fijarItems(items :any[]){
       console.log ('Accediendo a Asignación de Puntos');
       let eq = this.inscripcionesEquiposJuegoColeccion.filter(res => res.equipoId === equipo.id)[0];
       this.navCtrl.push (MisCromosActualesPage,{equipo:eq ,coleccion:this.coleccion, juego:juego });
+    }
+
+    DameJornadasDelJuegoDeCompeticionSeleccionado() {
+      this.peticionesApi.DameJornadasDeCompeticionLiga(this.juegoSeleccionado.id)
+        .subscribe(inscripciones => {
+          this.jornadas = inscripciones;
+          console.log('Las jornadas son: ');
+          console.log(this.jornadas);
+          console.log('Vamos a por los enfrentamientos de cada jornada');
+          this.DameEnfrentamientosDelJuego();
+        });
+    }
+
+    DameEnfrentamientosDelJuego() {
+      console.log('Estoy en DameEnfrentamientosDeLasJornadas()');
+      let jornadasCounter = 0;
+      this.enfrentamientosDelJuego = [];
+      // tslint:disable-next-line:prefer-for-of
+      for (let i = 0; i < this.jornadas.length; i++) {
+        this.enfrentamientosDelJuego[i] = [];
+        this.peticionesApi.DameEnfrentamientosDeCadaJornadaLiga(this.jornadas[i].id)
+        .subscribe((enfrentamientosDeLaJornada: Array<EnfrentamientoLiga>) => {
+          jornadasCounter++;
+          console.log('Los enfrentamiendos de la jornadaId ' + this.jornadas[i].id + ' son: ');
+          console.log(enfrentamientosDeLaJornada);
+          // tslint:disable-next-line:prefer-for-of
+          for (let j = 0; j < enfrentamientosDeLaJornada.length; j++) {
+            this.enfrentamientosDelJuego[i][j] = new EnfrentamientoLiga();
+            this.enfrentamientosDelJuego[i][j] = enfrentamientosDeLaJornada[j];
+          }
+          if (jornadasCounter === this.jornadas.length) {
+            console.log('La lista final de enfrentamientos del juego es: ');
+            console.log(this.enfrentamientosDelJuego);
+            if (this.juegoSeleccionado.Modo === 'Individual') {
+              this.AlumnosDelJuegoCompeticionLiga();
+            } else {
+              this.EquiposDelJuegoCompeticionLiga();
+            }
+          }
+        });
+      }
+    }
+
+    AlumnosDelJuegoCompeticionLiga() {
+      console.log ('Vamos a por los alumnos');
+      console.log('Id juegoSeleccionado: ' + this.juegoSeleccionado.id);
+      this.peticionesApi.DameAlumnosJuegoDeCompeticionLiga(this.juegoSeleccionado.id)
+      .subscribe(alumnosJuego => {
+        console.log ('Ya tengo los alumnos: ' );
+        console.log (alumnosJuego);
+        this.items = alumnosJuego;
+        this.alumnosDelJuegoLiga = alumnosJuego;
+        this.itemsAPI=alumnosJuego;
+        this.RecuperarInscripcionesAlumnoJuegoLiga();
+      });
+    }
+
+    EquiposDelJuegoCompeticionLiga() {
+      console.log ('Vamos a por los equipos');
+      console.log('Id juegoSeleccionado: ' + this.juegoSeleccionado.id);
+      this.peticionesApi.DameEquiposJuegoDeCompeticionLiga(this.juegoSeleccionado.id)
+      .subscribe(equiposJuego => {
+        console.log ('ya tengo los equipos');
+        console.log (equiposJuego);
+        this.items = equiposJuego;
+        this.equiposDelJuegoLiga = equiposJuego;
+        this.itemsAPI=equiposJuego;
+        this.RecuperarInscripcionesEquiposJuegoLiga();
+      });
+    }
+
+
+    // Recupera los AlumnoJuegoDeCompeticionLiga del juegoSeleccionado.id ordenados por puntos de mayor a menor
+    RecuperarInscripcionesAlumnoJuegoLiga() {
+      this.peticionesApi.DameInscripcionesAlumnoJuegoDeCompeticionLiga(this.juegoSeleccionado.id)
+      .subscribe(inscripciones => {
+        this.listaAlumnosOrdenadaPorPuntos = inscripciones;
+        console.log ('AlumnosJuegoDeCompeticionLiga: ');
+        console.log (this.listaAlumnosOrdenadaPorPuntos);
+        // ordena la lista por puntos
+        // tslint:disable-next-line:only-arrow-functions
+        this.listaAlumnosOrdenadaPorPuntos = this.listaAlumnosOrdenadaPorPuntos.sort(function(obj1, obj2) {
+          console.log (obj2.PuntosTotalesAlumno + ' ; ' + obj1.PuntosTotalesAlumno);
+          return obj2.PuntosTotalesAlumno - obj1.PuntosTotalesAlumno;
+        });
+        console.log(this.listaAlumnosOrdenadaPorPuntos);
+        this.TablaClasificacionTotalLiga();
+      });
+    }
+
+    // Recupera los EquipoJuegoDeCompeticionLiga del juegoSeleccionado.id ordenados por puntos de mayor a menor
+    RecuperarInscripcionesEquiposJuegoLiga() {
+      this.peticionesApi.DameInscripcionesEquipoJuegoDeCompeticionLiga(this.juegoSeleccionado.id)
+      .subscribe(inscripciones => {
+        this.listaEquiposOrdenadaPorPuntos = inscripciones;
+        // ordena la lista por puntos
+        // tslint:disable-next-line:only-arrow-functions
+        this.listaEquiposOrdenadaPorPuntos = this.listaEquiposOrdenadaPorPuntos.sort(function(obj1, obj2) {
+          console.log (obj2.PuntosTotalesEquipo + ' ; ' + obj1.PuntosTotalesEquipo);
+          return obj2.PuntosTotalesEquipo - obj1.PuntosTotalesEquipo;
+        });
+        console.log(this.listaEquiposOrdenadaPorPuntos);
+        this.TablaClasificacionTotalLiga();
+      });
+    }
+
+    // En función del modo (Individual/Equipos), recorremos la lisa de Alumnos o de Equipos y vamos rellenando el rankingJuegoDePuntos
+    // ESTO DEBERIA IR AL SERVICIO DE CALCULO, PERO DE MOMENTO NO LO HAGO PORQUE SE GENERAN DOS TABLAS
+    // Y NO COMPRENDO BIEN LA NECESIDAD DE LAS DOS
+
+    TablaClasificacionTotalLiga() {
+
+      if (this.juegoSeleccionado.Modo === 'Individual') {
+        this.rankingAlumnoJuegoDeCompeticion = this.calculos.PrepararTablaRankingIndividualLiga (this.listaAlumnosOrdenadaPorPuntos,
+                                                                                                 this.alumnosDelJuegoLiga, this.jornadas,
+                                                                                                 this.enfrentamientosDelJuego);
+        console.log ('Estoy en TablaClasificacionTotal(), la tabla que recibo desde calculos es:');
+        console.log (this.rankingAlumnoJuegoDeCompeticion);
+
+
+      } else {
+        this.rankingEquiposJuegoDeCompeticion = this.calculos.PrepararTablaRankingEquipoLiga (this.listaEquiposOrdenadaPorPuntos,
+                                                                                              this.equiposDelJuegoLiga, this.jornadas,
+                                                                                              this.enfrentamientosDelJuego);
+        console.log('Estoy en TablaClasificacionTotal(), la tabla que recibo desde calculos es:');
+        console.log (this.rankingEquiposJuegoDeCompeticion);
+      }
+    }
+
+    DameTablaJornadasLiga(juegoSeleccionado, jornadas, enfrentamientosJuego: EnfrentamientoLiga[][]) {
+      const TablaJornada: TablaJornadas [] = [];
+      console.log('juego seleccionado:');
+      console.log(juegoSeleccionado);
+      for (let i = 0; i < jornadas.length; i++) {
+        let jornada: Jornada;
+        const jornadaId = jornadas[i].id;
+        jornada = jornadas.filter(res => res.id === jornadaId)[0];
+        const enfrentamientosJornada: EnfrentamientoLiga[] = [];
+        enfrentamientosJuego[i].forEach(enfrentamientoDeLaJornada => {
+          if (enfrentamientoDeLaJornada.JornadaDeCompeticionLigaId === jornadaId) {
+            enfrentamientosJornada.push(enfrentamientoDeLaJornada);
+          }
+        });
+        console.log('Los enfrentamientosJornada con id ' + jornadaId + ' son:');
+        console.log(enfrentamientosJornada);
+        const Disputada: boolean = this.JornadaFinalizadaLiga(jornada, enfrentamientosJornada);
+        TablaJornada[i] = new TablaJornadas (i + 1, jornada.Fecha, jornada.CriterioGanador, jornada.id, undefined, undefined, Disputada);
+      }
+      return TablaJornada;
+    }
+
+    JornadaFinalizadaLiga(jornadaSeleccionada: Jornada, EnfrentamientosJornada: EnfrentamientoLiga[]) {
+      let HayGanador = false;
+      let jornadaFinalizada: boolean;
+      if (jornadaSeleccionada.id === EnfrentamientosJornada[0].JornadaDeCompeticionLigaId) {
+        // tslint:disable-next-line:prefer-for-of
+        for (let i = 0; i < EnfrentamientosJornada.length; i++) {
+          if (EnfrentamientosJornada[i].Ganador !== undefined) {
+            HayGanador = true;
+          }
+        }
+        if (HayGanador === false) {
+          jornadaFinalizada = false;
+        } else {
+          jornadaFinalizada = true;
+        }
+      }
+      return jornadaFinalizada;
     }
 }
