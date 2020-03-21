@@ -26,4 +26,10 @@ export * from './EquipoJuegoDeColeccion';
 export * from './Album';
 export * from './AlbumEquipo';
 //export * from './clasesParaTablasJuegoColeccion/AlbumDelAlumno';
+export * from './Jornada';
+export * from './AlumnoJuegoDeCompeticionFormulaUno';
+export * from './EquipoJuegoDeCompeticionFormulaUno';
+export * from './clasesParaTablasJuegoDeCompeticion/TablaAlumnoJuegoDeCompeticion';
+export * from './clasesParaTablasJuegoDeCompeticion/TablaEquipoJuegoDeCompeticion';
+
 

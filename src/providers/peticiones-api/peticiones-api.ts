@@ -6,7 +6,8 @@ import { ResponseContentType, Http} from '@angular/http';
 import {  Alumno, Grupo,Profesor, Juego, Punto, Insignia, AlumnoJuegoDePuntos,
   Equipo, EquipoJuegoDePuntos, Coleccion, Matricula, Nivel,
   AlumnoJuegoDeColeccion, EquipoJuegoDeColeccion, Cromo, HistorialPuntosAlumno, HistorialPuntosEquipo,
-  Album, AlbumEquipo, AsignacionEquipo, AsignacionPuntosJuego } from '../../clases/index';
+  Album, AlbumEquipo, AsignacionEquipo, AsignacionPuntosJuego, Jornada, AlumnoJuegoDeCompeticionFormulaUno,
+  EquipoJuegoDeCompeticionFormulaUno } from '../../clases/index';
 
 
 /*
@@ -53,6 +54,11 @@ export class PeticionesApiProvider {
   private APIUrlImagenNivel = this.URLBase + 'imagenes/imagenNivel';
   private APIURLImagenInsignia = this.URLBase + 'imagenes/ImagenInsignia';
   private APIUrlLogosEquipos = this.URLBase + 'imagenes/LogosEquipos';
+
+  // Juego de Competición Fórmula Uno
+  private APIUrlJuegoDeCompeticionFormulaUno = 'http://localhost:3000/api/JuegosDecompeticionFormulaUno';
+  private APIUrlAlumnoJuegoDeCompeticionFormulaUno = 'http://localhost:3000/api/AlumnosJuegoDeCompeticionFormulaUno';
+  private APIUrlEquipoJuegoDeCompeticionFormulaUno = 'http://localhost:3000/api/EquiposJuegoDeCompeticionFormulaUno';
 
 
   constructor(
@@ -413,7 +419,39 @@ export class PeticionesApiProvider {
   public DameJuegoDeCompeticionLigaGrupo(grupoId: number): Observable<Juego[]> {
     return this.http.get<Juego[]>(this.APIUrlGrupos + '/' + grupoId + '/JuegosDeCompeticionLiga');
   }
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Juego de competición fórmula uno
   public DameJuegoDeCompeticionFormulaUnoGrupo(grupoId: number): Observable<Juego[]> {
     return this.http.get<Juego[]>(this.APIUrlGrupos + '/' + grupoId + '/JuegosDeCompeticionFormulaUno');
+  }
+
+  public DameJornadasDeCompeticionFormulaUno(juegoDeCompeticionId: number): Observable<Jornada[]> {
+    return this.http.get<Jornada[]>(this.APIUrlJuegoDeCompeticionFormulaUno + '/' + juegoDeCompeticionId
+                                     + '/jornadasDeCompeticionFormulaUno');
+  }
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Gestion del juego de competición fórmula uno, individual
+  public DameAlumnosJuegoDeCompeticionFormulaUno(juegoDeCompeticionFormulaUnoId: number): Observable<Alumno[]> {
+    return this.http.get<Alumno[]>(this.APIUrlJuegoDeCompeticionFormulaUno + '/' + juegoDeCompeticionFormulaUnoId + '/alumnos');
+  }
+
+  public DameInscripcionesAlumnoJuegoDeCompeticionFormulaUno(juegoDeCompeticionFormulaUnoId: number): Observable<AlumnoJuegoDeCompeticionFormulaUno[]> {
+    return this.http.get<AlumnoJuegoDeCompeticionFormulaUno[]>(this.APIUrlAlumnoJuegoDeCompeticionFormulaUno
+                                                      + '?filter[where][JuegoDeCompeticionFormulaUnoId]=' + juegoDeCompeticionFormulaUnoId);
+  }
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Gestion del juego de competición fórmula uno, equipos
+  public DameEquiposJuegoDeCompeticionFormulaUno(juegoDeCompeticionLigaId: number): Observable<Equipo[]> {
+    console.log('Voy a por los equipos');
+    return this.http.get<Equipo[]>(this.APIUrlJuegoDeCompeticionFormulaUno + '/' + juegoDeCompeticionLigaId + '/equipos');
+  }
+
+  public DameInscripcionesEquipoJuegoDeCompeticionFormulaUno(juegoDeCompeticionFormulaUnoId: number): Observable<EquipoJuegoDeCompeticionFormulaUno[]> {
+    return this.http.get<EquipoJuegoDeCompeticionFormulaUno[]>(this.APIUrlEquipoJuegoDeCompeticionFormulaUno
+                                                      + '?filter[where][JuegoDeCompeticionFormulaUnoId]=' + juegoDeCompeticionFormulaUnoId);
   }
 }
