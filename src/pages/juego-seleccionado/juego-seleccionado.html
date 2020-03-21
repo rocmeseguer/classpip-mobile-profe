@@ -308,7 +308,7 @@
     <!--Para el caso de Juego Individual-->
     <div *ngIf="juegoSeleccionado.Modo === 'Individual'" padding style="margin-top:10%">
       <!--Mediante el ion-searchbar permitimos filtrar los alumnos y buscar el deseado-->
-      <ion-searchbar  (ionInput)="getItemsF1($event)" placeholder="Filtrar por alumno" style="background-color: transparent; margin-bottom: 10%; margin-top:-10%"></ion-searchbar>
+      <ion-searchbar  (ionInput)="getItemsIndividualF1($event)" placeholder="Filtrar por alumno" style="background-color: transparent; margin-bottom: 10%; margin-top:-10%"></ion-searchbar>
 
       <ion-grid no-padding>
         <!--Se define la cabecera de la tabla que recoge los alumnos del juego-->
