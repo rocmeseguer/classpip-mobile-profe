@@ -19,8 +19,8 @@ import {  Alumno, Grupo,Profesor, Juego, Punto, Insignia, AlumnoJuegoDePuntos,
 export class PeticionesApiProvider {
 
 
-  //private URLBase = 'http://localhost:3000/api/';
-  private URLBase = 'http://10.192.151.13:3000/api/';
+  private URLBase = 'http://localhost:3000/api/';
+  //private URLBase = 'http://10.192.151.13:3000/api/';
 
   private APIUrlProfesores = this.URLBase + 'Profesores';
 
@@ -410,5 +410,10 @@ export class PeticionesApiProvider {
   public DameJuegoDeCompeticionGrupo(grupoId: number): Observable<Juego[]> {
     return this.http.get<Juego[]>(this.APIUrlGrupos + '/' + grupoId + '/juegoDeCompeticions');
   }
-
+  public DameJuegoDeCompeticionLigaGrupo(grupoId: number): Observable<Juego[]> {
+    return this.http.get<Juego[]>(this.APIUrlGrupos + '/' + grupoId + '/JuegosDeCompeticionLiga');
+  }
+  public DameJuegoDeCompeticionFormulaUnoGrupo(grupoId: number): Observable<Juego[]> {
+    return this.http.get<Juego[]>(this.APIUrlGrupos + '/' + grupoId + '/JuegosDeCompeticionFormulaUno');
+  }
 }

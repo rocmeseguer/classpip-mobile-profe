@@ -61,10 +61,11 @@ export class CalculosProvider {
             }
           }
           // Ahora vamos a por los juegos de competición
-          console.log ('vamos a por los juegos de competicion: ' + grupoID);
-          this.peticionesAPI.DameJuegoDeCompeticionGrupo(grupoID)
+          console.log ('vamos a por los juegos de competicion liga del grupo: ' + grupoID);
+          this.peticionesAPI.DameJuegoDeCompeticionLigaGrupo(grupoID)
           .subscribe(juegosCompeticion => {
             console.log('He recibido los juegos de competición');
+            console.log(juegosCompeticion);
             // tslint:disable-next-line:prefer-for-of
             for (let i = 0; i < juegosCompeticion.length; i++) {
               if (juegosCompeticion[i].JuegoActivo === true) {
@@ -73,9 +74,23 @@ export class CalculosProvider {
                 juegosInactivos.push(juegosCompeticion[i]);
               }
             }
+            console.log ('vamos a por los juegos de competicion formula uno del grupo: ' + grupoID);
+            this.peticionesAPI.DameJuegoDeCompeticionFormulaUnoGrupo(grupoID)
+            .subscribe(juegosCompeticionFormulaUno => {
+            console.log('He recibido los juegos de competición formula uno');
+            console.log(juegosCompeticionFormulaUno);
+            // tslint:disable-next-line:prefer-for-of
+            for (let i = 0; i < juegosCompeticionFormulaUno.length; i++) {
+              if (juegosCompeticionFormulaUno[i].JuegoActivo === true) {
+                juegosActivos.push(juegosCompeticionFormulaUno[i]);
+              } else {
+                juegosInactivos.push(juegosCompeticionFormulaUno[i]);
+              }
+            }
             const resultado = { activos: juegosActivos, inactivos: juegosInactivos};
             obs.next (resultado);
             // this.PreparaListas ();
+            });
           });
         });
       });
