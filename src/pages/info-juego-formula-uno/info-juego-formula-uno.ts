@@ -66,5 +66,44 @@ export class InfoJuegoFormulaUnoPage {
     console.log('tabla equipos clasificación:');
     console.log(this.listaEquiposClasificacion);
   }
+
+  ObtenerEnfrentamientosDeCadaJornada(jornadaSeleccionada: TablaJornadas) {
+    console.log('El id de la jornada seleccionada es: ' + jornadaSeleccionada.id);
+    if (jornadaSeleccionada.GanadoresFormulaUno === undefined) {
+      this.datosClasificacionJornada = this.calculos.ClasificacionJornada(this.juegoSeleccionado, this.listaAlumnosClasificacion,
+                                                     this.listaEquiposClasificacion, undefined, undefined);
+    } else {
+      this.datosClasificacionJornada = this.calculos.ClasificacionJornada(this.juegoSeleccionado, this.listaAlumnosClasificacion,
+                                                     this.listaEquiposClasificacion, jornadaSeleccionada.GanadoresFormulaUno.nombre,
+                                                     jornadaSeleccionada.GanadoresFormulaUno.id);
+    }
+    // console.log(this.datosClasificaciónJornada.participante);
+    // console.log(this.datosClasificaciónJornada.puntos);
+    // console.log(this.datosClasificaciónJornada.posicion);
+    this.ConstruirTablaClasificaciónJornada();
+  }
+
+  ConstruirTablaClasificaciónJornada() {
+    console.log ('Aquí tendré la tabla de clasificación, los participantes ordenados son:');
+    console.log(this.datosClasificacionJornada.participante);
+    console.log(this.datosClasificacionJornada.puntos);
+    console.log(this.datosClasificacionJornada.posicion);
+    console.log('ParticipanteId:');
+    console.log(this.datosClasificacionJornada.participanteId);
+    this.TablaClasificacionJornadaSeleccionada = this.calculos.PrepararTablaRankingJornadaFormulaUno(this.datosClasificacionJornada);
+    // this.dataSourceClasificacionJornada = new MatTableDataSource(this.TablaClasificacionJornadaSeleccionada);
+    console.log('TablaClasificacionJornadaSeleccionada:');
+    console.log(this.TablaClasificacionJornadaSeleccionada);
+  }
+
+  JornadaFinalizada(jornadaSeleccionada: TablaJornadas) {
+    const jornadaFinalizada = this.calculos.JornadaFinalizada(this.juegoSeleccionado, jornadaSeleccionada);
+    if (jornadaFinalizada === true) {
+      this.botonResultadosDesactivado = true;
+    } else {
+      this.botonResultadosDesactivado = false;
+    }
+    return jornadaFinalizada;
+  }
 }
 
