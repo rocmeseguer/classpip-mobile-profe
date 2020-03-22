@@ -103,7 +103,14 @@ export class InfoJuegoFormulaUnoPage {
     } else {
       this.botonResultadosDesactivado = false;
     }
+    console.log('jornadaFinalizada = ' + jornadaFinalizada);
     return jornadaFinalizada;
   }
+
+  resultadosJornada(jornada: TablaJornadas) {
+    console.log('Estoy en resultadosJornada');
+    console.log(jornada);
+  }
+
 }
 

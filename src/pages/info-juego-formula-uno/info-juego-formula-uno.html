@@ -20,23 +20,13 @@
 
 </ion-header>
 
-<ion-content class="fondoDegradado"></ion-content>
+<ion-content class="fondoDegradado">
+  <ion-list class="container" *ngFor="let jornada of JornadasCompeticion" (click)="resultadosJornada(jornada);">
+    <ion-icon item-left name="checkmark-circle" *ngIf="JornadaFinalizada(jornada) === true"></ion-icon>
+    <ion-icon item-left name="timer" *ngIf="JornadaFinalizada(jornada) === false"></ion-icon>
+    <p style="text-align: center; font-size: large;"> Jornada {{jornada.NumeroDeJornada}} </p>
+    <p style="text-align: center;">Fecha: {{jornada.Fecha | date: 'shortDate'}}</p>
+    <p style="text-align: center;">Criterio: {{jornada.CriterioGanador}}</p>
+  </ion-list>
+</ion-content>
 
-<br>
-
-<ion-list style="margin-top: 35%;" *ngIf="numeroTotalJornadas!==0;else Aviso_no_jornadas">
-  <!--Medinate title, se le enviará punto.Nombre y será el titulo que aparecerá
-  en el acordeon generado-->
-  <accordionPuntos *ngFor="let jornada of JornadasCompeticion" [title]= "jornada.NumeroDeJornada">
-    <!-- Parráfo creado para que inicialmente aparezca un hueco en blanco al expandir el acordeón -->
-    <p><ion-item style="background-color:transparent"></ion-item></p>
-    <p  id="InformacionJornada">Criterio: {{jornada.CriterioGanador}}</p>
-    <!-- <p id="InformacionPuntos">{{punto.Descripcion}}</p> -->
-  </accordionPuntos>
-</ion-list>
-
-<ng-template #Aviso_no_jornadas >
-  <div style= "text-align: center;">
-    <label style= "color: white; text-align: center;" > No hay jornadas registradas</label>
-  </div>
-</ng-template>
