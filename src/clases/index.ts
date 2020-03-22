@@ -31,5 +31,7 @@ export * from './AlumnoJuegoDeCompeticionFormulaUno';
 export * from './EquipoJuegoDeCompeticionFormulaUno';
 export * from './clasesParaTablasJuegoDeCompeticion/TablaAlumnoJuegoDeCompeticion';
 export * from './clasesParaTablasJuegoDeCompeticion/TablaEquipoJuegoDeCompeticion';
+export * from './clasesParaTablasJuegoDeCompeticion/TablaJornadas';
+export * from './clasesParaTablasJuegoDeCompeticionFormulaUno/TablaClasificacionJornada';
 
 

@@ -8,20 +8,15 @@ import { AsignarPuntosPage } from '../asignar-puntos/asignar-puntos';
 import { AsignarCromosPage } from '../asignar-cromos/asignar-cromos';
 import { MisCromosPage } from '../mis-cromos/mis-cromos';
 import { MisCromosActualesPage } from '../mis-cromos-actuales/mis-cromos-actuales';
+import { InfoJuegoFormulaUnoPage } from '../info-juego-formula-uno/info-juego-formula-uno';
 
 //Importamos las clases necesarias
-import {TablaAlumnoJuegoDePuntos} from '../../clases/TablaAlumnoJuegoDePuntos';
-import {TablaEquipoJuegoDePuntos} from '../../clases/TablaEquipoJuegoDePuntos';
-import {Punto} from '../../clases/Punto';
-import { Alumno } from '../../clases/Alumno';
-import {Equipo} from '../../clases/Equipo';
-import {Coleccion} from '../../clases/Coleccion';
 import {PeticionesApiProvider} from '../../providers/peticiones-api/peticiones-api';
 import { CalculosProvider } from '../../providers/calculos/calculos';
 import { SesionProvider } from '../../providers/sesion/sesion';
 
-// Importamos las clases necesarias
-import { Juego, Jornada, TablaAlumnoJuegoDeCompeticion, TablaEquipoJuegoDeCompeticion } from '../../clases/index';
+//Importamos las clases necesarias
+import { Punto, Juego, Jornada, TablaAlumnoJuegoDeCompeticion, TablaEquipoJuegoDeCompeticion, TablaJornadas } from '../../clases/index';
 
 
 @IonicPage()
@@ -67,6 +62,8 @@ export class JuegoSeleccionadoPage  {
    rankingIndividualFormulaUno: TablaAlumnoJuegoDeCompeticion[] = [];
    rankingEquiposFormulaUno: TablaEquipoJuegoDeCompeticion[] = [];
 
+   // Variables que enviamos a la página información Fórmula uno:
+   JornadasCompeticion: TablaJornadas[];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private http: HttpClient,
@@ -251,6 +248,20 @@ export class JuegoSeleccionadoPage  {
     } else {
       this.rankingEquiposFormulaUno = this.itemsAPI;
     }
+  }
+
+  irInformacionF1() {
+    console.log ('Aquí estará la información del juego');
+    console.log ('Voy a pasar la información del juego seleccionado');
+    this.sesion.TomaJuego (this.juegoSeleccionado);
+    this.JornadasCompeticion = this.calculos.DameTablaJornadasCompeticion(this.juegoSeleccionado, this.jornadasF1,
+                                                                          this.rankingIndividualFormulaUno, this.rankingEquiposFormulaUno);
+    console.log ('Voy a pasar la información de las jornadas del juego');
+    this.sesion.TomaDatosJornadas(this.jornadasF1,
+                                  this.JornadasCompeticion);
+    this.sesion.TomaTablaAlumnoJuegoDeCompeticion(this.rankingIndividualFormulaUno);
+    this.sesion.TomaTablaEquipoJuegoDeCompeticion(this.rankingEquiposFormulaUno);
+    this.navCtrl.push (InfoJuegoFormulaUnoPage);
   }
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

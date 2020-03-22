@@ -31,6 +31,7 @@ import { MisCromosActualesPageModule } from '../pages/mis-cromos-actuales/mis-cr
 import { PeticionesApiProvider } from '../providers/peticiones-api/peticiones-api';
 import { SesionProvider } from '../providers/sesion/sesion';
 import { CalculosProvider } from '../providers/calculos/calculos';
+import { InfoJuegoFormulaUnoPageModule } from '../pages/info-juego-formula-uno/info-juego-formula-uno.module'
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { CalculosProvider } from '../providers/calculos/calculos';
     MisColeccionesPageModule,
     MisCromosPageModule,
     MisCromosActualesPageModule,
-    AsignarCromosPageModule
+    AsignarCromosPageModule,
+    InfoJuegoFormulaUnoPageModule
 
   ],
   bootstrap: [IonicApp],
