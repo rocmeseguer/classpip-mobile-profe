@@ -100,8 +100,8 @@
               <ion-col>
                 <p >Nombre</p>
               </ion-col>
-              <ion-col>
-                <p >Apellido</p>
+              <ion-col  col-3>
+                <p >Apellidos</p>
               </ion-col>
               <ion-col>
                 <p>Puntos</p>
@@ -122,10 +122,11 @@
                         <p style = 'text-align: left;' >{{item.nombre}}</p>
                       </ion-col>
                       <ion-col >
-                        <p style = 'text-align: left;'  >{{item.primerApellido}}</p>
+                        <p style = 'text-align: left;'>{{item.primerApellido}}</p>
+                        <p style = 'text-align: left;'>{{item.segundoApellido}}</p>
                       </ion-col>
                       <ion-col>
-                        <p style = 'text-align: right;' >{{item.puntos}}</p>
+                        <p style = 'text-align: center;' >{{item.puntos}}</p>
                       </ion-col>
                       <ion-col>
                         <p style = 'text-align: center;' >{{item.nivel}}</p>
@@ -134,7 +135,6 @@
               </div>
 
             </ion-content>
-
           </ion-grid>
         </div>
 
@@ -143,10 +143,10 @@
           <ion-grid no-padding  >
             <!--Se define la cabecera de la tabla que recoge los equipos del juego-->
             <ion-row class="cabecera" >
-              <ion-col col-2>
+              <ion-col  col-2>
                 <p>Pos.</p>
               </ion-col >
-              <ion-col col-6>
+              <ion-col col-5>
                 <p >Nombre</p>
               </ion-col>
               <ion-col>
@@ -162,17 +162,17 @@
             <ion-content id="fondo">
               <div style="margin-top: -6%">
                 <ion-row class="casillas" *ngFor="let item of rankingEquiposJuegoDePuntos"  >
-                      <ion-col col-2>
+                      <ion-col  col-2>
                         <p><b>{{item.posicion}}</b></p>
                       </ion-col>
                       <ion-col col-6>
                         <p style = 'text-align: left;' >{{item.nombre}}</p>
                       </ion-col>
                       <ion-col>
-                        <p style = 'text-align: right;'>{{item.puntos}}</p>
+                        <p style = 'text-align: center;'>{{item.puntos}}</p>
                       </ion-col>
                       <ion-col>
-                        <p style = 'text-align: center;'>{{item.nivel}}</p>
+                        <p style = 'text-align: left;'>{{item.nivel}}</p>
                       </ion-col>
                </ion-row>
               </div>
@@ -203,9 +203,7 @@
           </button>
         </ion-col>
 
-        </ion-row>
-
-
+      </ion-row>
 
     <!--Se discrimina segun modo de juego Individual o Colectivo-->
 
@@ -215,17 +213,17 @@
     <!--Mediante el ion-searchbar permitimos filtrar los alumnos y buscar el deseado-->
     <ion-searchbar  (ionInput)="getItems($event)" placeholder="Filtrar por alumno" style="background-color: transparent; margin-bottom: 10%; margin-top:-10%"></ion-searchbar>
 
-      <ion-grid no-padding  >
+      <ion-grid no-padding>
 
           <!--Se define la cabecera de la tabla que recoge los alumnos del juego-->
           <ion-row class="cabecera" >
             <ion-col col-3 style="margin-left:1%">
               <p >Nombre</p>
             </ion-col>
-            <ion-col col-6 style="margin-left:1%" >
+            <ion-col col-7 style="margin-left:1%" >
               <p >Apellidos</p>
             </ion-col>
-            <ion-col col-3 style="margin-left:-7%">
+            <ion-col col-2 style="margin-left:-7%">
               <p>Ver album</p>
             </ion-col>
           </ion-row>
@@ -257,7 +255,7 @@
        <!--Mediante el ion-searchbar permitimos filtrar los alumnos y buscar el deseado-->
     <ion-searchbar  (ionInput)="getItems1($event)" placeholder="Filtrar por equipo" style="background-color: transparent;margin-bottom: 10%; margin-top:-10%"></ion-searchbar>
 
-        <ion-grid no-padding  >
+        <ion-grid no-padding>
 
           <!--Se define la cabecera de la tabla que recoge los equipos del juego-->
           <ion-row class="cabecera" >
@@ -421,6 +419,109 @@
   </ion-grid>
     </div>
 
+  </div>
+
+  <!-- Para el caso de juego de Competición Fórmula Uno -->
+  <div *ngIf="juegoSeleccionado.Tipo === 'Juego De Competición Fórmula Uno'">
+    <!--Se definen en una misma fila dos botones que permiten obtener información sobre
+      los cromos a los que obtas , además de otro botón que permite asignar cromos-->
+    <ion-row>
+        <ion-col col-6 >
+          <button ion-button round style ='width: 100%;' color="primary" size="large" (click)=  irInformacionF1(juegoSeleccionado); >
+            Información
+          </button>
+        </ion-col>
+        <ion-col col-6 >
+          <button ion-button round style ='width: 100%;' color="primary" size="large" (click)= AsignarResultados(juegoSeleccionado);>Resultados</button>
+        </ion-col>
+
+    </ion-row>
+
+      <!--Se discrimina segun modo de juego Individual o Colectivo-->
+
+    <!--Para el caso de Juego Individual-->
+    <div *ngIf="juegoSeleccionado.Modo === 'Individual'" padding style="margin-top:10%">
+      <!--Mediante el ion-searchbar permitimos filtrar los alumnos y buscar el deseado-->
+      <ion-searchbar  (ionInput)="getItemsIndividualF1($event)" placeholder="Filtrar por alumno" style="background-color: transparent; margin-bottom: 10%; margin-top:-10%"></ion-searchbar>
+
+      <ion-grid no-padding>
+        <!--Se define la cabecera de la tabla que recoge los alumnos del juego-->
+        <ion-row class="cabecera" >
+          <ion-col>
+            <p>Pos.</p>
+          </ion-col>
+          <ion-col>
+            <p >Nombre</p>
+          </ion-col>
+          <ion-col>
+            <p >Apellidos</p>
+          </ion-col>
+          <ion-col>
+            <p>Puntos</p>
+          </ion-col>
+        </ion-row>
+
+        <!--Se define el contenido de la tabla que recoge los alumnos del juego-->
+        <ion-content id="fondo">
+          <div style="margin-top: -6%">
+              <ion-row class="casillas" *ngFor="let item of rankingIndividualFormulaUno"  >
+                  <ion-col >
+                    <p ><b>{{item.Posicion}}</b></p>
+                  </ion-col>
+                  <ion-col >
+                    <p style = 'text-align: left;'>{{item.Nombre}}</p>
+                  </ion-col>
+                  <ion-col >
+                    <p style = 'text-align: left;'>{{item.PrimerApellido}}</p>
+                    <p style = 'text-align: left;'>{{item.SegundoApellido}}</p>
+                  </ion-col>
+                  <ion-col>
+                    <p style = 'text-align: center;'>{{item.Puntos}}</p>
+                  </ion-col>
+           </ion-row>
+          </div>
+        </ion-content>
+      </ion-grid>
+
+    </div>
+
+    <!--Para el caso de Juego Equipo-->
+    <div *ngIf="juegoSeleccionado.Modo !== 'Individual'" padding style="margin-top:10%">
+      <!--Mediante el ion-searchbar permitimos filtrar los alumnos y buscar el deseado-->
+      <ion-searchbar  (ionInput)="getItemsEquipoF1($event)" placeholder="Filtrar por alumno" style="background-color: transparent; margin-bottom: 10%; margin-top:-10%"></ion-searchbar>
+
+      <ion-grid no-padding>
+        <!--Se define la cabecera de la tabla que recoge los alumnos del juego-->
+        <ion-row class="cabecera" >
+          <ion-col>
+            <p>Pos.</p>
+          </ion-col>
+          <ion-col col-7>
+            <p >Nombre</p>
+          </ion-col>
+          <ion-col>
+            <p>Puntos</p>
+          </ion-col>
+        </ion-row>
+
+        <!--Se define el contenido de la tabla que recoge los alumnos del juego-->
+        <ion-content id="fondo">
+          <div style="margin-top: -6%">
+              <ion-row class="casillas" *ngFor="let item of rankingEquiposFormulaUno"  >
+                  <ion-col>
+                    <p ><b>{{item.Posicion}}</b></p>
+                  </ion-col>
+                  <ion-col col-7>
+                    <p style = 'text-align: left;'>{{item.Nombre}}</p>
+                  </ion-col>
+                  <ion-col>
+                    <p style = 'text-align: center;'>{{item.Puntos}}</p>
+                  </ion-col>
+           </ion-row>
+          </div>
+        </ion-content>
+      </ion-grid>
+    </div>
   </div>
 
 </ion-content>

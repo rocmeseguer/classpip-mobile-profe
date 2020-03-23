@@ -10,14 +10,9 @@ import { MisCromosPage } from '../mis-cromos/mis-cromos';
 import { MisCromosActualesPage } from '../mis-cromos-actuales/mis-cromos-actuales';
 import { InfoJuegoLigaPage } from '../info-juego-liga/info-juego-liga';
 import { SeleccionarGanadorLigaPage } from '../Seleccionar-ganador-liga/Seleccionar-ganador-liga';
+import { InfoJuegoFormulaUnoPage } from '../info-juego-formula-uno/info-juego-formula-uno';
 
 //Importamos las clases necesarias
-import {TablaAlumnoJuegoDePuntos} from '../../clases/TablaAlumnoJuegoDePuntos';
-import {TablaEquipoJuegoDePuntos} from '../../clases/TablaEquipoJuegoDePuntos';
-import {Punto} from '../../clases/Punto';
-import { Alumno } from '../../clases/Alumno';
-import {Equipo} from '../../clases/Equipo';
-import {Coleccion} from '../../clases/Coleccion';
 import {PeticionesApiProvider} from '../../providers/peticiones-api/peticiones-api';
 import { CalculosProvider } from '../../providers/calculos/calculos';
 import { SesionProvider } from '../../providers/sesion/sesion';
@@ -30,6 +25,9 @@ import {EquipoJuegoDeCompeticionLiga} from '../../clases/EquipoJuegoDeCompeticio
 import {InformacionPartidosLiga} from '../../clases/InformacionPartidosLiga';
 import {TablaJornadas} from '../../clases/TablaJornadas';
 
+//Importamos las clases necesarias
+import { Punto, Juego, Jornada, TablaAlumnoJuegoDeCompeticion, TablaEquipoJuegoDeCompeticion, TablaJornadas } from '../../clases/index';
+
 
 @IonicPage()
 @Component({
@@ -39,7 +37,7 @@ import {TablaJornadas} from '../../clases/TablaJornadas';
 export class JuegoSeleccionadoPage  {
 
   // PARAMETROS QUE RECOGEMOS DE LA PAGINA PREVIA
-  juegoSeleccionado: any;
+  juegoSeleccionado: Juego;
 
   // Recupera la informacion del juego seleccionado además de los alumnos o los equipos, los puntos y los niveles del juego
   alumnosDelJuego: any[];
@@ -67,6 +65,8 @@ export class JuegoSeleccionadoPage  {
    rankingEquiposJuegoDePuntos: any[] = [];
    rankingEquiposJuegoDePuntosTotal: any[] = [];
 
+   // Recoge las jornadas del Juego de Fórmula Uno
+   jornadasF1: Jornada[];
 
   JornadasCompeticion: TablaJornadas[] = [];
 
@@ -81,12 +81,19 @@ export class JuegoSeleccionadoPage  {
   equiposDelJuegoLiga: Equipo[];
 
 
+   //
+   rankingIndividualFormulaUno: TablaAlumnoJuegoDeCompeticion[] = [];
+   rankingEquiposFormulaUno: TablaEquipoJuegoDeCompeticion[] = [];
+
+   // Variables que enviamos a la página información Fórmula uno:
+   JornadasCompeticion: TablaJornadas[];
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private http: HttpClient,
               private calculos: CalculosProvider,
               private sesion: SesionProvider,
               private peticionesApi: PeticionesApiProvider) {
-    this.juegoSeleccionado=navParams.get('juego');
+    this.juegoSeleccionado = navParams.get('juego');
 
   }
 
@@ -134,7 +141,158 @@ export class JuegoSeleccionadoPage  {
       this.DameJornadasDelJuegoDeCompeticionSeleccionado();
       // this.DameJuegosdePuntosActivos();
     }
+
+    if (this.juegoSeleccionado.Tipo === 'Juego De Competición Fórmula Uno') {
+      console.log('El juego seleccionado es: ');
+      console.log(this.juegoSeleccionado);
+      if (this.juegoSeleccionado.Modo === 'Individual') {
+        console.log('Estoy en juego individual');
+        this.AlumnosDelJuegoFormulaUno();
+      } else {
+        console.log('Estoy en juego equipos');
+        this.EquiposDelJuegoFormulaUno();
+      }
+      this.DameJornadasDelJuegoDeCompeticionSeleccionado();
+    }
   }
+
+  ////////////////////////////////////////  FÓRMULA UNO  ////////////////////////////////////////////
+
+  // Recupera los alumnos que pertenecen al juego
+  AlumnosDelJuegoFormulaUno() {
+    console.log ('Vamos a pos los alumnos');
+    this.peticionesApi.DameAlumnosJuegoDeCompeticionFormulaUno(this.juegoSeleccionado.id)
+    .subscribe(alumnosJuego => {
+      console.log ('Ya tengo los alumnos');
+      console.log(alumnosJuego);
+      this.alumnosDelJuego = alumnosJuego;
+      this.RecuperarInscripcionesAlumnoJuegoF1();
+    });
+  }
+
+  // Recupera los equipos que pertenecen al juego
+  EquiposDelJuegoFormulaUno() {
+    console.log ('Vamos a pos los equipos');
+    this.peticionesApi.DameEquiposJuegoDeCompeticionFormulaUno(this.juegoSeleccionado.id)
+    .subscribe(equiposJuego => {
+      console.log ('ya tengo los equipos');
+      this.equiposDelJuego = equiposJuego;
+      this.RecuperarInscripcionesEquiposJuegoF1();
+    });
+  }
+
+  DameJornadasDelJuegoDeCompeticionSeleccionado() {
+    this.peticionesApi.DameJornadasDeCompeticionFormulaUno(this.juegoSeleccionado.id)
+      .subscribe(inscripciones => {
+        this.jornadasF1 = inscripciones;
+        console.log('Las jornadas son: ');
+        console.log(this.jornadasF1);
+      });
+  }
+
+  RecuperarInscripcionesAlumnoJuegoF1() {
+    console.log ('vamos por las inscripciones ' + this.juegoSeleccionado.id);
+    this.peticionesApi.DameInscripcionesAlumnoJuegoDeCompeticionFormulaUno(this.juegoSeleccionado.id)
+    .subscribe(inscripciones => {
+      this.listaAlumnosOrdenadaPorPuntos = inscripciones;
+      // ordena la lista por puntos
+      this.listaAlumnosOrdenadaPorPuntos = this.listaAlumnosOrdenadaPorPuntos.sort(function(obj1, obj2) {
+        return obj2.PuntosTotalesAlumno - obj1.PuntosTotalesAlumno;
+      });
+      console.log ('ya tengo las inscripciones: ');
+      this.TablaClasificacionTotalF1();
+    });
+  }
+
+  RecuperarInscripcionesEquiposJuegoF1() {
+    console.log ('vamos por las inscripciones ' + this.juegoSeleccionado.id);
+    this.peticionesApi.DameInscripcionesEquipoJuegoDeCompeticionFormulaUno(this.juegoSeleccionado.id)
+    .subscribe(inscripciones => {
+      this.listaEquiposOrdenadaPorPuntos = inscripciones;
+      console.log(this.listaEquiposOrdenadaPorPuntos);
+      // ordenamos por puntos
+      this.listaEquiposOrdenadaPorPuntos = this.listaEquiposOrdenadaPorPuntos.sort(function(obj1, obj2) {
+        return obj2.PuntosTotalesEquipo - obj1.PuntosTotalesEquipo;
+      });
+      console.log ('ya tengo las inscripciones');
+      this.TablaClasificacionTotalF1();
+    });
+  }
+
+  TablaClasificacionTotalF1() {
+    console.log('Estoy en TablaClasificacionTotalF1()');
+    if (this.juegoSeleccionado.Modo === 'Individual') {
+      this.rankingIndividualFormulaUno = this.calculos.PrepararTablaRankingIndividualFormulaUno (this.listaAlumnosOrdenadaPorPuntos,
+                                                                                                 this.alumnosDelJuego);
+      console.log(this.rankingIndividualFormulaUno);
+      this.items = this.rankingIndividualFormulaUno;
+      this.itemsAPI=this.rankingIndividualFormulaUno;
+    } else {
+
+      this.rankingEquiposFormulaUno = this.calculos.PrepararTablaRankingEquipoFormulaUno (this.listaEquiposOrdenadaPorPuntos,
+                                                                                          this.equiposDelJuego);
+      console.log(this.rankingEquiposFormulaUno);
+      this.items = this.rankingEquiposFormulaUno;
+      this.itemsAPI=this.rankingEquiposFormulaUno;
+
+    }
+  }
+
+  //   //Función correspondiente al ion-searchbar que nos permitirá visualizar los alumnos que
+  // //tengas las caracteristicas definidas en el filtro
+  getItemsIndividualF1(ev: any) {
+    // Reset items back to all of the items
+    this.fijarItems(this.itemsAPI);
+    console.log ('filtro con ')
+    console.log(this.itemsAPI);
+    console.log(ev);
+    // set val to the value of the searchbar
+    let val = ev.target.value;
+    if (val && val.trim() !== '') {
+      this.items = this.items.filter(function(item) {
+      return (item.Nombre.toLowerCase().includes(val.toLowerCase())||
+      item.PrimerApellido.toLowerCase().includes(val.toLowerCase())||
+      item.SegundoApellido.toLowerCase().includes(val.toLowerCase()));
+      });
+      console.log(this.items);
+      this.rankingIndividualFormulaUno = this.items;
+    } else {
+      this.rankingIndividualFormulaUno = this.itemsAPI;
+    }
+  }
+
+  //Función correspondiente al ion-searchbar que nos permitirá visualizar los equipos que
+  //tengan las caracteristicas definidas en el filtro
+  getItemsEquipoF1(ev: any) {
+    // Reset items back to all of the items
+    this.fijarItems(this.itemsAPI);
+    // set val to the value of the searchbar
+    let val = ev.target.value;
+
+    if (val && val.trim() !== '') {
+      this.items = this.items.filter(function(item) {
+      return (item.Nombre.toLowerCase().includes(val.toLowerCase()));
+      });
+      this.rankingEquiposFormulaUno = this.items;
+    } else {
+      this.rankingEquiposFormulaUno = this.itemsAPI;
+    }
+  }
+
+  irInformacionF1() {
+    console.log ('Aquí estará la información del juego');
+    console.log ('Voy a pasar la información del juego seleccionado');
+    this.sesion.TomaJuego (this.juegoSeleccionado);
+    this.JornadasCompeticion = this.calculos.DameTablaJornadasCompeticion(this.juegoSeleccionado, this.jornadasF1,
+                                                                          this.rankingIndividualFormulaUno, this.rankingEquiposFormulaUno);
+    console.log ('Voy a pasar la información de las jornadas del juego');
+    this.sesion.TomaDatosJornadas(this.jornadasF1,
+                                  this.JornadasCompeticion);
+    this.sesion.TomaTablaAlumnoJuegoDeCompeticion(this.rankingIndividualFormulaUno);
+    this.sesion.TomaTablaEquipoJuegoDeCompeticion(this.rankingEquiposFormulaUno);
+    this.navCtrl.push (InfoJuegoFormulaUnoPage);
+  }
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
   // Recupera los alumnos que pertenecen al juego de Puntos
@@ -247,24 +405,23 @@ export class JuegoSeleccionadoPage  {
     });
   }
 
+  // Recupera las inscripciones de los alumnos en el juego y los puntos que tienen y los ordena de mayor a menor valor
+  RecuperarInscripcionesEquiposJuego() {
 
-    // Recupera las inscripciones de los alumnos en el juego y los puntos que tienen y los ordena de mayor a menor valor
-    RecuperarInscripcionesEquiposJuego() {
+    this.peticionesApi.DameInscripcionesEquipoJuegoDePuntos(this.juegoSeleccionado.id)
+    .subscribe(inscripciones => {
+    this.listaEquiposOrdenadaPorPuntos = inscripciones;
+    console.log(this.listaEquiposOrdenadaPorPuntos);
 
-      this.peticionesApi.DameInscripcionesEquipoJuegoDePuntos(this.juegoSeleccionado.id)
-      .subscribe(inscripciones => {
-        this.listaEquiposOrdenadaPorPuntos = inscripciones;
-        console.log(this.listaEquiposOrdenadaPorPuntos);
-
-        // ordenamos por puntos
-        // tslint:disable-next-line:only-arrow-functions
-        this.listaEquiposOrdenadaPorPuntos = this.listaEquiposOrdenadaPorPuntos.sort(function(obj1, obj2) {
-          return obj2.PuntosTotalesEquipo - obj1.PuntosTotalesEquipo;
-        });
-        console.log ('ya tengo las inscripciones');
-        this.TablaClasificacionTotal();
-      });
-    }
+    // ordenamos por puntos
+    // tslint:disable-next-line:only-arrow-functions
+    this.listaEquiposOrdenadaPorPuntos = this.listaEquiposOrdenadaPorPuntos.sort(function(obj1, obj2) {
+      return obj2.PuntosTotalesEquipo - obj1.PuntosTotalesEquipo;
+    });
+    console.log ('ya tengo las inscripciones');
+    this.TablaClasificacionTotal();
+    });
+  }
 
 
 
@@ -273,7 +430,6 @@ export class JuegoSeleccionadoPage  {
     this.peticionesApi.DameInscripcionesAlumnoJuegoDeColeccion(this.juegoSeleccionado.id)
     .subscribe(inscripciones => {
       this.inscripcionesAlumnosJuegoColeccion = inscripciones;
-
     });
   }
 
@@ -414,38 +570,39 @@ fijarItems(items :any[]){
 }
 
 //Función correspondiente al ion-searchbar que nos permitirá visualizar los alumnos que
-  //tengas las caracteristicas definidas en el filtro
-  getItems(ev: any) {
-    // Reset items back to all of the items
+//tengas las caracteristicas definidas en el filtro
+getItems(ev: any) {
+  // Reset items back to all of the items
+  this.fijarItems(this.itemsAPI);
+  console.log ('filtro con ')
+  console.log(this.itemsAPI);
+  console.log(ev);
+  // set val to the value of the searchbar
+  let val = ev.target.value;
+  if (val && val.trim() !== '') {
+    this.items = this.items.filter(function(item) {
+    return (item.Nombre.toLowerCase().includes(val.toLowerCase())||
+    item.PrimerApellido.toLowerCase().includes(val.toLowerCase())||
+    item.SegundoApellido.toLowerCase().includes(val.toLowerCase()));
+    });
+    console.log(this.items);
+  }
+}
 
-    this.fijarItems(this.itemsAPI);
-    console.log ('filtro con ' + this.items);
-    // set val to the value of the searchbar
-    let val = ev.target.value;
+//Función correspondiente al ion-searchbar que nos permitirá visualizar los equipos que
+//tengan las caracteristicas definidas en el filtro
+getItems1(ev: any) {
+  // Reset items back to all of the items
+  this.fijarItems(this.itemsAPI);
+  // set val to the value of the searchbar
+  let val = ev.target.value;
 
-        if (val && val.trim() !== '') {
-        this.items = this.items.filter(function(item) {
-          return (item.Nombre.toLowerCase().includes(val.toLowerCase())||
-          item.PrimerApellido.toLowerCase().includes(val.toLowerCase())||
-          item.SegundoApellido.toLowerCase().includes(val.toLowerCase()));
-        });
-      }
-    }
-
-      //Función correspondiente al ion-searchbar que nos permitirá visualizar los alumnos que
-  //tengas las caracteristicas definidas en el filtro
-  getItems1(ev: any) {
-    // Reset items back to all of the items
-    this.fijarItems(this.itemsAPI);
-    // set val to the value of the searchbar
-    let val = ev.target.value;
-
-        if (val && val.trim() !== '') {
-        this.items = this.items.filter(function(item) {
-          return (item.Nombre.toLowerCase().includes(val.toLowerCase()));
-        });
-      }
-    }
+  if (val && val.trim() !== '') {
+    this.items = this.items.filter(function(item) {
+    return (item.Nombre.toLowerCase().includes(val.toLowerCase()));
+    });
+  }
+}
 
     //Función que permite redirigirte a la página de cromos disponibles de un alumno
     irCromosActualesAlumno(alumno:any,juego: any){

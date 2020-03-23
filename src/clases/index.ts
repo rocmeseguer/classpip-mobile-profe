@@ -32,4 +32,13 @@ export * from './TablaEquipoJuegoDeCompeticion';
 export * from './TablaAlumnoJuegoDeCompeticion';
 export * from './InformacionPartidosLiga';
 export * from './TablaJornadas';
+//export * from './clasesParaTablasJuegoColeccion/AlbumDelAlumno';
+export * from './Jornada';
+export * from './AlumnoJuegoDeCompeticionFormulaUno';
+export * from './EquipoJuegoDeCompeticionFormulaUno';
+export * from './clasesParaTablasJuegoDeCompeticion/TablaAlumnoJuegoDeCompeticion';
+export * from './clasesParaTablasJuegoDeCompeticion/TablaEquipoJuegoDeCompeticion';
+export * from './clasesParaTablasJuegoDeCompeticion/TablaJornadas';
+export * from './clasesParaTablasJuegoDeCompeticionFormulaUno/TablaClasificacionJornada';
+
 

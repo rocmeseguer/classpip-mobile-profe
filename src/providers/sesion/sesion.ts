@@ -57,6 +57,12 @@ export class SesionProvider {
 
   // listaEquiposGrupo: any;
 
+  // Variable Juego Competición Fórmula Uno
+  JornadasCompeticion: TablaJornadas[];
+  jornadas: Jornada[];
+  TablaAlumnoJuegoDeCompeticion: TablaAlumnoJuegoDeCompeticion[];
+  TablaEquipoJuegoDeCompeticion: TablaEquipoJuegoDeCompeticion[]
+
   constructor() { }
 
   // La gestión del profesor tiene una problemática especial.
@@ -72,6 +78,64 @@ export class SesionProvider {
   // a los subscriptores.
   // Se usa la clase ReplaySubject(1) para guardar el profesor, de manera que siempre que se subscribe
   // un componente se le envía solo el ultimo objeto que se almacenó, que es justo lo que necesitamos
+
+
+
+
+  ///////////////////////////////////////////  JUEGO DE COMPETICIÓN FÓRMULA UNO  //////////////////////////////////////////
+  public TomaDatosJornadas(
+    jornadas: Jornada[],
+    JornadasCompeticion: TablaJornadas[]
+  ) {
+  this.JornadasCompeticion = JornadasCompeticion;
+  this.jornadas = jornadas;
+  console.log ('jornadas:');
+  console.log ( this.JornadasCompeticion);
+  console.log ('TablaJornadas:');
+  console.log ( this.jornadas);
+}
+
+public DameDatosJornadas(): any {
+  const datos = {
+  jornadas: this.jornadas,
+  JornadasCompeticion: this.JornadasCompeticion
+  };
+  console.log ('Aqui estan las jornadas guardadas y la tabla de jornadas: ');
+  console.log(this.jornadas);
+  console.log(this.JornadasCompeticion);
+
+  return datos;
+}
+
+public TomaJuego(juego: Juego) {
+  this.juego = juego;
+}
+
+public  DameJuego(): Juego {
+  return this.juego;
+}
+
+public TomaTablaAlumnoJuegoDeCompeticion(Tabla: TablaAlumnoJuegoDeCompeticion[]) {
+  this.TablaAlumnoJuegoDeCompeticion = Tabla;
+}
+
+public DameTablaAlumnoJuegoDeCompeticion(): TablaAlumnoJuegoDeCompeticion[] {
+  const Tabla = this.TablaAlumnoJuegoDeCompeticion;
+  return Tabla;
+}
+
+public TomaTablaEquipoJuegoDeCompeticion(Tabla: TablaEquipoJuegoDeCompeticion[]) {
+  this.TablaEquipoJuegoDeCompeticion = Tabla;
+}
+
+public DameTablaEquipoJuegoDeCompeticion(): TablaEquipoJuegoDeCompeticion[] {
+  const Tabla = this.TablaEquipoJuegoDeCompeticion;
+  return Tabla;
+}
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 
   public TomaProfesor(profesor: Profesor) {
       this.profesor.next(profesor);

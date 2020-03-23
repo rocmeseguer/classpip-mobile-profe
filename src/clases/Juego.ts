@@ -26,3 +26,4 @@ export class Juego {
     this.NombreJuego = NombreJuego;
   }
 }
+
