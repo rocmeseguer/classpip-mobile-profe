@@ -22,8 +22,8 @@
 
 <ion-content class="fondoDegradado">
   <ion-list class="container" *ngFor="let jornada of JornadasCompeticion" (click)="resultadosJornada(jornada);">
-    <ion-icon item-left name="checkmark-circle" *ngIf="JornadaFinalizada(jornada) === true"></ion-icon>
-    <ion-icon item-left name="timer" *ngIf="JornadaFinalizada(jornada) === false"></ion-icon>
+    <ion-icon item-left style="margin-left: 10%;  margin-top: 5%; size: 200px;" name="checkmark-circle" *ngIf="JornadaFinalizada(jornada) === true"></ion-icon>
+    <ion-icon item-left style="margin-left: 10%;  margin-top: 5%; size: 200px;"  name="timer" *ngIf="JornadaFinalizada(jornada) === false"></ion-icon>
     <p style="text-align: center; font-size: large;"> Jornada {{jornada.NumeroDeJornada}} </p>
     <p style="text-align: center;">Fecha: {{jornada.Fecha | date: 'shortDate'}}</p>
     <p style="text-align: center;">Criterio: {{jornada.CriterioGanador}}</p>

@@ -103,7 +103,6 @@ export class InfoJuegoFormulaUnoPage {
     } else {
       this.botonResultadosDesactivado = false;
     }
-    console.log('jornadaFinalizada = ' + jornadaFinalizada);
     return jornadaFinalizada;
   }
 
