@@ -60,8 +60,7 @@ import { InfoJuegoFormulaUnoPageModule } from '../pages/info-juego-formula-uno/i
     MisCromosActualesPageModule,
     AsignarCromosPageModule,
     InfoJuegoLigaPageModule,
-    SeleccionarGanadorLigaPageModule
-    AsignarCromosPageModule,
+    SeleccionarGanadorLigaPageModule,
     InfoJuegoFormulaUnoPageModule
 
   ],

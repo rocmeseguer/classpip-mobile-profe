@@ -7,8 +7,7 @@ import {  Alumno, Grupo,Profesor, Juego, Punto, Insignia, AlumnoJuegoDePuntos,
   Equipo, EquipoJuegoDePuntos, Coleccion, Matricula, Nivel,
   AlumnoJuegoDeColeccion, EquipoJuegoDeColeccion, Cromo, HistorialPuntosAlumno, HistorialPuntosEquipo,
   Album, AlbumEquipo, AsignacionEquipo, AsignacionPuntosJuego, Jornada, AlumnoJuegoDeCompeticionLiga,
-  EquipoJuegoDeCompeticionLiga, EnfrentamientoLiga } from '../../clases/index';
-  Album, AlbumEquipo, AsignacionEquipo, AsignacionPuntosJuego, Jornada, AlumnoJuegoDeCompeticionFormulaUno,
+  EquipoJuegoDeCompeticionLiga, EnfrentamientoLiga, AlumnoJuegoDeCompeticionFormulaUno,
   EquipoJuegoDeCompeticionFormulaUno } from '../../clases/index';
 
 

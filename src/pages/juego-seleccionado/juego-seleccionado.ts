@@ -26,7 +26,7 @@ import {InformacionPartidosLiga} from '../../clases/InformacionPartidosLiga';
 import {TablaJornadas} from '../../clases/TablaJornadas';
 
 //Importamos las clases necesarias
-import { Punto, Juego, Jornada, TablaAlumnoJuegoDeCompeticion, TablaEquipoJuegoDeCompeticion, TablaJornadas } from '../../clases/index';
+import { Punto, Juego, Alumno, Equipo} from '../../clases/index';
 
 
 @IonicPage()
@@ -85,8 +85,6 @@ export class JuegoSeleccionadoPage  {
    rankingIndividualFormulaUno: TablaAlumnoJuegoDeCompeticion[] = [];
    rankingEquiposFormulaUno: TablaEquipoJuegoDeCompeticion[] = [];
 
-   // Variables que enviamos a la página información Fórmula uno:
-   JornadasCompeticion: TablaJornadas[];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private http: HttpClient,
@@ -179,15 +177,6 @@ export class JuegoSeleccionadoPage  {
       this.equiposDelJuego = equiposJuego;
       this.RecuperarInscripcionesEquiposJuegoF1();
     });
-  }
-
-  DameJornadasDelJuegoDeCompeticionSeleccionado() {
-    this.peticionesApi.DameJornadasDeCompeticionFormulaUno(this.juegoSeleccionado.id)
-      .subscribe(inscripciones => {
-        this.jornadasF1 = inscripciones;
-        console.log('Las jornadas son: ');
-        console.log(this.jornadasF1);
-      });
   }
 
   RecuperarInscripcionesAlumnoJuegoF1() {
