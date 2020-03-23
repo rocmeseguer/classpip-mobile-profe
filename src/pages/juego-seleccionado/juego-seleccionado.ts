@@ -9,6 +9,7 @@ import { AsignarCromosPage } from '../asignar-cromos/asignar-cromos';
 import { MisCromosPage } from '../mis-cromos/mis-cromos';
 import { MisCromosActualesPage } from '../mis-cromos-actuales/mis-cromos-actuales';
 import { InfoJuegoLigaPage } from '../info-juego-liga/info-juego-liga';
+import { SeleccionarGanadorLigaPage } from '../Seleccionar-ganador-liga/Seleccionar-ganador-liga';
 
 //Importamos las clases necesarias
 import {TablaAlumnoJuegoDePuntos} from '../../clases/TablaAlumnoJuegoDePuntos';
@@ -360,9 +361,22 @@ export class JuegoSeleccionadoPage  {
       this.ColeccionDelJuego();
       this.navCtrl.push (MisCromosPage,{coleccion:this.coleccion});
       } else if (this.juegoSeleccionado.Tipo === 'Juego De Competición Liga') {
-        console.log ('Accediendo a Información de Juego de Liga');
+        console.log ('Aquí estará la información del juego');
+        console.log ('Voy a por la información del juego seleccionado');
+        this.sesion.TomaJuego (this.juegoSeleccionado);
+        console.log('Tomo las jornadas' + this.jornadas);
+        console.log('Los enfrentamientos del juego son: ');
+        console.log(this.enfrentamientosDelJuego);
         this.JornadasCompeticion = this.DameTablaJornadasLiga(this.juegoSeleccionado, this.jornadas, this.enfrentamientosDelJuego);
-        this.navCtrl.push (InfoJuegoLigaPage,{juego:juego, rankingAlumnoJuegoDeCompeticion: this.rankingAlumnoJuegoDeCompeticion, rankingEquiposJuegoDeCompeticion: this.rankingEquiposJuegoDeCompeticion, jornadas: this.jornadas, JornadasCompeticion: this.JornadasCompeticion});
+        console.log('Las tablas JornadasCompeticionLiga son: ');
+        console.log(this.JornadasCompeticion);
+        // this.JornadasCompeticion = this.calculos.DameTablaJornadasCompeticion( this.juegoSeleccionado, this.jornadas, undefined, undefined);
+        console.log ('Voy a por la información de las jornadas del juego');
+        this.sesion.TomaDatosJornadas(this.jornadas,
+                                          this.JornadasCompeticion);
+        this.sesion.TomaTablaAlumnoJuegoDeCompeticion(this.rankingAlumnoJuegoDeCompeticion);
+        this.sesion.TomaTablaEquipoJuegoDeCompeticion(this.rankingEquiposJuegoDeCompeticion);
+        this.navCtrl.push (InfoJuegoLigaPage,{juego:juego});
       }
 }
 
@@ -616,5 +630,21 @@ fijarItems(items :any[]){
         }
       }
       return jornadaFinalizada;
+    }
+
+    seleccionarGanadorLiga(juego: any) {
+      console.log('Aquí estará el proceso para elegir el ganador');
+      console.log ('Voy a por la información del juego seleccionado');
+      this.sesion.TomaJuego (this.juegoSeleccionado);
+      console.log('Tomo las jornadas' + this.jornadas);
+      this.JornadasCompeticion = this.calculos.DameTablaJornadasCompeticion( this.juegoSeleccionado, this.jornadas, undefined, undefined);
+      console.log ('Voy a por la información de las jornadas del juego');
+      this.sesion.TomaDatosJornadas(this.jornadas,
+                                    this.JornadasCompeticion);
+      this.sesion.TomaTablaAlumnoJuegoDeCompeticion(this.rankingAlumnoJuegoDeCompeticion);
+      this.sesion.TomaTablaEquipoJuegoDeCompeticion(this.rankingEquiposJuegoDeCompeticion);
+      this.sesion.TomaInscripcionAlumno(this.listaAlumnosOrdenadaPorPuntos);
+      this.sesion.TomaInscripcionEquipo(this.listaEquiposOrdenadaPorPuntos);
+      this.navCtrl.push (SeleccionarGanadorLigaPage,{juego:juego});
     }
 }

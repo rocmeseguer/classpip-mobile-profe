@@ -31,4 +31,5 @@ export * from './TablaEquipoJuegoDePuntos';
 export * from './TablaEquipoJuegoDeCompeticion';
 export * from './TablaAlumnoJuegoDeCompeticion';
 export * from './InformacionPartidosLiga';
+export * from './TablaJornadas';
 

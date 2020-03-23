@@ -450,4 +450,17 @@ export class PeticionesApiProvider {
     return this.http.get<EquipoJuegoDeCompeticionLiga[]>(this.APIUrlEquipoJuegoDeCompeticionLiga
                                                           + '?filter[where][JuegoDeCompeticionLigaId]=' + juegoDeCompeticionLigaId);
   }
+  public PonGanadorDelEnfrentamiento(enfrentamiento: EnfrentamientoLiga): Observable<EnfrentamientoLiga> {
+    return this.http.put<EnfrentamientoLiga>('http://localhost:3000/api/EnfrentamientosLiga/' + enfrentamiento.id, enfrentamiento);
+  }
+  // tslint:disable-next-line:max-line-length
+  public PonPuntosAlumnoGanadorJuegoDeCompeticionLiga(alumnoGanadorJuegoDeCompeticionLiga: AlumnoJuegoDeCompeticionLiga): Observable<AlumnoJuegoDeCompeticionLiga> {
+    return this.http.put<AlumnoJuegoDeCompeticionLiga>(this.APIUrlAlumnoJuegoDeCompeticionLiga + '/'
+                                                       + alumnoGanadorJuegoDeCompeticionLiga.id, alumnoGanadorJuegoDeCompeticionLiga);
+  }
+  // tslint:disable-next-line:max-line-length
+  public PonPuntosEquipoGanadorJuegoDeCompeticionLiga(ganadorJuegoDeCompeticionLiga: EquipoJuegoDeCompeticionLiga): Observable<EquipoJuegoDeCompeticionLiga> {
+    return this.http.put<EquipoJuegoDeCompeticionLiga>('http://localhost:3000/api/EquiposJuegoDeCompeticionLiga/'
+                                                       + ganadorJuegoDeCompeticionLiga.id, ganadorJuegoDeCompeticionLiga);
+  }
 }

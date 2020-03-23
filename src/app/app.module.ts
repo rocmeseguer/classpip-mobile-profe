@@ -31,6 +31,8 @@ import { MisCromosActualesPageModule } from '../pages/mis-cromos-actuales/mis-cr
 import { PeticionesApiProvider } from '../providers/peticiones-api/peticiones-api';
 import { SesionProvider } from '../providers/sesion/sesion';
 import { CalculosProvider } from '../providers/calculos/calculos';
+import { InfoJuegoLigaPageModule } from '../pages/info-juego-liga/info-juego-liga.module';
+import { SeleccionarGanadorLigaPageModule } from '../pages/Seleccionar-ganador-liga/Seleccionar-ganador-liga.module';
 
 @NgModule({
   declarations: [
@@ -55,7 +57,9 @@ import { CalculosProvider } from '../providers/calculos/calculos';
     MisColeccionesPageModule,
     MisCromosPageModule,
     MisCromosActualesPageModule,
-    AsignarCromosPageModule
+    AsignarCromosPageModule,
+    InfoJuegoLigaPageModule,
+    SeleccionarGanadorLigaPageModule
 
   ],
   bootstrap: [IonicApp],
