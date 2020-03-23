@@ -12,8 +12,8 @@ import { Juego, Jornada, TablaAlumnoJuegoDeCompeticion, TablaEquipoJuegoDeCompet
 
 @IonicPage()
 @Component({
-  selector: 'page-info-juego-formula-uno',
-  templateUrl: 'info-juego-formula-uno.html',
+  selector: 'page-jornada-juego-formula-uno',
+  templateUrl: 'jornada-juego-formula-uno.html',
 })
 
 export class JornadaJuegoFormulaUnoPage {
