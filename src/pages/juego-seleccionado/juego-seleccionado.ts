@@ -150,7 +150,7 @@ export class JuegoSeleccionadoPage  {
         console.log('Estoy en juego equipos');
         this.EquiposDelJuegoFormulaUno();
       }
-      this.DameJornadasDelJuegoDeCompeticionSeleccionado();
+      this.DameJornadasDelJuegoDeCompeticionSeleccionadoF1();
     }
   }
 
@@ -792,5 +792,14 @@ getItems1(ev: any) {
       this.sesion.TomaInscripcionAlumno(this.listaAlumnosOrdenadaPorPuntos);
       this.sesion.TomaInscripcionEquipo(this.listaEquiposOrdenadaPorPuntos);
       this.navCtrl.push (SeleccionarGanadorLigaPage,{juego:juego});
+    }
+
+    DameJornadasDelJuegoDeCompeticionSeleccionadoF1() {
+      this.peticionesApi.DameJornadasDeCompeticionFormulaUno(this.juegoSeleccionado.id)
+        .subscribe(inscripciones => {
+          this.jornadasF1 = inscripciones;
+          console.log('Las jornadas son: ');
+          console.log(this.jornadasF1);
+        });
     }
 }
