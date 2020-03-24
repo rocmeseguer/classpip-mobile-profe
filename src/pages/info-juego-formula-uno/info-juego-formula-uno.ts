@@ -69,7 +69,7 @@ export class InfoJuegoFormulaUnoPage {
     console.log(this.listaEquiposClasificacion);
   }
 
-  ObtenerEnfrentamientosDeCadaJornada(jornadaSeleccionada: TablaJornadas) {
+  ObtenerClasificacionDeCadaJornada(jornadaSeleccionada: TablaJornadas) {
     console.log('El id de la jornada seleccionada es: ' + jornadaSeleccionada.id);
     if (jornadaSeleccionada.GanadoresFormulaUno === undefined) {
       this.datosClasificacionJornada = this.calculos.ClasificacionJornada(this.juegoSeleccionado, this.listaAlumnosClasificacion,
@@ -111,7 +111,7 @@ export class InfoJuegoFormulaUnoPage {
   resultadosJornada(jornada: TablaJornadas) {
     console.log('Estoy en resultadosJornada');
     console.log(jornada);
-    this.ObtenerEnfrentamientosDeCadaJornada(jornada);
+    this.ObtenerClasificacionDeCadaJornada(jornada);
     console.log('this.TablaClasificacionJornadaSeleccionada');
     console.log(this.TablaClasificacionJornadaSeleccionada);
     this.navCtrl.push (JornadaJuegoFormulaUnoPage,{clasificacionJornadaSeleccionada: this.TablaClasificacionJornadaSeleccionada,
