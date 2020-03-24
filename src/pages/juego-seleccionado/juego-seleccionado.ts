@@ -508,19 +508,17 @@ export class JuegoSeleccionadoPage  {
       this.ColeccionDelJuego();
       this.navCtrl.push (MisCromosPage,{coleccion:this.coleccion});
       } else if (this.juegoSeleccionado.Tipo === 'Juego De Competición Liga') {
-        console.log ('Aquí estará la información del juego');
-        console.log ('Voy a por la información del juego seleccionado');
+        console.log ('Voy a pasar la información del juego de liga');
         this.sesion.TomaJuego (this.juegoSeleccionado);
         console.log('Tomo las jornadas' + this.jornadas);
         console.log('Los enfrentamientos del juego son: ');
         console.log(this.enfrentamientosDelJuego);
-        this.JornadasCompeticion = this.DameTablaJornadasLiga(this.juegoSeleccionado, this.jornadas, this.enfrentamientosDelJuego);
+        this.JornadasCompeticion = this.calculos.DameTablaJornadasLiga(this.juegoSeleccionado, this.jornadas, this.enfrentamientosDelJuego);
         console.log('Las tablas JornadasCompeticionLiga son: ');
         console.log(this.JornadasCompeticion);
-        // this.JornadasCompeticion = this.calculos.DameTablaJornadasCompeticion( this.juegoSeleccionado, this.jornadas, undefined, undefined);
-        console.log ('Voy a por la información de las jornadas del juego');
+        console.log ('Voy a pasar la información de las jornadas del juego');
         this.sesion.TomaDatosJornadas(this.jornadas,
-                                          this.JornadasCompeticion);
+                                      this.JornadasCompeticion);
         this.sesion.TomaTablaAlumnoJuegoDeCompeticion(this.rankingAlumnoJuegoDeCompeticion);
         this.sesion.TomaTablaEquipoJuegoDeCompeticion(this.rankingEquiposJuegoDeCompeticion);
         this.navCtrl.push (InfoJuegoLigaPage,{juego:juego});
@@ -737,28 +735,6 @@ getItems1(ev: any) {
         console.log('Estoy en TablaClasificacionTotal(), la tabla que recibo desde calculos es:');
         console.log (this.rankingEquiposJuegoDeCompeticion);
       }
-    }
-
-    DameTablaJornadasLiga(juegoSeleccionado, jornadas, enfrentamientosJuego: EnfrentamientoLiga[][]) {
-      const TablaJornada: TablaJornadas [] = [];
-      console.log('juego seleccionado:');
-      console.log(juegoSeleccionado);
-      for (let i = 0; i < jornadas.length; i++) {
-        let jornada: Jornada;
-        const jornadaId = jornadas[i].id;
-        jornada = jornadas.filter(res => res.id === jornadaId)[0];
-        const enfrentamientosJornada: EnfrentamientoLiga[] = [];
-        enfrentamientosJuego[i].forEach(enfrentamientoDeLaJornada => {
-          if (enfrentamientoDeLaJornada.JornadaDeCompeticionLigaId === jornadaId) {
-            enfrentamientosJornada.push(enfrentamientoDeLaJornada);
-          }
-        });
-        console.log('Los enfrentamientosJornada con id ' + jornadaId + ' son:');
-        console.log(enfrentamientosJornada);
-        const Disputada: boolean = this.JornadaFinalizadaLiga(jornada, enfrentamientosJornada);
-        TablaJornada[i] = new TablaJornadas (i + 1, jornada.Fecha, jornada.CriterioGanador, jornada.id, undefined, undefined, Disputada);
-      }
-      return TablaJornada;
     }
 
     JornadaFinalizadaLiga(jornadaSeleccionada: Jornada, EnfrentamientosJornada: EnfrentamientoLiga[]) {

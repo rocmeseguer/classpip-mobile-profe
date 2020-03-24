@@ -37,6 +37,49 @@ export class CalculosProvider {
   }
 
 
+  /////////////////////////////////////////////////////////////// COMPETICIÓN LIGA /////////////////////////////////////////////////////////////////
+  public DameTablaJornadasLiga(juegoSeleccionado, jornadas, enfrentamientosJuego: EnfrentamientoLiga[][]) {
+    const TablaJornada: TablaJornadas [] = [];
+    console.log('juego seleccionado:');
+    console.log(juegoSeleccionado);
+    for (let i = 0; i < jornadas.length; i++) {
+      let jornada: Jornada;
+      const jornadaId = jornadas[i].id;
+      jornada = jornadas.filter(res => res.id === jornadaId)[0];
+      const enfrentamientosJornada: EnfrentamientoLiga[] = [];
+      enfrentamientosJuego[i].forEach(enfrentamientoDeLaJornada => {
+        if (enfrentamientoDeLaJornada.JornadaDeCompeticionLigaId === jornadaId) {
+          enfrentamientosJornada.push(enfrentamientoDeLaJornada);
+        }
+      });
+      console.log('Los enfrentamientosJornada con id ' + jornadaId + ' son:');
+      console.log(enfrentamientosJornada);
+      const Disputada: boolean = this.JornadaFinalizadaLiga(jornada, enfrentamientosJornada);
+      TablaJornada[i] = new TablaJornadas (i + 1, jornada.Fecha, jornada.CriterioGanador, jornada.id, undefined, undefined, Disputada);
+    }
+    return TablaJornada;
+  }
+
+  public JornadaFinalizadaLiga(jornadaSeleccionada: Jornada, EnfrentamientosJornada: EnfrentamientoLiga[]) {
+    let HayGanador = false;
+    let jornadaFinalizada: boolean;
+    if (jornadaSeleccionada.id === EnfrentamientosJornada[0].JornadaDeCompeticionLigaId) {
+      // tslint:disable-next-line:prefer-for-of
+      for (let i = 0; i < EnfrentamientosJornada.length; i++) {
+        if (EnfrentamientosJornada[i].Ganador !== undefined) {
+          HayGanador = true;
+        }
+      }
+      if (HayGanador === false) {
+        jornadaFinalizada = false;
+      } else {
+        jornadaFinalizada = true;
+      }
+    }
+    return jornadaFinalizada;
+  }
+
+
 
   ///////////////////////////////////////////////////////////// COMPETICIÓN FÓRMULA UNO ///////////////////////////////////////////////////////////////
   public PrepararTablaRankingIndividualFormulaUno(listaAlumnosOrdenadaPorPuntos: AlumnoJuegoDeCompeticionFormulaUno[],
