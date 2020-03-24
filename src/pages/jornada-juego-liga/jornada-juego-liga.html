@@ -1,0 +1,117 @@
+<!--Se definen los elementos que aparecerán en la cabecera de la pantalla de la aplicación-->
+<ion-header>
+
+  <!--CABECERA SUPERIOR ( JUNTO A MENU LATERAL )-->
+  <form class="ClasspipCabecera" >
+    <button ion-button menuToggle >
+      <ion-icon name="menu" ></ion-icon>
+    </button>
+    <img src="../../assets/icon/Icono Classpip.png">
+    <h2 style="color:white">Classpip</h2>
+  </form>
+
+  <!--CABECERA INFERIOR (PERMITIRA RETROCEDER A LAS PANTALLAS ANTERIORES mediante un NavBar)-->
+  <div color="azulcabecera">
+    <!-- <ion-navbar color="azulcabecera" swipeBackEnabled="false"> -->
+    <ion-navbar color="azulcabecera">
+        <ion-title>JORNADA {{jornadaSeleccionada.NumeroDeJornada}}</ion-title>
+    </ion-navbar>
+  </div>
+
+</ion-header>
+
+
+<ion-content class="fondoDegradado">
+
+  <!--CONTENIDO DE CONTENEDOR DONDE EXPLICAMOS INFORMACIÓN DE LA PANTALLA-->
+  <ion-content class="contenedorInformacion">
+      <ion-row>
+          <ion-col col-12>
+            <p class="InformacionPantalla"><b>Fecha: </b> {{jornadaSeleccionada.Fecha | date: 'shortDate'}}
+            <p class="InformacionPantalla"><b>Criterio: </b> {{jornadaSeleccionada.CriterioGanador}}
+          </ion-col>
+      </ion-row>
+  </ion-content>
+
+<!--SE HACE DISTINCIÓN ENTRE TIPO DE JUEGO DE PUNTOS Y DE COLECCIONES-->
+
+<!-- Para el caso de juego de Competición Fórmula Uno -->
+<div *ngIf="juegoSeleccionado.Tipo === 'Juego De Competición Fórmula Uno'">
+
+  <!--Para el caso de Juego Individual-->
+  <div *ngIf="juegoSeleccionado.Modo === 'Individual'" padding style="margin-top:10%">
+
+    <ion-grid no-padding>
+      <!--Se define la cabecera de la tabla que recoge los alumnos del juego-->
+      <ion-row class="cabecera" >
+        <ion-col>
+          <p>Alumno 1</p>
+        </ion-col>
+        <ion-col>
+          <p >Alumno 2</p>
+        </ion-col>
+        <ion-col>
+          <p>Ganador</p>
+        </ion-col>
+      </ion-row>
+
+      <!--Se define el contenido de la tabla que recoge los alumnos del juego-->
+      <ion-content id="fondo">
+        <div style="margin-top: -6%">
+          <ion-row class="casillas" *ngFor="let item of EnfrentamientosJornadaSeleccionada"  >
+            <ion-col >
+              <p ><b>{{item.nombreJugadorUno}}</b></p>
+            </ion-col>
+            <ion-col>
+              <p style = 'text-align: left;'>{{item.nombreJugadorDos}}</p>
+            </ion-col>
+            <ion-col>
+              <p style = 'text-align: center;'>{{item.Ganador}}</p>
+            </ion-col>
+         </ion-row>
+        </div>
+      </ion-content>
+    </ion-grid>
+
+  </div>
+
+  <div *ngIf="juegoSeleccionado.Modo !== 'Individual'" padding style="margin-top:10%">
+
+    <ion-grid no-padding>
+      <!--Se define la cabecera de la tabla que recoge los alumnos del juego-->
+      <ion-row class="cabecera" >
+        <ion-col>
+          <p>Equipo 1</p>
+        </ion-col>
+        <ion-col>
+          <p >Equipo 2</p>
+        </ion-col>
+        <ion-col>
+          <p>Ganador</p>
+        </ion-col>
+      </ion-row>
+
+      <!--Se define el contenido de la tabla que recoge los alumnos del juego-->
+      <ion-content id="fondo">
+        <div style="margin-top: -6%">
+          <ion-row class="casillas" *ngFor="let item of EnfrentamientosJornadaSeleccionada"  >
+            <ion-col >
+              <p ><b>{{item.nombreJugadorUno}}</b></p>
+            </ion-col>
+            <ion-col>
+              <p style = 'text-align: left;'>{{item.nombreJugadorDos}}</p>
+            </ion-col>
+            <ion-col>
+              <p style = 'text-align: center;'>{{item.Ganador}}</p>
+            </ion-col>
+         </ion-row>
+        </div>
+      </ion-content>
+    </ion-grid>
+
+  </div>
+</div>
+
+</ion-content>
+
+

@@ -35,7 +35,8 @@ import { InfoJuegoLigaPageModule } from '../pages/info-juego-liga/info-juego-lig
 import { SeleccionarGanadorLigaPageModule } from '../pages/Seleccionar-ganador-liga/Seleccionar-ganador-liga.module';
 import { SeleccionarGanadorFormulaUnoPageModule } from '../pages/Seleccionar-ganador-formula-uno/Seleccionar-ganador-formula-uno.module';
 import { InfoJuegoFormulaUnoPageModule } from '../pages/info-juego-formula-uno/info-juego-formula-uno.module';
-import { JornadaJuegoFormulaUnoPageModule } from '../pages/jornada-juego-formula-uno/jornada-juego-formula-uno.module'
+import { JornadaJuegoFormulaUnoPageModule } from '../pages/jornada-juego-formula-uno/jornada-juego-formula-uno.module';
+import { JornadaJuegoLigaPageModule } from '../pages/jornada-juego-liga/jornada-juego-liga.module'
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { JornadaJuegoFormulaUnoPageModule } from '../pages/jornada-juego-formula
     SeleccionarGanadorLigaPageModule,
     InfoJuegoFormulaUnoPageModule,
     SeleccionarGanadorFormulaUnoPageModule,
-    JornadaJuegoFormulaUnoPageModule
+    JornadaJuegoFormulaUnoPageModule,
+    JornadaJuegoLigaPageModule
 
   ],
   bootstrap: [IonicApp],

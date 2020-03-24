@@ -6,6 +6,9 @@ import {PeticionesApiProvider} from '../../providers/peticiones-api/peticiones-a
 import { CalculosProvider } from '../../providers/calculos/calculos';
 import { SesionProvider } from '../../providers/sesion/sesion';
 
+
+import {JornadaJuegoLigaPage} from '../jornada-juego-liga/jornada-juego-liga';
+
 // Importamos las clases necesarias
 import { Juego, Jornada, TablaAlumnoJuegoDeCompeticion, TablaEquipoJuegoDeCompeticion, TablaJornadas, TablaClasificacionJornada,
          EnfrentamientoLiga, AlumnoJuegoDeCompeticionLiga, EquipoJuegoDeCompeticionLiga} from '../../clases/index';
@@ -168,9 +171,8 @@ export class InfoJuegoLigaPage {
     this.ObtenerEnfrentamientosDeCadaJornada(jornada);
     console.log('this.EnfrentamientosJornadaSeleccionada');
     console.log(this.EnfrentamientosJornadaSeleccionada);
-    // this.navCtrl.push (JornadaJuegoLigaPage,{resultadosJornadaSeleccionada: this.EnfrentamientosJornadaSeleccionada,
-    //                                                jornadaSeleccionada: jornada,
-    //                                                juegoSeleccionado: this.juegoSeleccionado});
+    this.navCtrl.push (JornadaJuegoLigaPage,{enfrentamientosJornadaSeleccionada: this.EnfrentamientosJornadaSeleccionada,
+                       jornadaSeleccionada: jornada, juegoSeleccionado: this.juegoSeleccionado});
   }
 
 }
