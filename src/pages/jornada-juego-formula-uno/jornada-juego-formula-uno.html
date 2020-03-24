@@ -14,19 +14,114 @@
   <div color="azulcabecera">
     <!-- <ion-navbar color="azulcabecera" swipeBackEnabled="false"> -->
     <ion-navbar color="azulcabecera">
-        <ion-title>INFORMACIÓN</ion-title>
+        <ion-title>JORNADA {{jornadaSeleccionada.NumeroDeJornada}}</ion-title>
     </ion-navbar>
   </div>
 
 </ion-header>
 
+<!-- <ion-content class="fondoDegradado">
+  Para el caso de juego de Competición Fórmula Uno
+  <div *ngIf="juegoSeleccionado.Tipo === 'Juego De Competición Fórmula Uno'">
+    <ion-content class="contenedorInformacion">
+
+          Al poner <b> permitimos que las palabras que esten dentro se visualicen en negrita
+          <p class="InformacionPantalla"><b>Fecha: </b>: {{jornadaSeleccionada.Fecha | date: 'shortDate'}}
+          <p class="InformacionPantalla"><b>Criterio: </b> {{jornadaSeleccionada.CriterioGanador}}
+
+    </ion-content>
+
+    <ion-grid no-padding>
+      Se define la cabecera de la tabla que recoge los alumnos del juego
+      <ion-row class="cabecera" >
+        <ion-col>
+          <p>Pos.</p>
+        </ion-col>
+        <ion-col>
+          <p >Nombre</p>
+        </ion-col>
+        <ion-col>
+          <p>Puntos</p>
+        </ion-col>
+      </ion-row>
+
+      Se define el contenido de la tabla que recoge los alumnos del juego
+      <ion-content id="fondo">
+        <div style="margin-top: -6%">
+            <ion-row class="casillas" *ngFor="let item of clasificacionJornadaSeleccionada"  >
+                <ion-col >
+                  <p ><b>{{item.posicion}}</b></p>
+                </ion-col>
+                <ion-col >
+                  <p style = 'text-align: left;'>{{item.participante}}</p>
+                </ion-col>
+                <ion-col>
+                  <p style = 'text-align: center;'>{{item.puntos}}</p>
+                </ion-col>
+        </ion-row>
+        </div>
+      </ion-content>
+    </ion-grid>
+  </div>
+
+</ion-content> -->
+
+
 <ion-content class="fondoDegradado">
-  <ion-list class="container" *ngFor="let jornada of JornadasCompeticion" (click)="resultadosJornada(jornada);">
-    <ion-icon item-left style="margin-left: 10%;  margin-top: 5%; size: 200px;" name="checkmark-circle" *ngIf="JornadaFinalizada(jornada) === true"></ion-icon>
-    <ion-icon item-left style="margin-left: 10%;  margin-top: 5%; size: 200px;"  name="timer" *ngIf="JornadaFinalizada(jornada) === false"></ion-icon>
-    <p style="text-align: center; font-size: large;"> Jornada {{jornada.NumeroDeJornada}} </p>
-    <p style="text-align: center;">Fecha: {{jornada.Fecha | date: 'shortDate'}}</p>
-    <p style="text-align: center;">Criterio: {{jornada.CriterioGanador}}</p>
-  </ion-list>
+
+  <!--CONTENIDO DE CONTENEDOR DONDE EXPLICAMOS INFORMACIÓN DE LA PANTALLA-->
+  <ion-content class="contenedorInformacion">
+      <ion-row>
+          <ion-col col-12>
+            <p class="InformacionPantalla"><b>Fecha: </b> {{jornadaSeleccionada.Fecha | date: 'shortDate'}}
+            <p class="InformacionPantalla"><b>Criterio: </b> {{jornadaSeleccionada.CriterioGanador}}
+          </ion-col>
+      </ion-row>
+  </ion-content>
+
+<!--SE HACE DISTINCIÓN ENTRE TIPO DE JUEGO DE PUNTOS Y DE COLECCIONES-->
+
+<!-- Para el caso de juego de Competición Fórmula Uno -->
+<div *ngIf="juegoSeleccionado.Tipo === 'Juego De Competición Fórmula Uno'">
+
+  <!--Para el caso de Juego Individual-->
+  <div *ngIf="juegoSeleccionado.Modo === 'Individual'" padding style="margin-top:10%">
+
+    <ion-grid no-padding>
+      <!--Se define la cabecera de la tabla que recoge los alumnos del juego-->
+      <ion-row class="cabecera" >
+        <ion-col>
+          <p>Pos.</p>
+        </ion-col>
+        <ion-col  col-6>
+          <p >Nombre</p>
+        </ion-col>
+        <ion-col>
+          <p>Puntos</p>
+        </ion-col>
+      </ion-row>
+
+      <!--Se define el contenido de la tabla que recoge los alumnos del juego-->
+      <ion-content id="fondo">
+        <div style="margin-top: -6%">
+          <ion-row class="casillas" *ngFor="let item of clasificacionJornadaSeleccionada"  >
+            <ion-col >
+              <p ><b>{{item.posicion}}</b></p>
+            </ion-col>
+            <ion-col col-6>
+              <p style = 'text-align: left;'>{{item.participante}}</p>
+            </ion-col>
+            <ion-col>
+              <p style = 'text-align: center;'>{{item.puntos}}</p>
+            </ion-col>
+         </ion-row>
+        </div>
+      </ion-content>
+    </ion-grid>
+
+  </div>
+</div>
+
 </ion-content>
+
 
