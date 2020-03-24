@@ -31,7 +31,9 @@ export class JornadaJuegoFormulaUnoPage {
                               participanteId: number[];
                              };
 
-  TablaClasificacionJornadaSeleccionada: TablaClasificacionJornada[];
+  clasificacionJornadaSeleccionada: TablaClasificacionJornada[];
+
+  jornadaSeleccionada: TablaJornadas;
 
   // Columnas Tabla
   displayedColumns: string[] = ['posicion', 'participante', 'puntos'];
@@ -44,71 +46,22 @@ export class JornadaJuegoFormulaUnoPage {
               private http: HttpClient,
               private calculos: CalculosProvider,
               private sesion: SesionProvider,
-              private peticionesApi: PeticionesApiProvider) { }
+              private peticionesApi: PeticionesApiProvider) {
+    this.clasificacionJornadaSeleccionada = navParams.get('clasificacionJornadaSeleccionada');
+    this.jornadaSeleccionada = navParams.get('jornadaSeleccionada');
+    this.juegoSeleccionado = navParams.get('juegoSeleccionado');
+    console.log('Estoy en jornada juego formula uno');
+    console.log('Tabla clasificación jornada');
+    console.log(this.clasificacionJornadaSeleccionada);
+    console.log('jornada seleccionada');
+    console.log(this.jornadaSeleccionada);
+  }
 
 
 
   //Se realizarán las siguiente tareas al inicializar la página.
   ionViewDidLoad() {
-    console.log('Estoy en ngOnInit de información formula uno');
-    this.juegoSeleccionado = this.sesion.DameJuego();
-    this.numeroTotalJornadas = this.juegoSeleccionado.NumeroTotalJornadas;
-    console.log('Juego seleccionado: ');
-    console.log(this.juegoSeleccionado);
-    console.log('Número total de jornadas: ');
-    console.log(this.numeroTotalJornadas);
-    const datos = this.sesion.DameDatosJornadas();
-    this.JornadasCompeticion = datos.JornadasCompeticion;
-    this.listaAlumnosClasificacion = this.sesion.DameTablaAlumnoJuegoDeCompeticion();
-    console.log('tabla alumnos clasificación:');
-    console.log(this.listaAlumnosClasificacion);
-    this.listaEquiposClasificacion = this.sesion.DameTablaEquipoJuegoDeCompeticion();
-    console.log('tabla equipos clasificación:');
-    console.log(this.listaEquiposClasificacion);
-  }
-
-  ObtenerEnfrentamientosDeCadaJornada(jornadaSeleccionada: TablaJornadas) {
-    console.log('El id de la jornada seleccionada es: ' + jornadaSeleccionada.id);
-    if (jornadaSeleccionada.GanadoresFormulaUno === undefined) {
-      this.datosClasificacionJornada = this.calculos.ClasificacionJornada(this.juegoSeleccionado, this.listaAlumnosClasificacion,
-                                                     this.listaEquiposClasificacion, undefined, undefined);
-    } else {
-      this.datosClasificacionJornada = this.calculos.ClasificacionJornada(this.juegoSeleccionado, this.listaAlumnosClasificacion,
-                                                     this.listaEquiposClasificacion, jornadaSeleccionada.GanadoresFormulaUno.nombre,
-                                                     jornadaSeleccionada.GanadoresFormulaUno.id);
-    }
-    // console.log(this.datosClasificaciónJornada.participante);
-    // console.log(this.datosClasificaciónJornada.puntos);
-    // console.log(this.datosClasificaciónJornada.posicion);
-    this.ConstruirTablaClasificaciónJornada();
-  }
-
-  ConstruirTablaClasificaciónJornada() {
-    console.log ('Aquí tendré la tabla de clasificación, los participantes ordenados son:');
-    console.log(this.datosClasificacionJornada.participante);
-    console.log(this.datosClasificacionJornada.puntos);
-    console.log(this.datosClasificacionJornada.posicion);
-    console.log('ParticipanteId:');
-    console.log(this.datosClasificacionJornada.participanteId);
-    this.TablaClasificacionJornadaSeleccionada = this.calculos.PrepararTablaRankingJornadaFormulaUno(this.datosClasificacionJornada);
-    // this.dataSourceClasificacionJornada = new MatTableDataSource(this.TablaClasificacionJornadaSeleccionada);
-    console.log('TablaClasificacionJornadaSeleccionada:');
-    console.log(this.TablaClasificacionJornadaSeleccionada);
-  }
-
-  JornadaFinalizada(jornadaSeleccionada: TablaJornadas) {
-    const jornadaFinalizada = this.calculos.JornadaFinalizada(this.juegoSeleccionado, jornadaSeleccionada);
-    if (jornadaFinalizada === true) {
-      this.botonResultadosDesactivado = true;
-    } else {
-      this.botonResultadosDesactivado = false;
-    }
-    return jornadaFinalizada;
-  }
-
-  resultadosJornada(jornada: TablaJornadas) {
-    console.log('Estoy en resultadosJornada');
-    console.log(jornada);
+    console.log('Bienvenido a la página jornada juego fórmula uno ');
   }
 
 }

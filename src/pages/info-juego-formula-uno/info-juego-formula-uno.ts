@@ -6,6 +6,8 @@ import {PeticionesApiProvider} from '../../providers/peticiones-api/peticiones-a
 import { CalculosProvider } from '../../providers/calculos/calculos';
 import { SesionProvider } from '../../providers/sesion/sesion';
 
+import {JornadaJuegoFormulaUnoPage} from '../jornada-juego-formula-uno/jornada-juego-formula-uno';
+
 // Importamos las clases necesarias
 import { Juego, Jornada, TablaAlumnoJuegoDeCompeticion, TablaEquipoJuegoDeCompeticion, TablaJornadas, TablaClasificacionJornada } from '../../clases/index';
 
@@ -44,7 +46,7 @@ export class InfoJuegoFormulaUnoPage {
               private http: HttpClient,
               private calculos: CalculosProvider,
               private sesion: SesionProvider,
-              private peticionesApi: PeticionesApiProvider) { }
+              private peticionesApi: PeticionesApiProvider) {}
 
 
 
@@ -109,6 +111,12 @@ export class InfoJuegoFormulaUnoPage {
   resultadosJornada(jornada: TablaJornadas) {
     console.log('Estoy en resultadosJornada');
     console.log(jornada);
+    this.ObtenerEnfrentamientosDeCadaJornada(jornada);
+    console.log('this.TablaClasificacionJornadaSeleccionada');
+    console.log(this.TablaClasificacionJornadaSeleccionada);
+    this.navCtrl.push (JornadaJuegoFormulaUnoPage,{clasificacionJornadaSeleccionada: this.TablaClasificacionJornadaSeleccionada,
+                                                   jornadaSeleccionada: jornada,
+                                                   juegoSeleccionado: this.juegoSeleccionado});
   }
 
 }

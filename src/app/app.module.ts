@@ -33,7 +33,8 @@ import { SesionProvider } from '../providers/sesion/sesion';
 import { CalculosProvider } from '../providers/calculos/calculos';
 import { InfoJuegoLigaPageModule } from '../pages/info-juego-liga/info-juego-liga.module';
 import { SeleccionarGanadorLigaPageModule } from '../pages/Seleccionar-ganador-liga/Seleccionar-ganador-liga.module';
-import { InfoJuegoFormulaUnoPageModule } from '../pages/info-juego-formula-uno/info-juego-formula-uno.module'
+import { InfoJuegoFormulaUnoPageModule } from '../pages/info-juego-formula-uno/info-juego-formula-uno.module';
+import { JornadaJuegoFormulaUnoPageModule } from '../pages/jornada-juego-formula-uno/jornada-juego-formula-uno.module'
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { InfoJuegoFormulaUnoPageModule } from '../pages/info-juego-formula-uno/i
     AsignarCromosPageModule,
     InfoJuegoLigaPageModule,
     SeleccionarGanadorLigaPageModule,
-    InfoJuegoFormulaUnoPageModule
+    InfoJuegoFormulaUnoPageModule,
+    JornadaJuegoFormulaUnoPageModule
 
   ],
   bootstrap: [IonicApp],
