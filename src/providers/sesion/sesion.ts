@@ -209,4 +209,13 @@ public TomaInscripcionEquipo(inscripcionEquipo: any) {
 public DameInscripcionEquipo(): any {
   return this.inscripcionEquipo;
 }
+
+public TomaJuegosDePuntos(juegosActivos: Juego[]) {
+  this.JuegosDePuntosActivos = juegosActivos;
+}
+
+public DameJuegosDePuntosActivos(): Juego[] {
+  const juegosActivosPuntos = this.JuegosDePuntosActivos ;
+  return juegosActivosPuntos;
+}
 }

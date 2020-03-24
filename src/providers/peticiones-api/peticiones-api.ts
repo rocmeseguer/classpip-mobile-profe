@@ -500,4 +500,21 @@ export class PeticionesApiProvider {
     return this.http.get<EquipoJuegoDeCompeticionFormulaUno[]>(this.APIUrlEquipoJuegoDeCompeticionFormulaUno
                                                       + '?filter[where][JuegoDeCompeticionFormulaUnoId]=' + juegoDeCompeticionFormulaUnoId);
   }
+
+  public PonGanadoresJornadasDeCompeticionFormulaUno(jornada: Jornada): Observable<Jornada> {
+    return this.http.put<Jornada>('http://localhost:3000/api/JornadasDeCompeticionFormulaUno/' + jornada.id, jornada);
+  }
+
+  // tslint:disable-next-line:max-line-length
+  public PonPuntosAlumnosGanadoresJornadasDeCompeticionFormulaUno(alumno: AlumnoJuegoDeCompeticionFormulaUno): Observable<AlumnoJuegoDeCompeticionFormulaUno> {
+    // tslint:disable-next-line:max-line-length
+    return this.http.put<AlumnoJuegoDeCompeticionFormulaUno>('http://localhost:3000/api/AlumnosJuegoDeCompeticionFormulaUno/' + alumno.id, alumno);
+  }
+
+   // tslint:disable-next-line:max-line-length
+   public PonPuntoEquiposGanadoresJornadasDeCompeticionFormulaUno(equipo: EquipoJuegoDeCompeticionFormulaUno): Observable<EquipoJuegoDeCompeticionFormulaUno> {
+    // tslint:disable-next-line:max-line-length
+    return this.http.put<EquipoJuegoDeCompeticionFormulaUno>('http://localhost:3000/api/EquiposJuegoDeCompeticionFormulaUno/' + equipo.id, equipo);
+  }
+
 }

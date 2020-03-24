@@ -11,6 +11,7 @@ import { MisCromosActualesPage } from '../mis-cromos-actuales/mis-cromos-actuale
 import { InfoJuegoLigaPage } from '../info-juego-liga/info-juego-liga';
 import { SeleccionarGanadorLigaPage } from '../Seleccionar-ganador-liga/Seleccionar-ganador-liga';
 import { InfoJuegoFormulaUnoPage } from '../info-juego-formula-uno/info-juego-formula-uno';
+import { SeleccionarGanadorFormulaUnoPage } from '../Seleccionar-ganador-formula-uno/Seleccionar-ganador-formula-uno';
 
 //Importamos las clases necesarias
 import {PeticionesApiProvider} from '../../providers/peticiones-api/peticiones-api';
@@ -65,9 +66,9 @@ export class JuegoSeleccionadoPage  {
    rankingEquiposJuegoDePuntos: any[] = [];
    rankingEquiposJuegoDePuntosTotal: any[] = [];
 
-   // Recoge las jornadas del Juego de Fórmula Uno
-   jornadasF1: Jornada[];
-
+  // Recoge las jornadas del Juego de Fórmula Uno
+  jornadasF1: Jornada[];
+  juegosActivosPuntos: Juego[] = [];
   JornadasCompeticion: TablaJornadas[] = [];
 
   // Muestra la posición del alumno, el nombre y los apellidos del alumno y los puntos
@@ -137,7 +138,7 @@ export class JuegoSeleccionadoPage  {
     if (this.juegoSeleccionado.Tipo === 'Juego De Competición Liga') {
       console.log('Vamos a por las jornadas');
       this.DameJornadasDelJuegoDeCompeticionSeleccionado();
-      // this.DameJuegosdePuntosActivos();
+      this.DameJuegosdePuntosActivos();
     }
 
     if (this.juegoSeleccionado.Tipo === 'Juego De Competición Fórmula Uno') {
@@ -151,6 +152,7 @@ export class JuegoSeleccionadoPage  {
         this.EquiposDelJuegoFormulaUno();
       }
       this.DameJornadasDelJuegoDeCompeticionSeleccionadoF1();
+      this.DameJuegosdePuntosActivos();
     }
   }
 
@@ -791,6 +793,7 @@ getItems1(ev: any) {
       this.sesion.TomaTablaEquipoJuegoDeCompeticion(this.rankingEquiposJuegoDeCompeticion);
       this.sesion.TomaInscripcionAlumno(this.listaAlumnosOrdenadaPorPuntos);
       this.sesion.TomaInscripcionEquipo(this.listaEquiposOrdenadaPorPuntos);
+      this.sesion.TomaJuegosDePuntos(this.juegosActivosPuntos);
       this.navCtrl.push (SeleccionarGanadorLigaPage,{juego:juego});
     }
 
@@ -801,5 +804,42 @@ getItems1(ev: any) {
           console.log('Las jornadas son: ');
           console.log(this.jornadasF1);
         });
+    }
+
+    DameJuegosdePuntosActivos() {
+      this.peticionesApi.DameJuegoDePuntosGrupo(this.juegoSeleccionado.grupoId)
+      .subscribe(juegosPuntos => {
+        // tslint:disable-next-line:prefer-for-of
+        for (let i = 0; i < juegosPuntos.length; i++) {
+          if (juegosPuntos[i].JuegoActivo === true) {
+            this.juegosActivosPuntos.push(juegosPuntos[i]);
+          }
+        }
+      });
+      console.log('Juegos disponibles');
+      console.log(this.juegosActivosPuntos);
+      return this.juegosActivosPuntos;
+
+    }
+
+    seleccionarGanadorFormulaUno(juego: any): void {
+      console.log('Aquí estará el proceso para elegir el ganador');
+      console.log ('Voy a por la información del juego seleccionado');
+      this.sesion.TomaJuego (this.juegoSeleccionado);
+      console.log (this.juegoSeleccionado);
+      console.log (this.jornadasF1);
+      console.log (this.rankingIndividualFormulaUno);
+      console.log (this.rankingEquiposFormulaUno);
+      this.JornadasCompeticion = this.calculos.DameTablaJornadasCompeticion(this.juegoSeleccionado, this.jornadasF1,
+                                                                            this.rankingIndividualFormulaUno, this.rankingEquiposFormulaUno);
+      console.log ('Voy a por la información de las jornadas del juego');
+      this.sesion.TomaDatosJornadas(this.jornadasF1,
+                                    this.JornadasCompeticion);
+      this.sesion.TomaTablaAlumnoJuegoDeCompeticion(this.rankingIndividualFormulaUno);
+      this.sesion.TomaTablaEquipoJuegoDeCompeticion(this.rankingEquiposFormulaUno);
+      this.sesion.TomaInscripcionAlumno(this.listaAlumnosOrdenadaPorPuntos);
+      this.sesion.TomaInscripcionEquipo(this.listaEquiposOrdenadaPorPuntos);
+      this.sesion.TomaJuegosDePuntos(this.juegosActivosPuntos);
+      this.navCtrl.push (SeleccionarGanadorFormulaUnoPage,{juego:juego});
     }
 }
