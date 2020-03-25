@@ -61,33 +61,32 @@
 
   <div *ngIf="juegoSeleccionado.Modo === 'Individual' && jornadaSeleccionada !== undefined" padding>
 
-      <!-- <ion-grid no-padding
+      <ion-grid no-padding>
 
 
-          Se define la cabecera de la tabla que recoge los alumnos del juego
+
           <ion-row class="cabecera" >
-            <ion-col col-3 style="margin-top:3%; margin-left:-5%">
+            <ion-col col-3 style="margin-left:0%">
               <p >Alumno 1</p>
             </ion-col>
-            <ion-col col-6 style="margin-top:3%; margin-left:-8%" >
+            <ion-col col-6 style="margin-left:10%" >
               <p >Alumno 2</p>
             </ion-col>
-            <ion-col col-3 style="margin-left:-26%">
-              <p>Empate</p>
+            <ion-col col-3 style="margin-left:-15%">
+              <p>Ganador</p>
             </ion-col>
           </ion-row>
 
-          Se define el contenido de la tabla que recoge los alumnos del juego
           <ion-content id="fondo">
             <div style="margin-top: -6%">
                 <ion-row class="casillas" *ngFor="let EnfrentamientoLiga of EnfrentamientosJornadaSeleccionada"  >
-                    <ion-col col-3 style="margin-top:3%">
+                    <ion-col col-3 style="margin-top:3%;margin-left:-5%">
                       <p >{{EnfrentamientoLiga.nombreJugadorUno}}</p>
                     </ion-col>
-                    <ion-col col-7 style="margin-left: -9%">
+                    <ion-col col-7 style="margin-top:3%;margin-left: 10%">
                       <p >{{EnfrentamientoLiga.nombreJugadorDos}}</p>
                     </ion-col>
-                    <ion-col col-2 style="margin-top:3%;margin-left: -29%">
+                    <ion-col col-2 style="margin-top:3%;margin-left: -15%">
                       <p >{{EnfrentamientoLiga.nombreGanador}}</p>
                     </ion-col>
                 </ion-row>
@@ -95,7 +94,48 @@
 
           </ion-content>
 
-      </ion-grid> -->
+      </ion-grid>
+
+
+
+  </div>
+
+  <div *ngIf="juegoSeleccionado.Modo !== 'Individual' && jornadaSeleccionada !== undefined" padding>
+
+    <ion-grid no-padding>
+
+
+
+        <ion-row class="cabecera" >
+          <ion-col col-3 style="margin-left:0%">
+            <p >Equipo 1</p>
+          </ion-col>
+          <ion-col col-6 style="margin-left:10%" >
+            <p >Equipo 2</p>
+          </ion-col>
+          <ion-col col-3 style="margin-left:-15%">
+            <p>Ganador</p>
+          </ion-col>
+        </ion-row>
+
+        <ion-content id="fondo">
+          <div style="margin-top: -6%">
+              <ion-row class="casillas" *ngFor="let EnfrentamientoLiga of EnfrentamientosJornadaSeleccionada"  >
+                  <ion-col col-3 style="margin-top:3%;margin-left:-5%">
+                    <p >{{EnfrentamientoLiga.nombreJugadorUno}}</p>
+                  </ion-col>
+                  <ion-col col-7 style="margin-top:3%;margin-left: 10%">
+                    <p >{{EnfrentamientoLiga.nombreJugadorDos}}</p>
+                  </ion-col>
+                  <ion-col col-2 style="margin-top:3%;margin-left: -15%">
+                    <p >{{EnfrentamientoLiga.nombreGanador}}</p>
+                  </ion-col>
+              </ion-row>
+          </div>
+
+        </ion-content>
+
+    </ion-grid>
 
 
 

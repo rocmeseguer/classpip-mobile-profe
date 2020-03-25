@@ -35,7 +35,6 @@ import { InfoJuegoLigaPageModule } from '../pages/info-juego-liga/info-juego-lig
 import { SeleccionarGanadorLigaPageModule } from '../pages/Seleccionar-ganador-liga/Seleccionar-ganador-liga.module';
 import { InfoJuegoFormulaUnoPageModule } from '../pages/info-juego-formula-uno/info-juego-formula-uno.module';
 import { SeleccionarGanadorFormulaUnoPageModule } from '../pages/Seleccionar-ganador-formula-uno/Seleccionar-ganador-formula-uno.module';
-import { InfoJuegoFormulaUnoPageModule } from '../pages/info-juego-formula-uno/info-juego-formula-uno.module';
 import { JornadaJuegoFormulaUnoPageModule } from '../pages/jornada-juego-formula-uno/jornada-juego-formula-uno.module'
 
 @NgModule({
@@ -65,8 +64,7 @@ import { JornadaJuegoFormulaUnoPageModule } from '../pages/jornada-juego-formula
     InfoJuegoLigaPageModule,
     SeleccionarGanadorLigaPageModule,
     InfoJuegoFormulaUnoPageModule,
-    SeleccionarGanadorFormulaUnoPageModule
-    InfoJuegoFormulaUnoPageModule,
+    SeleccionarGanadorFormulaUnoPageModule,
     JornadaJuegoFormulaUnoPageModule
 
   ],

@@ -124,40 +124,52 @@ export class SeleccionarGanadorFormulaUnoPage {
 
   ActualizarBoton() {
     console.log('Estoy en actualizar botón');
-    if (this.jornadaSeleccionada !== undefined) {
+    console.log(this.jornadaSeleccionada);
+    console.log(this.juegodePuntosSeleccionadoID);
+    console.log(this.botonAsignarAleatorioDesactivado);
+    console.log(this.botonAsignarJuegoDesactivado);
+    if (this.jornadaSeleccionada !== undefined && this.juegodePuntosSeleccionadoID !== undefined) {
+      console.log('Estoy en actualizar botón modo juego');
       this.botonAsignarAleatorioDesactivado = false;
       this.botonAsignarJuegoDesactivado = false;
+       // tslint:disable-next-line:prefer-for-of
+       for (let i = 0; i < this.juegosActivosPuntosModo.length; i++) {
+        console.log('Entro en el for');
+        console.log(this.juegosActivosPuntosModo[i].id);
+        console.log(this.juegodePuntosSeleccionadoID);
+        console.log(this.juegosActivosPuntosModo[i].id === Number(this.juegodePuntosSeleccionadoID));
+        if (this.juegosActivosPuntosModo[i].id === Number(this.juegodePuntosSeleccionadoID)) {
+        console.log('Entro en el if');
+        console.log(this.juegosActivosPuntosModo[i].Modo);
+          // Vamos a buscar a los alumnos o equipos con sus repectivos puntos
+        if (this.juegosActivosPuntosModo[i].Modo === 'Individual') {
+            this.NumeroDeJuegoDePuntos = i;
+            this.RecuperarInscripcionesAlumnoJuego();
+            console.log(this.listaAlumnosOrdenadaPorPuntosJuegoDePuntos);
+          } else {
+            this.NumeroDeJuegoDePuntos = i;
+            this.RecuperarInscripcionesEquiposJuego();
+            console.log(this.listaEquiposOrdenadaPorPuntosJuegoDePuntos);
+          }
+        console.log('Alumnos');
+        console.log(this.listaAlumnosOrdenadaPorPuntosJuegoDePuntos);
+        console.log('Equipo');
+        console.log(this.listaEquiposOrdenadaPorPuntosJuegoDePuntos);
+        }
+      }
+      this.TieneGanadores(this.jornadaId);
+      this.ObtenerClasificaciónDeCadaJornada();
+
+    } else if (this.jornadaSeleccionada !== undefined) {
+      console.log('Estoy en actualizar botón modo alea');
+      this.botonAsignarAleatorioDesactivado = false;
+      this.botonAsignarJuegoDesactivado = true;
       this.jornadaId = this.jornadaSeleccionada;
+      this.TieneGanadores(this.jornadaId);
+      this.ObtenerClasificaciónDeCadaJornada();
       console.log(this.juegosActivosPuntosModo);
       console.log(this.juegodePuntosSeleccionadoID);
 
-        // tslint:disable-next-line:prefer-for-of
-        for (let i = 0; i < this.juegosActivosPuntosModo.length; i++) {
-          console.log('Entro en el for');
-          console.log(this.juegosActivosPuntosModo[i].id);
-          console.log(this.juegodePuntosSeleccionadoID);
-          console.log(this.juegosActivosPuntosModo[i].id === Number(this.juegodePuntosSeleccionadoID));
-          if (this.juegosActivosPuntosModo[i].id === Number(this.juegodePuntosSeleccionadoID)) {
-          console.log('Entro en el if');
-          console.log(this.juegosActivosPuntosModo[i].Modo);
-            // Vamos a buscar a los alumnos o equipos con sus repectivos puntos
-          if (this.juegosActivosPuntosModo[i].Modo === 'Individual') {
-              this.NumeroDeJuegoDePuntos = i;
-              this.RecuperarInscripcionesAlumnoJuego();
-              console.log(this.listaAlumnosOrdenadaPorPuntosJuegoDePuntos);
-            } else {
-              this.NumeroDeJuegoDePuntos = i;
-              this.RecuperarInscripcionesEquiposJuego();
-              console.log(this.listaEquiposOrdenadaPorPuntosJuegoDePuntos);
-            }
-          console.log('Alumnos');
-          console.log(this.listaAlumnosOrdenadaPorPuntosJuegoDePuntos);
-          console.log('Equipo');
-          console.log(this.listaEquiposOrdenadaPorPuntosJuegoDePuntos);
-          }
-        }
-      this.TieneGanadores(this.jornadaId);
-      this.ObtenerClasificaciónDeCadaJornada();
     }
   }
 

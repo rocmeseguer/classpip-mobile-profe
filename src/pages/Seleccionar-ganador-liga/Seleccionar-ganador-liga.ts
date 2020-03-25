@@ -272,10 +272,10 @@ export class SeleccionarGanadorLigaPage {
 
   ActualizarBoton() {
     console.log('Estoy en actualizar botón');
-    if (this.jornadaSeleccionada !== undefined) {
-      this.botonAsignarAleatorioDesactivado = false;
-      this.botonAsignarJuegoDesactivado = false;
+    if (this.jornadaSeleccionada !== undefined && this.juegodePuntosSeleccionadoID !== undefined ) {
       for (let i = 0; i < this.juegosActivosPuntosModo.length; i++) {
+        this.botonAsignarAleatorioDesactivado = false;
+        this.botonAsignarJuegoDesactivado = false;
         console.log('Entro en el for');
         console.log(this.juegosActivosPuntosModo[i].id);
         console.log(this.juegodePuntosSeleccionadoID);
@@ -299,6 +299,11 @@ export class SeleccionarGanadorLigaPage {
         console.log(this.listaEquiposOrdenadaPorPuntos);
         }
       }
+      this.ObtenerEnfrentamientosDeCadaJornada();
+
+    } else if (this.jornadaSeleccionada !== undefined) {
+      this.botonAsignarAleatorioDesactivado = false;
+      this.botonAsignarJuegoDesactivado = true;
       this.ObtenerEnfrentamientosDeCadaJornada();
     }
   }

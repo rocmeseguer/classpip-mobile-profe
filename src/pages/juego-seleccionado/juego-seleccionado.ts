@@ -842,4 +842,45 @@ getItems1(ev: any) {
       this.sesion.TomaJuegosDePuntos(this.juegosActivosPuntos);
       this.navCtrl.push (SeleccionarGanadorFormulaUnoPage,{juego:juego});
     }
+
+    //   //Función correspondiente al ion-searchbar que nos permitirá visualizar los alumnos que
+  // //tengas las caracteristicas definidas en el filtro
+  getItemsIndividualLiga(ev: any) {
+    // Reset items back to all of the items
+    this.fijarItems(this.itemsAPI);
+    console.log ('filtro con ')
+    console.log(this.itemsAPI);
+    console.log(ev);
+    // set val to the value of the searchbar
+    let val = ev.target.value;
+    if (val && val.trim() !== '') {
+      this.items = this.items.filter(function(item) {
+      return (item.Nombre.toLowerCase().includes(val.toLowerCase())||
+      item.PrimerApellido.toLowerCase().includes(val.toLowerCase())||
+      item.SegundoApellido.toLowerCase().includes(val.toLowerCase()));
+      });
+      console.log(this.items);
+      this.rankingAlumnoJuegoDeCompeticion = this.items;
+    } else {
+      this.rankingAlumnoJuegoDeCompeticion = this.itemsAPI;
+    }
+  }
+
+  //Función correspondiente al ion-searchbar que nos permitirá visualizar los equipos que
+  //tengan las caracteristicas definidas en el filtro
+  getItemsEquipoLiga(ev: any) {
+    // Reset items back to all of the items
+    this.fijarItems(this.itemsAPI);
+    // set val to the value of the searchbar
+    let val = ev.target.value;
+
+    if (val && val.trim() !== '') {
+      this.items = this.items.filter(function(item) {
+      return (item.Nombre.toLowerCase().includes(val.toLowerCase()));
+      });
+      this.rankingEquiposJuegoDeCompeticion = this.items;
+    } else {
+      this.rankingEquiposJuegoDeCompeticion = this.itemsAPI;
+    }
+  }
 }
