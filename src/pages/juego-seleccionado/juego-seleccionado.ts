@@ -103,6 +103,24 @@ export class JuegoSeleccionadoPage  {
       // el tipo de puntos que esté en ese momento seleccionado
       this.MostrarRankingSeleccionado();
     }
+
+    if (this.juegoSeleccionado.Tipo === 'Juego De Competición Liga') {
+      console.log('Vamos a por las jornadas');
+      this.DameJornadasDelJuegoDeCompeticionSeleccionado();
+    }
+
+    if (this.juegoSeleccionado.Tipo === 'Juego De Competición Fórmula Uno') {
+      console.log('El juego seleccionado es: ');
+      console.log(this.juegoSeleccionado);
+      if (this.juegoSeleccionado.Modo === 'Individual') {
+        console.log('Estoy en juego individual');
+        this.AlumnosDelJuegoFormulaUno();
+      } else {
+        console.log('Estoy en juego equipos');
+        this.EquiposDelJuegoFormulaUno();
+      }
+      this.DameJornadasDelJuegoDeCompeticionSeleccionadoF1();
+    }
   }
   //Se realizarán las siguiente tareas al inicializar la página.
   ionViewDidLoad() {

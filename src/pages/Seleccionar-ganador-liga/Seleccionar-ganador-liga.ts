@@ -396,7 +396,8 @@ export class SeleccionarGanadorLigaPage {
       if (Resultados !== '' && Asignados === 'os enfrentamientos: ') {
         console.log('La lista de enfrentamientos actualizados queda: ');
         console.log(listaEnfrentamientosActualizados);
-        console.log('Los Resultados son: ' + Resultados);
+        console.log('Los Resultados son: ');
+        console.log(Resultados);
         swal(Resultados, 'Estos son los resultados', 'success');
       } else if (Resultados === '' && Asignados !== '') {
         swal('L' + Asignados + ' ya tienen asignado un gandaor',
