@@ -196,10 +196,10 @@ export class SeleccionarGanadorLigaPage {
       console.log('La lista de enfrentamientos actualizados queda: ');
       console.log(listaEnfrentamientosActualizados);
       console.log('Los Resultados son: ' + Resultados);
-      swal(Resultados, 'Estos son los resultados', 'success');
+      swal('Resultados asignados', ' Enhorabuena', 'success');
     } else if (Resultados === '' && Asignados !== '') {
-      swal('L' + Asignados + ' ya tienen asignado un gandaor',
-      'No se ha podido asignar ganador a estos enfrentamientos', 'error');
+      swal('Los enfrentamientos ya tienen asignado un gandaor',
+      '', 'error');
     } else if (Resultados !== '' && Asignados !== '') {
       swal(Resultados, 'No se ha podido asignar ganador a l' + Asignados + 'porque ya tienen asignado un gandaor. ',
                 'success');
@@ -400,8 +400,8 @@ export class SeleccionarGanadorLigaPage {
         console.log(Resultados);
         swal(Resultados, 'Estos son los resultados', 'success');
       } else if (Resultados === '' && Asignados !== '') {
-        swal('L' + Asignados + ' ya tienen asignado un gandaor',
-        'No se ha podido asignar ganador a estos enfrentamientos', 'error');
+        swal('Los enfrentamientos ya tienen asignado un gandaor',
+        '', 'error');
       } else if (Resultados !== '' && Asignados !== '') {
         swal(Resultados, 'No se ha podido asignar ganador a l' + Asignados + 'porque ya tienen asignado un gandaor. ',
                   'success');
@@ -487,8 +487,8 @@ export class SeleccionarGanadorLigaPage {
         console.log('Los Resultados son: ' + Resultados);
         swal(Resultados, 'Estos son los resultados', 'success');
       } else if (Resultados === '' && Asignados !== '') {
-        swal('L' + Asignados + ' ya tienen asignado un gandaor',
-        'No se ha podido asignar ganador a estos enfrentamientos', 'error');
+        swal('Los enfrentamientos ya tienen asignado un gandaor',
+        '', 'error');
       } else if (Resultados !== '' && Asignados !== '') {
         swal(Resultados, 'No se ha podido asignar ganador a l' + Asignados + 'porque ya tienen asignado un gandaor. ',
                   'success');
