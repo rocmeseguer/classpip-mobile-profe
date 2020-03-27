@@ -25,6 +25,8 @@ import {AlumnoJuegoDeCompeticionLiga} from '../../clases/AlumnoJuegoDeCompeticio
 import {EquipoJuegoDeCompeticionLiga} from '../../clases/EquipoJuegoDeCompeticionLiga';
 import {InformacionPartidosLiga} from '../../clases/InformacionPartidosLiga';
 import {TablaJornadas} from '../../clases/TablaJornadas';
+import {JornadaJuegoLigaPage} from '../jornada-juego-liga/jornada-juego-liga';
+import {JornadaJuegoFormulaUnoPage} from '../jornada-juego-formula-uno/jornada-juego-formula-uno';
 
 //Importamos las clases necesarias
 import { Punto, Juego, Alumno, Equipo} from '../../clases/index';
@@ -288,18 +290,22 @@ export class JuegoSeleccionadoPage  {
     }
   }
 
-  irInformacionF1() {
-    console.log ('Aquí estará la información del juego');
-    console.log ('Voy a pasar la información del juego seleccionado');
+  irInformacionF1(juego: any) {
+    console.log('Aquí estará el proceso para elegir el ganador');
+    console.log ('Voy a por la información del juego seleccionado');
     this.sesion.TomaJuego (this.juegoSeleccionado);
+    console.log (this.juegoSeleccionado);
+    console.log (this.jornadasF1);
+    console.log (this.rankingIndividualFormulaUno);
+    console.log (this.rankingEquiposFormulaUno);
     this.JornadasCompeticion = this.calculos.DameTablaJornadasCompeticion(this.juegoSeleccionado, this.jornadasF1,
                                                                           this.rankingIndividualFormulaUno, this.rankingEquiposFormulaUno);
-    console.log ('Voy a pasar la información de las jornadas del juego');
+    console.log ('Voy a por la información de las jornadas del juego');
     this.sesion.TomaDatosJornadas(this.jornadasF1,
                                   this.JornadasCompeticion);
     this.sesion.TomaTablaAlumnoJuegoDeCompeticion(this.rankingIndividualFormulaUno);
     this.sesion.TomaTablaEquipoJuegoDeCompeticion(this.rankingEquiposFormulaUno);
-    this.navCtrl.push (InfoJuegoFormulaUnoPage);
+    this.navCtrl.push (JornadaJuegoFormulaUnoPage,{juego:juego});
   }
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -517,30 +523,18 @@ export class JuegoSeleccionadoPage  {
 
   //Función que permite redirigirte a la página de información de juego de puntos o juego de coleccion
   irInformacion(juego: any) {
-    if (this.juegoSeleccionado.Tipo === 'Juego De Puntos') {
-      console.log ('Accediendo a Información de Juego de Puntos');
-      this.navCtrl.push (InfoJuegoPuntosPage,{juego:juego});
-      }
-      else if (this.juegoSeleccionado.Tipo === 'Juego De Colección') {
-      console.log ('Accediendo a Información de Juego de Colecciones');
-      this.ColeccionDelJuego();
-      this.navCtrl.push (MisCromosPage,{coleccion:this.coleccion});
-      } else if (this.juegoSeleccionado.Tipo === 'Juego De Competición Liga') {
-        console.log ('Voy a pasar la información del juego de liga');
-        this.sesion.TomaJuego (this.juegoSeleccionado);
-        console.log('Tomo las jornadas' + this.jornadas);
-        console.log('Los enfrentamientos del juego son: ');
-        console.log(this.enfrentamientosDelJuego);
-        this.JornadasCompeticion = this.calculos.DameTablaJornadasLiga(this.juegoSeleccionado, this.jornadas, this.enfrentamientosDelJuego);
-        console.log('Las tablas JornadasCompeticionLiga son: ');
-        console.log(this.JornadasCompeticion);
-        console.log ('Voy a pasar la información de las jornadas del juego');
-        this.sesion.TomaDatosJornadas(this.jornadas,
-                                      this.JornadasCompeticion);
-        this.sesion.TomaTablaAlumnoJuegoDeCompeticion(this.rankingAlumnoJuegoDeCompeticion);
-        this.sesion.TomaTablaEquipoJuegoDeCompeticion(this.rankingEquiposJuegoDeCompeticion);
-        this.navCtrl.push (InfoJuegoLigaPage,{juego:juego});
-      }
+    console.log('Aquí estará el proceso para elegir el ganador');
+    console.log ('Voy a por la información del juego seleccionado');
+    this.sesion.TomaJuego (this.juegoSeleccionado);
+    console.log('Tomo las jornadas' + this.jornadas);
+    this.JornadasCompeticion = this.calculos.DameTablaJornadasCompeticion( this.juegoSeleccionado, this.jornadas, undefined, undefined);
+    console.log ('Voy a por la información de las jornadas del juego');
+    this.sesion.TomaDatosJornadas(this.jornadas,
+                                  this.JornadasCompeticion);
+    this.sesion.TomaTablaAlumnoJuegoDeCompeticion(this.rankingAlumnoJuegoDeCompeticion);
+    this.sesion.TomaTablaEquipoJuegoDeCompeticion(this.rankingEquiposJuegoDeCompeticion);
+    this.navCtrl.push (JornadaJuegoLigaPage,{juego:juego});
+
 }
 
 AsignarPuntos(juego: any) {
