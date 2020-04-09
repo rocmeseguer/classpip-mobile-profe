@@ -6,34 +6,37 @@
 
 Classpip is a software architecture for teachers and students to perform school gamification activities inside the school environment through different platforms such as mobiles, tablets and computers.
 
-The software architecture is composed by a mobile application for performing “quick” class activities oriented to teachers and students. For “long” operations such as deep into reports and setup the platform there is an administration dashboard accessible from every computer. These two pieces shares the information through a service-oriented architecture that exposes the main methods for data manipulation.
+The software architecture is composed by two mobile applications for performing “quick” class activities oriented to teachers and students. For “long” operations such as deep into reports and setup the platform there is an administration dashboard accessible from every computer. These three pieces share the information through a service-oriented architecture that exposes the main methods for data manipulation.
 
 ![classpip-arch](https://github.com/classpip/classpip/raw/master/images/project-architecture.png)
 
+# Mobile-profe
+
+This repository contains the mobile application for teachers.
+
+
 ## Global dependencies
 
-Make sure you have NodeJS installed. Download the installer [here](https://nodejs.org/dist/latest-v8.x/) or use your favorite package manager. It's best to get the 8x version of node along with the 5x version of npm. This offers the best in stability and speed for building.
+You need to install NodeJS v10.13.0. This will install also npm (Node Package Manager). Check that you have the correc NodeJS version:
 
-```
 node -v
-> v8.6.0
-npm -v
-> 5.6.0
-```
+> v10.13.0
 
-Ahora no se que versión recomendamos instalar. 
+Install also ionic and cordova:
+
 ```
-npm install -g ionic@????
-npm install -g cordova@????
+npm install -g ionic@~4.6.0
+npm install -g cordova@~8.1.2
 ```
+Check that you have the correct versions:
+
+npm list -g -depth=0
 
 ## Local dependencies
 
-All the project dependencies are manage through [npmjs](https://www.npmjs.com/). This command will also download the typings configured in the **typings.json** file. To install this dependencies you should run:
+After cloning this repository you must install the local dependencies:
 
-```
 npm install
-```
 
 
 ## License
