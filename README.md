@@ -30,14 +30,18 @@ npm install -g cordova@~8.1.2
 ```
 Check that you have the correct versions:
 
+```
 npm list -g -depth=0
+```
+
 
 ## Local dependencies
 
 After cloning this repository you must install the local dependencies:
 
+```
 npm install
-
+```
 
 ## License
 
