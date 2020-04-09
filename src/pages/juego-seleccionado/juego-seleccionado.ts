@@ -523,18 +523,25 @@ export class JuegoSeleccionadoPage  {
 
   //Función que permite redirigirte a la página de información de juego de puntos o juego de coleccion
   irInformacion(juego: any) {
-    console.log('Aquí estará el proceso para elegir el ganador');
-    console.log ('Voy a por la información del juego seleccionado');
-    this.sesion.TomaJuego (this.juegoSeleccionado);
-    console.log('Tomo las jornadas' + this.jornadas);
-    this.JornadasCompeticion = this.calculos.DameTablaJornadasCompeticion( this.juegoSeleccionado, this.jornadas, undefined, undefined);
-    console.log ('Voy a por la información de las jornadas del juego');
-    this.sesion.TomaDatosJornadas(this.jornadas,
-                                  this.JornadasCompeticion);
-    this.sesion.TomaTablaAlumnoJuegoDeCompeticion(this.rankingAlumnoJuegoDeCompeticion);
-    this.sesion.TomaTablaEquipoJuegoDeCompeticion(this.rankingEquiposJuegoDeCompeticion);
-    this.navCtrl.push (JornadaJuegoLigaPage,{juego:juego});
-
+    if (this.juegoSeleccionado.Tipo === 'Juego De Puntos') {
+      console.log ('Accediendo a Información de Juego de Puntos');
+      this.navCtrl.push (InfoJuegoPuntosPage,{juego:juego});
+      } else if (this.juegoSeleccionado.Tipo === 'Juego De Colección') {
+      console.log ('Accediendo a Información de Juego de Colecciones ' + this.coleccion);
+      this.navCtrl.push (MisCromosPage,{coleccion:this.coleccion});
+      } else {
+      console.log('Aquí estará el proceso para elegir el ganador');
+      console.log ('Voy a por la información del juego seleccionado');
+      this.sesion.TomaJuego (this.juegoSeleccionado);
+      console.log('Tomo las jornadas' + this.jornadas);
+      this.JornadasCompeticion = this.calculos.DameTablaJornadasCompeticion( this.juegoSeleccionado, this.jornadas, undefined, undefined);
+      console.log ('Voy a por la información de las jornadas del juego');
+      this.sesion.TomaDatosJornadas(this.jornadas,
+                                    this.JornadasCompeticion);
+      this.sesion.TomaTablaAlumnoJuegoDeCompeticion(this.rankingAlumnoJuegoDeCompeticion);
+      this.sesion.TomaTablaEquipoJuegoDeCompeticion(this.rankingEquiposJuegoDeCompeticion);
+      this.navCtrl.push (JornadaJuegoLigaPage,{juego:juego});
+      }
 }
 
 AsignarPuntos(juego: any) {
