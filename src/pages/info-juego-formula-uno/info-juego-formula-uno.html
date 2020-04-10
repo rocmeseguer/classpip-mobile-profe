@@ -1,0 +1,32 @@
+<!--Se definen los elementos que aparecerán en la cabecera de la pantalla de la aplicación-->
+<ion-header>
+
+  <!--CABECERA SUPERIOR ( JUNTO A MENU LATERAL )-->
+  <form class="ClasspipCabecera" >
+    <button ion-button menuToggle >
+      <ion-icon name="menu" ></ion-icon>
+    </button>
+    <img src="../../assets/icon/Icono Classpip.png">
+    <h2 style="color:white">Classpip</h2>
+  </form>
+
+  <!--CABECERA INFERIOR (PERMITIRA RETROCEDER A LAS PANTALLAS ANTERIORES mediante un NavBar)-->
+  <div color="azulcabecera">
+    <!-- <ion-navbar color="azulcabecera" swipeBackEnabled="false"> -->
+    <ion-navbar color="azulcabecera">
+        <ion-title>INFORMACIÓN</ion-title>
+    </ion-navbar>
+  </div>
+
+</ion-header>
+
+<ion-content class="fondoDegradado">
+  <ion-list class="container" *ngFor="let jornada of JornadasCompeticion" (click)="resultadosJornada(jornada);">
+    <ion-icon item-left style="margin-left: 10%;  margin-top: 5%; size: 200px;" name="checkmark-circle" *ngIf="JornadaFinalizada(jornada) === true"></ion-icon>
+    <ion-icon item-left style="margin-left: 10%;  margin-top: 5%; size: 200px;"  name="timer" *ngIf="JornadaFinalizada(jornada) === false"></ion-icon>
+    <p style="text-align: center; color: white; font-size: large;"> Jornada {{jornada.NumeroDeJornada}} </p>
+    <p style="text-align: center; color: white;">Fecha: {{jornada.Fecha | date: 'shortDate'}}</p>
+    <p style="text-align: center; color: white;">Criterio: {{jornada.CriterioGanador}}</p>
+  </ion-list>
+</ion-content>
+

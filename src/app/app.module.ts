@@ -31,6 +31,12 @@ import { MisCromosActualesPageModule } from '../pages/mis-cromos-actuales/mis-cr
 import { PeticionesApiProvider } from '../providers/peticiones-api/peticiones-api';
 import { SesionProvider } from '../providers/sesion/sesion';
 import { CalculosProvider } from '../providers/calculos/calculos';
+import { InfoJuegoLigaPageModule } from '../pages/info-juego-liga/info-juego-liga.module';
+import { SeleccionarGanadorLigaPageModule } from '../pages/Seleccionar-ganador-liga/Seleccionar-ganador-liga.module';
+import { SeleccionarGanadorFormulaUnoPageModule } from '../pages/Seleccionar-ganador-formula-uno/Seleccionar-ganador-formula-uno.module';
+import { InfoJuegoFormulaUnoPageModule } from '../pages/info-juego-formula-uno/info-juego-formula-uno.module';
+import { JornadaJuegoFormulaUnoPageModule } from '../pages/jornada-juego-formula-uno/jornada-juego-formula-uno.module';
+import { JornadaJuegoLigaPageModule } from '../pages/jornada-juego-liga/jornada-juego-liga.module'
 
 @NgModule({
   declarations: [
@@ -55,7 +61,13 @@ import { CalculosProvider } from '../providers/calculos/calculos';
     MisColeccionesPageModule,
     MisCromosPageModule,
     MisCromosActualesPageModule,
-    AsignarCromosPageModule
+    AsignarCromosPageModule,
+    InfoJuegoLigaPageModule,
+    SeleccionarGanadorLigaPageModule,
+    InfoJuegoFormulaUnoPageModule,
+    SeleccionarGanadorFormulaUnoPageModule,
+    JornadaJuegoFormulaUnoPageModule,
+    JornadaJuegoLigaPageModule
 
   ],
   bootstrap: [IonicApp],

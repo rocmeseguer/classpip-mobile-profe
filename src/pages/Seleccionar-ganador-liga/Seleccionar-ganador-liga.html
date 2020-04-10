@@ -1,0 +1,144 @@
+<!--Se definen los elementos que aparecerán en la cabecera de la pantalla de la aplicación-->
+<ion-header>
+
+  <!--CABECERA SUPERIOR ( JUNTO A MENU LATERAL )-->
+  <form class="ClasspipCabecera" >
+    <button ion-button menuToggle >
+      <ion-icon name="menu" ></ion-icon>
+    </button>
+    <img src="../../assets/icon/Icono Classpip.png">
+    <h2 style="color:white">Classpip</h2>
+  </form>
+
+  <!--CABECERA INFERIOR (PERMITIRA RETROCEDER A LAS PANTALLAS ANTERIORES mediante un NavBar)-->
+  <ion-navbar color="azulcabecera">
+    <ion-title >MI JUEGO</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content class="fondoDegradado">
+
+  <ion-row>
+    <ion-col col-6 >
+      <button ion-button round style ='width: 100%;' color="primary" size="large" (click)=  AsignarGanadorJuegoPuntos() [disabled]="botonAsignarJuegoDesactivado">
+        Juego de Puntos
+      </button>
+    </ion-col>
+    <ion-col col-6 >
+      <button ion-button round style ='width: 100%;' color="primary" size="large" (click)= AsignarGanadorAleatoriamente() [disabled]="botonAsignarAleatorioDesactivado">
+        Aleatoriamente
+      </button>
+    </ion-col>
+
+  </ion-row>
+
+  <ion-row>
+    <ion-col>
+        <p style="color: white; text-align: center; background-color: rgb(0,0,0,0);" > Seleccione una Jornada </p>
+    </ion-col>
+    <ion-col>
+        <select style = "font-size: 80%; margin-top: 5%; height: 60%"  [(ngModel)]="jornadaSeleccionada" name="jornada" (change) = "ActualizarBoton()">
+            <option style = "font-size: 80%" *ngFor="let jornada of JornadasCompeticion" [value]="jornada.id">
+                Jornada {{jornada.NumeroDeJornada}}
+            </option>
+        </select>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col>
+        <p style="color: white; text-align: center; background-color: rgb(0,0,0,0);" > Seleccione una Juego </p>
+    </ion-col>
+    <ion-col>
+        <select style = "font-size: 80%; margin-top: 5%; height: 60%"  [(ngModel)]="juegodePuntosSeleccionadoID" name="juegodePuntos" (change) = "ActualizarBoton()">
+            <option style = "font-size: 80%" *ngFor="let juego of juegosActivosPuntosModo" [value]="juego.id">
+              {{juego.NombreJuego}}
+            </option>
+        </select>
+    </ion-col>
+  </ion-row>
+
+  <div *ngIf="juegoSeleccionado.Modo === 'Individual' && jornadaSeleccionada !== undefined" padding>
+
+      <ion-grid no-padding>
+
+
+
+          <ion-row class="cabecera" >
+            <ion-col col-3 style="margin-left:0%">
+              <p >Alumno 1</p>
+            </ion-col>
+            <ion-col col-6 style="margin-left:10%" >
+              <p >Alumno 2</p>
+            </ion-col>
+            <ion-col col-3 style="margin-left:-15%">
+              <p>Ganador</p>
+            </ion-col>
+          </ion-row>
+
+          <ion-content id="fondo">
+            <div style="margin-top: -6%">
+                <ion-row class="casillas" *ngFor="let EnfrentamientoLiga of EnfrentamientosJornadaSeleccionada"  >
+                    <ion-col col-3 style="margin-top:3%;margin-left:-5%">
+                      <p >{{EnfrentamientoLiga.nombreJugadorUno}}</p>
+                    </ion-col>
+                    <ion-col col-7 style="margin-top:3%;margin-left: 10%">
+                      <p >{{EnfrentamientoLiga.nombreJugadorDos}}</p>
+                    </ion-col>
+                    <ion-col col-2 style="margin-top:3%;margin-left: -15%">
+                      <p >{{EnfrentamientoLiga.nombreGanador}}</p>
+                    </ion-col>
+                </ion-row>
+            </div>
+
+          </ion-content>
+
+      </ion-grid>
+
+
+
+  </div>
+
+  <div *ngIf="juegoSeleccionado.Modo !== 'Individual' && jornadaSeleccionada !== undefined" padding>
+
+    <ion-grid no-padding>
+
+
+
+        <ion-row class="cabecera" >
+          <ion-col col-3 style="margin-left:0%">
+            <p >Equipo 1</p>
+          </ion-col>
+          <ion-col col-6 style="margin-left:10%" >
+            <p >Equipo 2</p>
+          </ion-col>
+          <ion-col col-3 style="margin-left:-15%">
+            <p>Ganador</p>
+          </ion-col>
+        </ion-row>
+
+        <ion-content id="fondo">
+          <div style="margin-top: -6%">
+              <ion-row class="casillas" *ngFor="let EnfrentamientoLiga of EnfrentamientosJornadaSeleccionada"  >
+                  <ion-col col-3 style="margin-top:3%;margin-left:-5%">
+                    <p >{{EnfrentamientoLiga.nombreJugadorUno}}</p>
+                  </ion-col>
+                  <ion-col col-7 style="margin-top:3%;margin-left: 10%">
+                    <p >{{EnfrentamientoLiga.nombreJugadorDos}}</p>
+                  </ion-col>
+                  <ion-col col-2 style="margin-top:3%;margin-left: -15%">
+                    <p >{{EnfrentamientoLiga.nombreGanador}}</p>
+                  </ion-col>
+              </ion-row>
+          </div>
+
+        </ion-content>
+
+    </ion-grid>
+
+
+
+  </div>
+
+</ion-content>

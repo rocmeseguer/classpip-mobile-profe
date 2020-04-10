@@ -7,6 +7,9 @@ import { JuegoSeleccionadoPage } from '../juego-seleccionado/juego-seleccionado'
 
 import {CalculosProvider} from '../../providers/calculos/calculos';
 
+// Importamos las clases necesarias
+import { Juego } from '../../clases/index';
+
 export interface OpcionSeleccionada {
   nombre: string;
   id: string;
@@ -20,9 +23,6 @@ export interface OpcionSeleccionada {
 })
 export class JuegoPuntosPage {
 
-  // URLs que utilizaremos
-  private APIUrlGrupos = 'http://localhost:3000/api/Grupos';
-
   // PARAMETROS QUE RECOGEMOS DE LA PAGINA PREVIA
   grupoId: number;
 
@@ -31,7 +31,8 @@ opcionesMostrar: OpcionSeleccionada[] = [
   {nombre: 'Todos los juegos', id: 'todosLosJuegos'},
   {nombre: 'Juegos de puntos', id: 'juegosDePuntos'},
   {nombre: 'Juegos de colección', id: 'juegosDeColeccion'},
-  {nombre: 'Juegos de competición', id: 'juegosDeCompeticion'},
+  {nombre: 'Juegos de competición Liga', id: 'juegosDeCompeticionLiga'},
+  {nombre: 'Juegos de competición Fórmula Uno', id: 'juegosDeCompeticionFormulaUno'},
 ];
 
   // Recogemos los tres tipos de juegos que tenemos y las metemos en una lista, tanto activos como inactivos
@@ -74,7 +75,7 @@ opcionesMostrar: OpcionSeleccionada[] = [
   ionViewDidLoad() {
     console.log('Bienvenido a la página de Juegos');
 
-    // Recupera la lista de juegos que tiene el grupo (primero el de puntos, después de colección y después los totales)
+    // Recupera la lista de juegos que tiene el grupo (primero el de puntos, después de colección,después los totales)
     // y los va clasificando en activo e inactivo
 
     this.calculos.DameListaJuegos(this.grupoId)
@@ -224,9 +225,11 @@ opcionesMostrar: OpcionSeleccionada[] = [
   // }
 
   // Función que usaremos para clicar en un juego y entrar en él, enviándolo al servicio
-  JuegoSeleccionado(juego: any) {
-    console.log ('Has seleccionado este juego ' + juego)
-    this.navCtrl.push (JuegoSeleccionadoPage,{juego:juego});
+
+  JuegoSeleccionado(juego: Juego) {
+    console.log ('Has seleccionado este juego ');
+    console.log(juego);
+    this.navCtrl.push (JuegoSeleccionadoPage, {juego: juego});
   }
 
 

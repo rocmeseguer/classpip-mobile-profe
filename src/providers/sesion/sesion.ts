@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import {  Alumno, Profesor, Juego, Punto, AlumnoJuegoDePuntos,
   Equipo, EquipoJuegoDePuntos, Coleccion,
   AlumnoJuegoDeColeccion, EquipoJuegoDeColeccion, Cromo, HistorialPuntosAlumno, HistorialPuntosEquipo,
-  Album, AlbumEquipo } from '../../clases/index';
+  Album, AlbumEquipo, TablaAlumnoJuegoDeCompeticion, Jornada, TablaJornadas, TablaEquipoJuegoDeCompeticion } from '../../clases/index';
 
   import { ReplaySubject } from 'rxjs';
 /*
@@ -49,6 +49,12 @@ export class SesionProvider {
   punto: Punto;
   //insignia: Insignia;
 
+  jornadas: any;
+  JornadasCompeticion: any;
+  TablaAlumnoJuegoDeCompeticion: TablaAlumnoJuegoDeCompeticion[];
+  TablaEquipoJuegoDeCompeticion: TablaEquipoJuegoDeCompeticion[];
+  JuegosDePuntosActivos: Juego[];
+
   // listaEquiposGrupo: any;
 
   constructor() { }
@@ -67,6 +73,64 @@ export class SesionProvider {
   // Se usa la clase ReplaySubject(1) para guardar el profesor, de manera que siempre que se subscribe
   // un componente se le envía solo el ultimo objeto que se almacenó, que es justo lo que necesitamos
 
+
+
+
+  ///////////////////////////////////////////  JUEGO DE COMPETICIÓN FÓRMULA UNO  //////////////////////////////////////////
+  public TomaDatosJornadas(
+    jornadas: Jornada[],
+    JornadasCompeticion: TablaJornadas[]
+  ) {
+  this.JornadasCompeticion = JornadasCompeticion;
+  this.jornadas = jornadas;
+  console.log ('jornadas:');
+  console.log ( this.JornadasCompeticion);
+  console.log ('TablaJornadas:');
+  console.log ( this.jornadas);
+}
+
+public DameDatosJornadas(): any {
+  const datos = {
+  jornadas: this.jornadas,
+  JornadasCompeticion: this.JornadasCompeticion
+  };
+  console.log ('Aqui estan las jornadas guardadas y la tabla de jornadas: ');
+  console.log(this.jornadas);
+  console.log(this.JornadasCompeticion);
+
+  return datos;
+}
+
+public TomaJuego(juego: Juego) {
+  this.juego = juego;
+}
+
+public  DameJuego(): Juego {
+  return this.juego;
+}
+
+public TomaTablaAlumnoJuegoDeCompeticion(Tabla: TablaAlumnoJuegoDeCompeticion[]) {
+  this.TablaAlumnoJuegoDeCompeticion = Tabla;
+}
+
+public DameTablaAlumnoJuegoDeCompeticion(): TablaAlumnoJuegoDeCompeticion[] {
+  const Tabla = this.TablaAlumnoJuegoDeCompeticion;
+  return Tabla;
+}
+
+public TomaTablaEquipoJuegoDeCompeticion(Tabla: TablaEquipoJuegoDeCompeticion[]) {
+  this.TablaEquipoJuegoDeCompeticion = Tabla;
+}
+
+public DameTablaEquipoJuegoDeCompeticion(): TablaEquipoJuegoDeCompeticion[] {
+  const Tabla = this.TablaEquipoJuegoDeCompeticion;
+  return Tabla;
+}
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
   public TomaProfesor(profesor: Profesor) {
       this.profesor.next(profesor);
   }
@@ -75,140 +139,6 @@ export class SesionProvider {
   public  DameProfesor(): any {
     return this.profesor;
   }
-  // public TomaGrupo(grupo: Grupo) {
-  //   this.grupo = grupo;
-  // }
-
-  // public TomaListaGrupos(listaGrupos: any) {
-  //   this.listaGrupos = listaGrupos;
-  // }
-
-  // public DameListaGrupos(): any {
-  //   return this.listaGrupos;
-  // }
-
-  // public  DameGrupo(): Grupo {
-  //   return this.grupo;
-  // }
-
-  // // public TomaEquiposGrupo(listaEquipos: any) {
-  // //   this.listaEquiposGrupo = listaEquipos;
-  // // }
-
-  // // public DameEquiposGrupo(): any {
-  // //   return this.listaEquiposGrupo;
-  // // }
-
-  // public TomaJuego(juego: Juego) {
-  //   this.juego = juego;
-  // }
-  // public  DameJuego(): Juego {
-  //   return this.juego;
-  // }
-  // public TomaEquipo(equipo: Equipo) {
-  //   this.equipo = equipo;
-  // }
-  // public TomaAlumnosEquipo(alumnos: Alumno[]) {
-  //   this.alumnosEquipo = alumnos;
-  // }
-  // public  DameEquipo(): Equipo {
-  //   return this.equipo;
-  // }
-  // public DameAlumnosEquipo(): Alumno[] {
-  //   return this.alumnosEquipo;
-  // }
-
-  // public TomaAlumnosGrupo(alumnos: Alumno[]) {
-  //   this.alumnosGrupo = alumnos;
-  // }
-  // public DameAlumnosGrupo(): Alumno[] {
-  //   return this.alumnosGrupo;
-  // }
-
-  // public TomaColeccion(coleccion: Coleccion) {
-  //   this.coleccion = coleccion;
-  // }
-  // public DameColeccion(): Coleccion {
-  //   return this.coleccion ;
-  // }
-
-  // public TomaCromos(cromosColeccion: Cromo[]) {
-  //   this.cromos = cromosColeccion;
-  // }
-
-  // public DameCromos(): Cromo[] {
-  //   return this.cromos;
-  // }
-
-  // public TomaCromo( cromo: Cromo) {
-  //   this.cromo = cromo;
-  // }
-
-  // public DameCromo(): Cromo {
-  //   return this.cromo;
-  // }
-
-  // public TomaDatosEvolucionAlumnoJuegoPuntos( posicion: any,
-  //                                             tiposPuntosDelJuego: any,
-  //                                             nivelesDelJuego: any,
-  //                                             alumnoSeleccionado: any,
-  //                                             inscripcionAlumnoJuego: any) {
-  //     this.posicion = posicion;
-  //     this.tiposPuntosDelJuego = tiposPuntosDelJuego;
-  //     this.nivelesDelJuego = nivelesDelJuego;
-  //     this.alumnoSeleccionado = alumnoSeleccionado;
-  //     this.inscripcionAlumnoJuego = inscripcionAlumnoJuego;
-  // }
-
-  // public DameDatosEvolucionAlumnoJuegoPuntos(): any {
-  //   const datos = {
-  //                     posicion: this.posicion,
-  //                     tiposPuntosDelJuego: this.tiposPuntosDelJuego,
-  //                     nivelesDelJuego: this.nivelesDelJuego,
-  //                     alumnoSeleccionado: this.alumnoSeleccionado,
-  //                     inscripcionAlumnoJuego: this.inscripcionAlumnoJuego
-  //   };
-  //   return datos;
-  // }
-
-  // public TomaDatosEvolucionEquipoJuegoPuntos(
-  //                     posicion: any,
-  //                     equipoSeleccionado: any,
-  //                     inscripcionEquipoJuego: any,
-  //                     nivelesDelJuego: any,
-  //                     tiposPuntosDelJuego) {
-  //     this.posicion = posicion;
-  //     this.equipoSeleccionado = equipoSeleccionado;
-  //     this.inscripcionEquipoJuego = inscripcionEquipoJuego;
-  //     this.nivelesDelJuego = nivelesDelJuego;
-  //     this.tiposPuntosDelJuego = tiposPuntosDelJuego;
-
-  // }
-
-  // public DameDatosEvolucionEquipoJuegoPuntos(): any {
-  //   const datos = {
-  //                     posicion: this.posicion,
-  //                     equipoSeleccionado: this.equipoSeleccionado,
-  //                     inscripcionEquipoJuego: this.inscripcionEquipoJuego,
-  //                     nivelesDelJuego: this.nivelesDelJuego,
-  //                     tiposPuntosDelJuego: this.tiposPuntosDelJuego
-  //   };
-  //   return datos;
-  // }
-
-  // public TomaInformacionJuego(  nivelesDelJuego: any,
-  //                               tiposPuntosDelJuego: any) {
-  //     this.nivelesDelJuego = nivelesDelJuego;
-  //     this.tiposPuntosDelJuego = tiposPuntosDelJuego;
-  // }
-  // public DameInformacionJuego(): any {
-  //   const datos = {
-  //                     nivelesDelJuego: this.nivelesDelJuego,
-  //                     tiposPuntosDelJuego: this.tiposPuntosDelJuego
-  //   };
-  //   return datos;
-  // }
-
 
   public TomaDatosParaAsignarPuntos(
           tiposPuntosDelJuego: any,
@@ -254,67 +184,38 @@ export class SesionProvider {
     return this.rankingEquiposJuegoDePuntos;
   }
 
-  // public TomaAlumnosDelJuego( alumnos: any) {
-  //   this.alumnosDelJuego = alumnos;
-  // }
+public DameDatosJornadasJuegoComponent(): any {
+const datos = {
+jornadas: this.jornadas,
+};
+console.log ('Aqui estan las jornadas guardadas: ');
+console.log(this.jornadas);
 
-  // public DameAlumnosDelJuego(): any {
-  //   return this.alumnosDelJuego;
-  // }
+return datos;
+}
 
-  // public DameEquiposDelJuego(): any {
-  //   return this.equiposDelJuego;
-  // }
+public TomaInscripcionAlumno(inscripcionAlumno: any) {
+  this.inscripcionAlumno = inscripcionAlumno;
+}
 
-  // public TomaEquiposDelJuego( equipos: any) {
-  //   this.equiposDelJuego = equipos;
-  // }
+public DameInscripcionAlumno(): any {
+  return this.inscripcionAlumno;
+}
 
-  // public TomaAlumno(alumno: any) {
-  //   this.alumno = alumno;
-  // }
-  // public DameAlumno(): any {
-  //   return this.alumno;
-  // }
+public TomaInscripcionEquipo(inscripcionEquipo: any) {
+  this.inscripcionEquipo = inscripcionEquipo;
+}
 
-  // public TomaInscripcionAlumno(inscripcionAlumno: any) {
-  //   this.inscripcionAlumno = inscripcionAlumno;
-  // }
+public DameInscripcionEquipo(): any {
+  return this.inscripcionEquipo;
+}
 
-  // public DameInscripcionAlumno(): any {
-  //   return this.inscripcionAlumno;
-  // }
+public TomaJuegosDePuntos(juegosActivos: Juego[]) {
+  this.JuegosDePuntosActivos = juegosActivos;
+}
 
-  // public TomaInscripcionEquipo(inscripcionEquipo: any) {
-  //   this.inscripcionEquipo = inscripcionEquipo;
-  // }
-
-  // public DameInscripcionEquipo(): any {
-  //   return this.inscripcionEquipo;
-  // }
-
-  // public TomaImagenLogoEquipo(imagenLogoEquipo: any) {
-  //   this.imagenLogoEquipo = imagenLogoEquipo;
-  // }
-
-  // public DameImagenLogoEquipo(): any {
-  //   return this.imagenLogoEquipo;
-  // }
-
-  // public TomaTipoPunto(punto: any) {
-  //   this.punto = punto;
-  // }
-
-  // public DameTipoPunto(): any {
-  //   return this.punto;
-  // }
-
-  // public TomaInsignia(insignia: any) {
-  //   this.insignia = insignia;
-  // }
-
-  // public DameInsignia(): any {
-  //   return this.insignia;
-  // }
-
+public DameJuegosDePuntosActivos(): Juego[] {
+  const juegosActivosPuntos = this.JuegosDePuntosActivos ;
+  return juegosActivosPuntos;
+}
 }
