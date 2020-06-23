@@ -38,6 +38,8 @@ import { InfoJuegoFormulaUnoPageModule } from '../pages/info-juego-formula-uno/i
 import { JornadaJuegoFormulaUnoPageModule } from '../pages/jornada-juego-formula-uno/jornada-juego-formula-uno.module';
 import { JornadaJuegoLigaPageModule } from '../pages/jornada-juego-liga/jornada-juego-liga.module'
 
+
+
 @NgModule({
   declarations: [
     MyApp,
