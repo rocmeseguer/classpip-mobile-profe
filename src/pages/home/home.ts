@@ -8,7 +8,8 @@ import { InicioPage } from '../inicio/inicio';
 //Importamos un proveedor para registrar el Id del profesor que ha iniciado sesion
 import { IdProfesorProvider } from '../../providers/id-profesor/id-profesor';
 import { PeticionesApiProvider } from '../../providers/peticiones-api/peticiones-api'
-import { SesionProvider } from '../../providers/sesion/sesion'
+import { SesionProvider } from '../../providers/sesion/sesion';
+
 
 
 @Component({
@@ -21,6 +22,9 @@ export class HomePage {
   nombre: string;
   apellido: string;
   public loading: Loading;
+  coords: any = { lat: 0, lng: 0 };
+  latitud;
+  longitud;
 
   // URLs que utilizaremos
   private APIUrl = 'http://localhost:3000/api/Profesores';
@@ -53,6 +57,16 @@ export class HomePage {
     alert.present();
   }
 
+
+
+  obtenerPosicion() {
+
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.latitud = position.coords.latitude;
+        this.longitud = position.coords.longitude;
+      });
+
+  }
 
   //Función que busca en la base de datos el nombre y apellido y en caso afirmativo,
   //te permite acceder a tu sesión de Classpip

@@ -10,6 +10,7 @@ import { SesionProvider} from '../../providers/sesion/sesion'
 import {PeticionesApiProvider} from '../../providers/peticiones-api/peticiones-api'
 import { Profesor } from '../../clases';
 
+
 @IonicPage()
 @Component({
   selector: 'page-inicio',
@@ -29,9 +30,13 @@ data: any;
 nombre: string;
 profesor: Profesor;
 
+
+
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private http: HttpClient,
               private peticionesApi: PeticionesApiProvider,
+
               private sesion: SesionProvider) {
   //this.id=navParams.get('id');
   //this.profesor = this.sesion.DameProfesor();
@@ -53,6 +58,8 @@ profesor: Profesor;
       }
     )
   }
+
+
 
 
   //Función que te redirije a la página de los alumnos del grupo seleccionado del profesor
