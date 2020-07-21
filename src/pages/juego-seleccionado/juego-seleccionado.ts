@@ -29,7 +29,8 @@ import {JornadaJuegoLigaPage} from '../jornada-juego-liga/jornada-juego-liga';
 import {JornadaJuegoFormulaUnoPage} from '../jornada-juego-formula-uno/jornada-juego-formula-uno';
 
 //Importamos las clases necesarias
-import { Punto, Juego, Alumno, Equipo} from '../../clases/index';
+import { Punto, Juego, Alumno, Equipo, AlumnoJuegoDeGeocaching, TablaAlumnoJuegoDeGeocaching, JuegoDeGeocaching} from '../../clases/index';
+import swal from 'sweetalert';
 
 
 @IonicPage()
@@ -82,6 +83,8 @@ export class JuegoSeleccionadoPage  {
   enfrentamientosDelJuego: Array<Array<EnfrentamientoLiga>>;
   alumnosDelJuegoLiga: Alumno[];
   equiposDelJuegoLiga: Equipo[];
+  listaAlumnosOrdenadaPorPuntuacion: AlumnoJuegoDeGeocaching[];
+  rankingAlumnosPorPuntuacion: TablaAlumnoJuegoDeGeocaching[];
 
 
    //
@@ -173,6 +176,12 @@ export class JuegoSeleccionadoPage  {
       }
       this.DameJornadasDelJuegoDeCompeticionSeleccionadoF1();
       this.DameJuegosdePuntosActivos();
+    }
+
+    if (this.juegoSeleccionado.Tipo === 'Juego De Geocaching') {
+      console.log('obtenemos info geocaching');
+      this.AlumnosDelJuegoGeocaching();
+      
     }
   }
 
@@ -878,4 +887,38 @@ getItems1(ev: any) {
       this.rankingEquiposJuegoDeCompeticion = this.itemsAPI;
     }
   }
+
+  AlumnosDelJuegoGeocaching() {
+    this.peticionesApi.DameAlumnosJuegoDeGeocaching(this.juegoSeleccionado.id)
+    .subscribe(alumnosJuego => {
+      this.alumnosDelJuego = alumnosJuego;
+      this.RecuperarInscripcionesAlumnoJuegoGeocaching();
+    });
+  }
+  RecuperarInscripcionesAlumnoJuegoGeocaching() {
+    this.peticionesApi.DameInscripcionesAlumnoJuegoDeGeocaching(this.juegoSeleccionado.id)
+    .subscribe(inscripciones => {
+      this.listaAlumnosOrdenadaPorPuntuacion = inscripciones;
+      // tslint:disable-next-line:only-arrow-functions
+      this.listaAlumnosOrdenadaPorPuntuacion = this.listaAlumnosOrdenadaPorPuntuacion.sort(function(a, b) {
+        return b.Puntuacion - a.Puntuacion;
+      });
+      this.TablaClasificacionTotalGeocaching();
+    });
+  }
+
+  TablaClasificacionTotalGeocaching() {
+    this.rankingAlumnosPorPuntuacion = this.calculos.PrepararTablaRankingGeocaching(this.listaAlumnosOrdenadaPorPuntuacion,
+      this.alumnosDelJuego);
+  }
+
+  FinalizarGeocaching(juego: any){
+    this.peticionesApi.ModificaJuegoDeGeocaching(new JuegoDeGeocaching(this.juegoSeleccionado.NombreJuego, this.juegoSeleccionado.PuntuacionCorrecta,
+      this.juegoSeleccionado.PuntuacionIncorrecta, this.juegoSeleccionado.PuntuacionCorrectaBonus, this.juegoSeleccionado.PuntuacionIncorrectaBonus, this.juegoSeleccionado.PreguntasBasicas, this.juegoSeleccionado.PreguntasBonus, false, true,
+      // tslint:disable-next-line:max-line-length
+      this.juegoSeleccionado.profesorId, this.juegoSeleccionado.grupoId, this.juegoSeleccionado.idescenario), this.juegoSeleccionado.id, this.juegoSeleccionado.grupoId)
+      .subscribe(res => {
+        swal('Juego finalizado correctamente');
+  });
+}
 }

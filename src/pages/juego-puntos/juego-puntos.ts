@@ -4,7 +4,8 @@ import { HttpClient } from '@angular/common/http';
 
 //Importamos las páginas necesarias
 import { JuegoSeleccionadoPage } from '../juego-seleccionado/juego-seleccionado';
-
+import { JuegoSeleccionadoInactivoPage } from '../juego-seleccionado-inactivo/juego-seleccionado-inactivo';
+import { JuegoSeleccionadoPreparadoPage } from '../juego-seleccionado-preparado/juego-seleccionado-preparado';
 import {CalculosProvider} from '../../providers/calculos/calculos';
 
 // Importamos las clases necesarias
@@ -33,6 +34,7 @@ opcionesMostrar: OpcionSeleccionada[] = [
   {nombre: 'Juegos de colección', id: 'juegosDeColeccion'},
   {nombre: 'Juegos de competición Liga', id: 'juegosDeCompeticionLiga'},
   {nombre: 'Juegos de competición Fórmula Uno', id: 'juegosDeCompeticionFormulaUno'},
+  {nombre: 'Juegos de Geocaching', id: 'juegosDeGeocaching'},
 ];
 
   // Recogemos los tres tipos de juegos que tenemos y las metemos en una lista, tanto activos como inactivos
@@ -58,6 +60,7 @@ opcionesMostrar: OpcionSeleccionada[] = [
   // HACEMOS DOS LISTAS CON LOS JUEGOS ACTIVOS E INACTIVOS DE LOS TRES TIPOS DE JUEGOS
   juegosActivos: any[] = [];
   juegosInactivos: any[] = [];
+  juegosPreparados: any[] = [];
 
   // Al seleccionar el tipo de juego que deseo mostrar de la lista desplegable (OpcionSeleccionada), copiaremos esa lista
   // en este vector, ya que será de donde se sacará la información que se mostrará
@@ -82,6 +85,7 @@ opcionesMostrar: OpcionSeleccionada[] = [
     .subscribe ( listas => {
             console.log ('He recibido los juegos');
             this.juegosActivos = listas.activos;
+            this.juegosPreparados = listas.preparados;
             // Si la lista aun esta vacia la dejo como indefinida para que me
             // salga el mensaje de que aun no hay juegos
             if (listas.activos[0] === undefined) {
@@ -97,6 +101,13 @@ opcionesMostrar: OpcionSeleccionada[] = [
             } else {
               this.juegosInactivos = listas.inactivos;
               console.log ('hay inactivos');
+            }
+            if (listas.preparados[0] === undefined) {
+              this.juegosPreparados = undefined;
+              console.log ('No hay preparados');
+            } else {
+              this.juegosPreparados = listas.preparados;
+              console.log ('hay preparados');
             }
 
     });
@@ -231,6 +242,18 @@ opcionesMostrar: OpcionSeleccionada[] = [
     console.log(juego);
     this.navCtrl.push (JuegoSeleccionadoPage, {juego: juego});
   }
+
+  JuegoSeleccionadoInactivo(juego: Juego) {
+    console.log ('Has seleccionado este juego ');
+    console.log(juego);
+    this.navCtrl.push (JuegoSeleccionadoInactivoPage, {juego: juego});
+  }
+  JuegoSeleccionadoPreparado(juego: Juego) {
+    console.log ('Has seleccionado este juego ');
+    console.log(juego);
+    this.navCtrl.push (JuegoSeleccionadoPreparadoPage, {juego: juego});
+  }
+
 
 
 }

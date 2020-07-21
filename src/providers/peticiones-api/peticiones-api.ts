@@ -8,7 +8,9 @@ import {  Alumno, Grupo,Profesor, Juego, Punto, Insignia, AlumnoJuegoDePuntos,
   AlumnoJuegoDeColeccion, EquipoJuegoDeColeccion, Cromo, HistorialPuntosAlumno, HistorialPuntosEquipo,
   Album, AlbumEquipo, AsignacionEquipo, AsignacionPuntosJuego, Jornada, AlumnoJuegoDeCompeticionLiga,
   EquipoJuegoDeCompeticionLiga, EnfrentamientoLiga, AlumnoJuegoDeCompeticionFormulaUno,
-  EquipoJuegoDeCompeticionFormulaUno } from '../../clases/index';
+  EquipoJuegoDeCompeticionFormulaUno, Escenario, PuntoGeolocalizable, AlumnoJuegoDeGeocaching, JuegoDeGeocaching } from '../../clases/index';
+  
+
 
 
 
@@ -23,8 +25,8 @@ import {  Alumno, Grupo,Profesor, Juego, Punto, Insignia, AlumnoJuegoDePuntos,
 export class PeticionesApiProvider {
 
 
-  private URLBase = 'http://localhost:3000/api/';
-  //private URLBase = 'http://10.192.151.13:3000/api/';
+  //private URLBase = 'http://localhost:3000/api/';
+  private URLBase = 'http://147.83.118.92:3000/api/';
 
   private APIUrlProfesores = this.URLBase + 'Profesores';
 
@@ -68,6 +70,11 @@ export class PeticionesApiProvider {
   private APIUrlJuegoDeCompeticionLiga = 'http://localhost:3000/api/JuegosDeCompeticionLiga';
   private APIUrlAlumnoJuegoDeCompeticionLiga = 'http://localhost:3000/api/AlumnosJuegoDeCompeticionLiga';
   private APIUrlEquipoJuegoDeCompeticionLiga = 'http://localhost:3000/api/EquiposJuegoDeCompeticionLiga';
+
+
+  private APIUrlEscenarios = this.URLBase + 'Escenarios';
+  private APIUrlJuegoDeGeocaching = this.URLBase + 'JuegosDeGeocaching';
+  private APIUrlAlumnoJuegoDeGeocaching = this.URLBase + 'AlumnosJuegoDeGeocaching';
 
   constructor(
     private http: HttpClient,
@@ -517,4 +524,35 @@ export class PeticionesApiProvider {
     return this.http.put<EquipoJuegoDeCompeticionFormulaUno>('http://localhost:3000/api/EquiposJuegoDeCompeticionFormulaUno/' + equipo.id, equipo);
   }
 
+
+
+//escenarios
+public DameEscenariosDelProfesor(profesorId: number): Observable<Escenario[]> {
+  return this.http.get<Escenario[]>(this.APIUrlProfesores + '/' + profesorId + '/escenarios');
+}
+public DamePuntosGeolocalizablesEscenario(idescenario: number): Observable<PuntoGeolocalizable[]> {
+  return this.http.get<PuntoGeolocalizable[]>(this.APIUrlEscenarios + '/' + idescenario + '/puntosgeolocalizables');
+}
+public ModificaPuntoGeolocalizableEscenario(puntogeolocalizable: PuntoGeolocalizable, idescenario: number, idpuntogeolocalizable: number): Observable<PuntoGeolocalizable> {
+  return this.http.put<PuntoGeolocalizable>(this.APIUrlEscenarios + '/' + idescenario + '/puntosgeolocalizables/' + idpuntogeolocalizable, puntogeolocalizable);
+}
+
+public DameJuegoDeGeocaching(grupoId: number): Observable<Juego[]> {
+  return this.http.get<Juego[]>(this.APIUrlGrupos + '/' + grupoId + '/juegosDeGeocaching');
+}
+
+
+public DameAlumnosJuegoDeGeocaching(juegoDeGeocaching: number): Observable<Alumno[]> {
+  return this.http.get<Alumno[]>(this.APIUrlJuegoDeGeocaching + '/' + juegoDeGeocaching + '/alumnos');
+}
+
+public DameInscripcionesAlumnoJuegoDeGeocaching(juegoDeGeocachingId: number): Observable<AlumnoJuegoDeGeocaching[]> {
+  return this.http.get<AlumnoJuegoDeGeocaching[]>(this.APIUrlAlumnoJuegoDeGeocaching
+                                                    + '?filter[where][juegoDeGeocachingId]=' + juegoDeGeocachingId);
+}
+public ModificaJuegoDeGeocaching(JuegosDeGeocaching: JuegoDeGeocaching,
+  juegoDeGeocachingId: number, grupoId: number): Observable<JuegoDeGeocaching> {
+return this.http.put<JuegoDeGeocaching>(this.APIUrlGrupos + '/' + grupoId + '/juegosDeGeocaching/' + juegoDeGeocachingId,
+JuegosDeGeocaching);
+}
 }

@@ -8,7 +8,7 @@ import { Juego, Nivel, Alumno, Equipo, TablaAlumnoJuegoDePuntos, Cromo,
   HistorialPuntosEquipo, AlumnoJuegoDeColeccion, EquipoJuegoDeColeccion, Album, AlbumEquipo,
   AlumnoJuegoDeCompeticionFormulaUno, EquipoJuegoDeCompeticionFormulaUno, TablaAlumnoJuegoDeCompeticion,
   TablaEquipoJuegoDeCompeticion, Jornada, TablaJornadas, TablaClasificacionJornada, InformacionPartidosLiga, EnfrentamientoLiga,
-  EquipoJuegoDeCompeticionLiga, AlumnoJuegoDeCompeticionLiga} from '../../clases/index';
+  EquipoJuegoDeCompeticionLiga, AlumnoJuegoDeCompeticionLiga, AlumnoJuegoDeGeocaching, TablaAlumnoJuegoDeGeocaching} from '../../clases/index';
 import {Observable } from 'rxjs';
 /*
   Generated class for the CalculosProvider provider.
@@ -331,6 +331,7 @@ export class CalculosProvider {
 
       const juegosActivos: Juego[] = [];
       const juegosInactivos: Juego[] = [];
+      const juegosPreparados: Juego[] = [];
 
       console.log ('vamos a por los juegos de puntos: ' + grupoID);
       this.peticionesAPI.DameJuegoDePuntosGrupo(grupoID)
@@ -374,6 +375,27 @@ export class CalculosProvider {
                 juegosInactivos.push(juegosCompeticion[i]);
               }
             }
+
+            console.log ('vamos a por los juegos de competicion liga del grupo: ' + grupoID);
+            this.peticionesAPI.DameJuegoDeGeocaching(grupoID)
+            .subscribe(juegosDeGeocaching => {
+              console.log('He recibido los juegos de geocaching');
+              console.log(juegosDeGeocaching);
+              // tslint:disable-next-line:prefer-for-of
+              for (let i = 0; i < juegosDeGeocaching.length; i++) {
+                if (juegosDeGeocaching[i].JuegoActivo === true) {
+                  juegosDeGeocaching[i].Tipo = 'Juego De Geocaching';
+                  juegosActivos.push(juegosDeGeocaching[i]);
+                } else if (juegosDeGeocaching[i].JuegoTerminado === false && juegosDeGeocaching[i].JuegoActivo === false) {
+                  juegosDeGeocaching[i].Tipo = 'Juego De Geocaching';
+                  juegosPreparados.push(juegosDeGeocaching[i]);
+                }
+                else if (juegosDeGeocaching[i].JuegoTerminado === true) {
+                  juegosDeGeocaching[i].Tipo = 'Juego De Geocaching';
+                  juegosInactivos.push(juegosDeGeocaching[i]);
+                }
+              }
+
             console.log ('vamos a por los juegos de competicion formula uno del grupo: ' + grupoID);
             this.peticionesAPI.DameJuegoDeCompeticionFormulaUnoGrupo(grupoID)
             .subscribe(juegosCompeticionFormulaUno => {
@@ -387,7 +409,7 @@ export class CalculosProvider {
                 juegosInactivos.push(juegosCompeticionFormulaUno[i]);
               }
             }
-            const resultado = { activos: juegosActivos, inactivos: juegosInactivos};
+            const resultado = { activos: juegosActivos, inactivos: juegosInactivos, preparados:juegosPreparados};
             obs.next (resultado);
             // this.PreparaListas ();
             });
@@ -395,6 +417,7 @@ export class CalculosProvider {
         });
       });
     });
+   });
 
     return listasObservables;
   }
@@ -1167,4 +1190,20 @@ export class CalculosProvider {
     }
     return EnfrentamientosJornadaSeleccionada;
   }
+
+  public PrepararTablaRankingGeocaching(listaAlumnosOrdenadaPorPuntos: AlumnoJuegoDeGeocaching[],
+    alumnosDelJuego: Alumno[]): TablaAlumnoJuegoDeGeocaching[] {
+const rankingJuegoDeCompeticion: TablaAlumnoJuegoDeGeocaching [] = [];
+// tslint:disable-next-line:prefer-for-oF
+for (let i = 0; i < listaAlumnosOrdenadaPorPuntos.length; i++) {
+let alumno: Alumno;
+const AlumnoId = listaAlumnosOrdenadaPorPuntos[i].alumnoId;
+alumno = alumnosDelJuego.filter(res => res.id === AlumnoId)[0];
+rankingJuegoDeCompeticion[i] = new TablaAlumnoJuegoDeGeocaching(alumno.Nombre, alumno.PrimerApellido, alumno.SegundoApellido,
+listaAlumnosOrdenadaPorPuntos[i].Puntuacion, listaAlumnosOrdenadaPorPuntos[i].Etapa, AlumnoId);
+}
+return rankingJuegoDeCompeticion;
+}
+
+
 }

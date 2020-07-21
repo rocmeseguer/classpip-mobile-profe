@@ -1,0 +1,65 @@
+<!--Se definen los elementos que aparecerán en la cabecera de la pantalla de la aplicación-->
+<ion-header>
+
+  <!--CABECERA SUPERIOR ( JUNTO A MENU LATERAL )-->
+  <form class="ClasspipCabecera">
+      <button ion-button menuToggle >
+          <ion-icon name="menu"></ion-icon>
+      </button>
+      <img src="../../assets/icon/Icono Classpip.png">
+      <h2 style="color:white">Classpip</h2>
+    </form>
+
+  <!--CABECERA INFERIOR (PERMITIRA RETROCEDER A LAS PANTALLAS ANTERIORES mediante un NavBar)-->
+  <ion-navbar color="azulcabecera">
+    <ion-title >MI JUEGO</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content class="fondoDegradado">
+
+  <div *ngIf= "juegoSeleccionado.Tipo === 'Juego De Geocaching'">
+
+      <ion-grid no-padding>
+
+          <!--Se define la cabecera de la tabla que recoge los alumnos del juego-->
+          <ion-row class="cabecera" >
+            <ion-col col-3 style="margin-left:0%">
+              <p >Nombre</p>
+            </ion-col>
+            <ion-col col-7 style="margin-left:-5%" >
+              <p >Apellidos</p>
+            </ion-col>
+            <ion-col col-2 style="margin-left:-30%">
+              <p>Puntuación</p>
+            </ion-col>
+            <ion-col col-2 style="margin-left:15%">
+              <p>Etapas</p>
+            </ion-col>
+          </ion-row>
+
+          <!--Se define el contenido de la tabla que recoge los alumnos del juego-->
+          <ion-content id="fondo">
+            <div style="margin-top: -4%">
+                <ion-row class="casillas" *ngFor="let item of rankingAlumnosPorPuntuacion"  >
+                    <ion-col col-3 style="margin-left: 3%">
+                      <p >{{item.nombre}}</p>
+                    </ion-col>
+                    <ion-col col-7 style="margin-left: 3%">
+                      <p >{{item.primerApellido}}</p>
+                    </ion-col>
+                    <ion-col col-2 style="margin-left: -20%">
+                      <p >{{item.puntuacion}}</p>
+                    </ion-col>
+                    <ion-col col-2 style="margin-left: -7%">
+                      <p >{{item.etapa}}</p>
+                    </ion-col>
+
+
+             </ion-row>
+            </div>
+ 
+
+</ion-content>
+

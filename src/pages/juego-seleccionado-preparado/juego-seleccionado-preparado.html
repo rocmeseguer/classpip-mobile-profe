@@ -1,0 +1,60 @@
+<!--Se definen los elementos que aparecerán en la cabecera de la pantalla de la aplicación-->
+<ion-header>
+
+  <!--CABECERA SUPERIOR ( JUNTO A MENU LATERAL )-->
+  <form class="ClasspipCabecera">
+      <button ion-button menuToggle >
+          <ion-icon name="menu"></ion-icon>
+      </button>
+      <img src="../../assets/icon/Icono Classpip.png">
+      <h2 style="color:white">Classpip</h2>
+    </form>
+
+  <!--CABECERA INFERIOR (PERMITIRA RETROCEDER A LAS PANTALLAS ANTERIORES mediante un NavBar)-->
+  <ion-navbar color="azulcabecera">
+    <ion-title >MI JUEGO</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content class="fondoDegradado">
+
+  <div *ngIf= "juegoSeleccionado.Tipo === 'Juego De Geocaching'">
+    <ion-row>
+      <ion-col col-6 >
+        <button ion-button round style ='width: 60%;' color="primary" style="font-size: 80%; margin-top: -2%; margin-left:140%; margin-right:50%" (click)=  ActivarGeocaching(juegoSeleccionado) class="ActivarGeocaching" >
+          Activar
+        </button>
+      </ion-col>
+  </ion-row>
+  
+
+
+      <ion-grid no-padding>
+
+          <!--Se define la cabecera de la tabla que recoge los alumnos del juego-->
+          <ion-row class="cabecera" >
+            <ion-col col-3 style="margin-left:3%">
+              <p >Nombre</p>
+            </ion-col>
+            <ion-col col-7 style="margin-left:3%" >
+              <p >Apellidos</p>
+            </ion-col>
+          </ion-row>
+
+          <!--Se define el contenido de la tabla que recoge los alumnos del juego-->
+          <ion-content id="fondo">
+            <div style="margin-top: -4%">
+                <ion-row class="casillas" *ngFor="let item of rankingAlumnosPorPuntuacion"  >
+                    <ion-col col-3 style="margin-left: 3%">
+                      <p >{{item.nombre}}</p>
+                    </ion-col>
+                    <ion-col col-7 style="margin-left: 3%">
+                      <p >{{item.primerApellido}}</p>
+                    </ion-col>
+             </ion-row>
+            </div>
+ 
+
+</ion-content>
+
