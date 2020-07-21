@@ -45,6 +45,8 @@ import { JuegoSeleccionadoInactivoPageModule} from '../pages/juego-seleccionado-
 import { JuegoSeleccionadoPreparadoPageModule} from '../pages/juego-seleccionado-preparado/juego-seleccionado-preparado.module';
 
 
+
+
 @NgModule({
   declarations: [
     MyApp,

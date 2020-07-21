@@ -26,7 +26,9 @@ export class PeticionesApiProvider {
 
 
   //private URLBase = 'http://localhost:3000/api/';
+
   private URLBase = 'http://147.83.118.92:3000/api/';
+
 
   private APIUrlProfesores = this.URLBase + 'Profesores';
 
