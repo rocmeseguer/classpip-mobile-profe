@@ -37,5 +37,9 @@ export * from './Jornada';
 export * from './AlumnoJuegoDeCompeticionFormulaUno';
 export * from './EquipoJuegoDeCompeticionFormulaUno';
 export * from './clasesParaTablasJuegoDeCompeticionFormulaUno/TablaClasificacionJornada';
-
+export * from './Escenario';
+export * from './PuntoGeolocalizable';
+export * from './AlumnoJuegoDeGeocaching';
+export * from './TablaAlumnoJuegoDeGeocaching';
+export * from './JuegoDeGeocaching';
 

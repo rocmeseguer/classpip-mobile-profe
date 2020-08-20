@@ -15,6 +15,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   //La página de Inicio será la que recoge los grupos disponibles del profesor
   import { InicioPage } from '../pages/inicio/inicio';
   import { MisColeccionesPage } from '../pages/mis-colecciones/mis-colecciones';
+  import { MisEscenariosPage } from '../pages/mis-escenarios/mis-escenarios';
 
 
 //Importamos un provider para poder enviar el Id del Profesor y tenerlo guardado durante
@@ -23,6 +24,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   import { IdProfesorProvider } from '../providers/id-profesor/id-profesor';
   import {SesionProvider} from '../providers/sesion/sesion'
 import { Profesor } from '../clases';
+
+
 
 @Component({
   templateUrl: 'app.html'
@@ -88,5 +91,12 @@ export class MyApp {
 //del proveedor.
     this.nav.setRoot(MisColeccionesPage,{id:this.profesor.id});
   }
+
+  irMisEscenarios(){
+
+    //Accedemos a la página de mis Alumnos (InicioPage) mediante un id que será el del profesor, obtenido
+    //del proveedor.
+        this.nav.setRoot(MisEscenariosPage,{id:this.profesor.id});
+      }
 }
 

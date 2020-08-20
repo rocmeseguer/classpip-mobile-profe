@@ -6,6 +6,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { MyApp } from './app.component';
+import { Geolocation } from '@ionic-native/geolocation'
 
 
 //**************** IMPORTAR PÁGINAS CREADAS ********************/
@@ -36,7 +37,13 @@ import { SeleccionarGanadorLigaPageModule } from '../pages/Seleccionar-ganador-l
 import { SeleccionarGanadorFormulaUnoPageModule } from '../pages/Seleccionar-ganador-formula-uno/Seleccionar-ganador-formula-uno.module';
 import { InfoJuegoFormulaUnoPageModule } from '../pages/info-juego-formula-uno/info-juego-formula-uno.module';
 import { JornadaJuegoFormulaUnoPageModule } from '../pages/jornada-juego-formula-uno/jornada-juego-formula-uno.module';
-import { JornadaJuegoLigaPageModule } from '../pages/jornada-juego-liga/jornada-juego-liga.module'
+import { JornadaJuegoLigaPageModule } from '../pages/jornada-juego-liga/jornada-juego-liga.module';
+import { MisEscenariosPageModule } from '../pages/mis-escenarios/mis-escenarios.module';
+import { MisPuntosGeolocalizablesPageModule } from '../pages/mis-puntosgeolocalizables/mis-puntosgeolocalizables.module';
+import { EditarMisPuntosGeolocalizablesPageModule } from '../pages/editar-mis-puntosgeolocalizables/editar-mis-puntosgeolocalizables.module';
+import { JuegoSeleccionadoInactivoPageModule} from '../pages/juego-seleccionado-inactivo/juego-seleccionado-inactivo.module';
+import { JuegoSeleccionadoPreparadoPageModule} from '../pages/juego-seleccionado-preparado/juego-seleccionado-preparado.module';
+
 
 
 
@@ -69,7 +76,14 @@ import { JornadaJuegoLigaPageModule } from '../pages/jornada-juego-liga/jornada-
     InfoJuegoFormulaUnoPageModule,
     SeleccionarGanadorFormulaUnoPageModule,
     JornadaJuegoFormulaUnoPageModule,
-    JornadaJuegoLigaPageModule
+    JornadaJuegoLigaPageModule,
+    MisEscenariosPageModule,
+    MisPuntosGeolocalizablesPageModule,
+    EditarMisPuntosGeolocalizablesPageModule,
+    JuegoSeleccionadoInactivoPageModule,
+    JuegoSeleccionadoPreparadoPageModule
+
+
 
   ],
   bootstrap: [IonicApp],
@@ -84,7 +98,8 @@ import { JornadaJuegoLigaPageModule } from '../pages/jornada-juego-liga/jornada-
     IdProfesorProvider,
     PeticionesApiProvider,
     SesionProvider,
-    CalculosProvider
+    CalculosProvider,
+    Geolocation
   ]
 })
 export class AppModule {
